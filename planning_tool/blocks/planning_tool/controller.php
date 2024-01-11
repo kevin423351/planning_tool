@@ -6,8 +6,8 @@ use Concrete\Core\Block\BlockController;
 
 class Controller extends BlockController {
 
-    protected $btInterfaceWidth = 750;
-	protected $btInterfaceHeight = 550;
+    // protected $btInterfaceWidth = 1050;
+	// protected $btInterfaceHeight = 550;
 	// protected $btTable = 'planning_tool';
 
     public function getBlockTypeName()
