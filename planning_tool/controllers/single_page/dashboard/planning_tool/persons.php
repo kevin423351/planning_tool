@@ -1,10 +1,10 @@
 <?php
-namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\Persons;
+namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Database;
 
-class Overview extends DashboardPageController
+class persons extends DashboardPageController
 {
     protected $btTable = 'persons';
 
@@ -21,7 +21,16 @@ class Overview extends DashboardPageController
     {
         $db = Database::connection();
         $persons = $db->fetchAll("SELECT * FROM {$this->btTable}");
-        return $persons;
-        
+        return $persons;  
+    }
+
+    public function details($persoonID) 
+    {
+        // haal hier persoon op
+    }
+
+    public function save()
+    {
+        // hier sla je op
     }
 } 

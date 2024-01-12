@@ -7,6 +7,6 @@ use Concrete\Core\Routing\Redirect;
 class Donations extends DashboardPageController
 {
     public function on_start() {
-        Redirect::to('/dashboard/persons/overview')->send();
+        Redirect::to('/dashboard/planning_tool/persons')->send();
     }
 }

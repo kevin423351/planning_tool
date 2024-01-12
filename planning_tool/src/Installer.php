@@ -34,11 +34,10 @@ class Installer
     public function uninstall($pkg = null)
     {
         $db = app()->make('database')->connection();
-        $db->query("SET foreign_key_checks = 0");
-        $db->query("DROP TABLE IF EXISTS planning_tool");
-        $db->query("SET foreign_key_checks = 1");
-
-    }
+    //     $db->query("DROP TABLE IF EXISTS persons");
+    //     $db->query("DROP TABLE IF EXISTS expertise");
+    //     $db->query("DROP TABLE IF EXISTS appointments");
+    // }
     public function clearCache() {
         Localization::clearCache();
     }
