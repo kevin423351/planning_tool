@@ -8,8 +8,8 @@ use Concrete\Core\Package\PackageService;
 
 use Concrete\Package\PlanningTool\Src\Installer\Blocks;
 
-class Installer
-{
+class Installer {
+    
     public function install($pkg = null) {
 
         if (!$pkg) {
@@ -48,4 +48,5 @@ class Installer
         $manager = new DatabaseStructureManager($em);
         $manager->refreshEntities();
     }
+}
 }
