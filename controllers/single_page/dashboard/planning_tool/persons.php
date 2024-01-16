@@ -6,6 +6,8 @@ use Database;
 
 class persons extends DashboardPageController
 {
+    
+
     protected $btTable = 'persons';
 
     public function on_before_render() {}
@@ -24,7 +26,7 @@ class persons extends DashboardPageController
         return $persons;  
     }
 
-    public function details($persoonID) 
+    public function details($personID) 
     {
         // haal hier persoon op
     }
