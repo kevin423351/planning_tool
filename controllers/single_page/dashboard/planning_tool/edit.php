@@ -6,10 +6,16 @@ use Database;
 
 class Edit extends DashboardPageController
 {
+    public function view($id)
+    {
+        var_dump($id);
+
+    }
+
+
     public function save()
     {
 
-        
 
         // $persoon = new Person();
         // $persoon->setFirstname($firstname);

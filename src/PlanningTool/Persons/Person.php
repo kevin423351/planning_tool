@@ -23,7 +23,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getID()
     {
-        return $this->ID;
+        return $this->id;
     }
 
     /**

@@ -13,6 +13,7 @@ class Add extends DashboardPageController
             // Perform necessary validation and sanitization here
 
             // Retrieve data from the form
+            $id = $_POST['personID'];
             $name = $_POST['formName'];
             $lastname = $_POST['formLastname'];
             $email = $_POST['formEmail'];
@@ -21,7 +22,7 @@ class Add extends DashboardPageController
             $db = Database::connection();
 
             // Insert data into the database
-            $sql = "INSERT INTO persons VALUES ('$name', '$lastname', '$email', '$date')";
+            $sql = "INSERT INTO persons VALUES ('$id', '$name', '$lastname', '$email', '$date')";
             
             if ($db->query($sql) === TRUE) {
                 echo "Item added successfully!";
