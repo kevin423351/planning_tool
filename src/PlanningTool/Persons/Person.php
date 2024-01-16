@@ -21,9 +21,14 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       */
     protected $personID;
 
-    public function getID()
+    public static function getByID($personID)
     {
-        return $this->id;
+        $em = dbORM::entityManager();
+        return $em->find(get_class(), $personID);
+    }
+    public function getItemID()
+    {
+        return $this->personID;
     }
 
     /**
@@ -33,12 +38,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     
     public function getFirstname()
     {
-        return $this->firstname;
+        return $this->formName;
     }
     
-    public function setFirstname($firstname)
+    public function setFirstname($formName)
     {
-        return $this->firstname;
+        return $this->formName;
     }
 
     	/**
@@ -48,12 +53,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getLastname()
     {
-        return $this->lastname;
+        return $this->formLastname;
     }
 
-    public function setLastname($lastname)
+    public function setLastname($formLastname)
     {
-        return $this->lastname;
+        return $this->formLastname;
     }
     	/**
      * @ORM\Column(type="string", length=150)
@@ -62,12 +67,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getEmail()
     {
-        return $this->email;
+        return $this->formEmail;
     }
 
-    public function setEmail($email)
+    public function setEmail($formEmail)
     {
-        return $this->email;
+        return $this->formEmail;
     }
     	/**
      * @ORM\Column(type="string", length=150)
@@ -76,11 +81,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getDate()
     {
-        return $this->date;
+        return $this->formDate;
     }
 
-    public function setDate($date)
+    public function setDate($formDate)
     {
-        return $this->date;
+        return $this->formDate;
     }
 }

@@ -9,7 +9,7 @@
 
 <h2>Edit persons</h2>
 
-<form method="post" action="<?=$this->action('save', $id) ?>">
+<form method="post" action="<?=$this->action('save',) ?>">
 
     <label for="name">Name:</label>
     <input type="text" id="formName" name="formName" value="<?php echo $name; ?>" required><br>
