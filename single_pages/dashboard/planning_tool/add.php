@@ -12,16 +12,16 @@
 <form method="post" action="<?=$this->action('add')?>">
 
     <label for="name">Name:</label>
-    <input type="text" id="formName" name="formName" value="<?php echo $name; ?>" required><br>
+    <input type="text" id="formName" name="formName" value="" required><br>
 
     <label for="lastname">lastname:</label>
-    <input type="text" id="formLastname" name="formLastname" value="<?php echo $lastname; ?>" required><br>
+    <input type="text" id="formLastname" name="formLastname" value="" required><br>
 
     <label for="email">Email:</label>
-    <input type="email" id="formEmail" name="formEmail" value="<?php echo $email; ?>" required><br>
+    <input type="email" id="formEmail" name="formEmail" value="" required><br>
 
     <label for="date">date:</label>
-    <input type="text" id="formDate" name="formDate" value="<?php echo $date; ?>" required><br>
+    <input type="text" id="formDate" name="formDate" value="" required><br>
 
     <input type="submit" value="Update">
 </form>

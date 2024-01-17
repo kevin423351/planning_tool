@@ -31,6 +31,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         return $this->personID;
     }
 
+    public function setItemID($personID)
+    {
+        $this->personID = $personID;
+    }
+
     /**
      * @ORM\Column(type="string", length=150)
      */
@@ -43,7 +48,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     
     public function setFirstname($formName)
     {
-        return $this->formName;
+        $this->formName = $formName;
     }
 
     	/**
@@ -58,7 +63,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function setLastname($formLastname)
     {
-        return $this->formLastname;
+        $this->formLastname = $formLastname;
     }
     	/**
      * @ORM\Column(type="string", length=150)
@@ -72,7 +77,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function setEmail($formEmail)
     {
-        return $this->formEmail;
+        $this->formEmail = $formEmail;
     }
     	/**
      * @ORM\Column(type="string", length=150)
@@ -86,6 +91,20 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function setDate($formDate)
     {
-        return $this->formDate;
+        $this->formDate = $formDate;
+    }
+
+    public function save()
+    {
+        $em = dbORM::entityManager();
+        $em->persist($this);
+        $em->flush();
+    }
+
+    public function delete()
+    {
+        $em = dbORM::entityManager();
+        $em->remove($this);
+        $em->flush();
     }
 }
