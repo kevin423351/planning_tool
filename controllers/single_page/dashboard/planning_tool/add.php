@@ -23,13 +23,11 @@ class Add extends DashboardPageController
     public function save() 
     {
         $person = new Person();
-        // wtf($person, $this->post());
+        
         $person->setFirstname($this->post('formName'));
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
-
-        // wtfd($person, $this->post());
         
         $person->save();
 

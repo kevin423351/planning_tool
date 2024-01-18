@@ -33,8 +33,7 @@ $persons = $persons ?? [];
             } else { ?>
                 <p>No data found.</p>
             <?php } ?>
-       </tbody>
-       
+       </tbody>    
     </table>
  </div>
  
