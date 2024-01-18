@@ -9,7 +9,7 @@
 
 <h2>Add persons</h2>
 
-<form method="post" action="<?=$this->action('add')?>">
+<form method="post" action="<?=$this->action('save')?>">
 
     <label for="name">Name:</label>
     <input type="text" id="formName" name="formName" value="" required><br>

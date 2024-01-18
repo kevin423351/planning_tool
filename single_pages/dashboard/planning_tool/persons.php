@@ -27,7 +27,7 @@ $persons = $persons ?? [];
                     <td><?= h($person['formEmail']) ?></td>
                     <td><?= h($person['formDate']) ?></td>
                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/edit',  $person['personID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                    <a href="<?= URL::to('/dashboard/planning_tool/delete')?>"  class="btn btn-danger btn-sm">delete</a></td>
+                    <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person['personID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
                 </tr>
                 <?php } 
             } else { ?>

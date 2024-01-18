@@ -75,7 +75,6 @@ class Controller extends Package {
         $p->setPage('/dashboard/planning_tool/persons');
         $p->setPage('/dashboard/planning_tool/edit');
         $p->setPage('/dashboard/planning_tool/add');
-        $p->setPage('/dashboard/planning_tool/delete');
         $p->install();
 	}
 }

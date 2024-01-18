@@ -6,34 +6,34 @@ use Database;
 
 class Add extends DashboardPageController
 {
-    public function add()
+    public function view()
     {
-        // Handle form submission
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
-            // Perform necessary validation and sanitization here
+        // $person = new Person();
 
-            // Retrieve data from the form
-            $id = $_POST['personID'];
-            $name = $_POST['formName'];
-            $lastname = $_POST['formLastname'];
-            $email = $_POST['formEmail'];
-            $date = $_POST['formDate'];
+        // $this->set('person', $person);
 
-            $db = Database::connection();
+        // $person->setFirstname('TEST SET NAME');
+        // $person->setLastname('TEST SET LASTNAME');
+        // $person->setEmail('TEST SET EMAIL');
+        // $person->setDate('TEST SET DATE');
+        // $person->save();
+    }
 
-            // Insert data into the database
-            $sql = "INSERT INTO persons VALUES ('$id', '$name', '$lastname', '$email', '$date')";
-            
-            if ($db->query($sql) === TRUE) {
-                echo "Item added successfully!";
-            } else {
-                echo "Error: " . $sql . "<br>" . $db->error;
-            }
 
-            // Close the database connection
-            $db->close();
-        }
+    public function save() 
+    {
+        $person = new Person();
+        // wtf($person, $this->post());
+        $person->setFirstname($this->post('formName'));
+        $person->setLastname($this->post('formLastname'));
+        $person->setEmail($this->post('formEmail'));
+        $person->setDate($this->post('formDate'));
 
+        // wtfd($person, $this->post());
+        
+        $person->save();
+
+        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
 } 
 ?>

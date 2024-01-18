@@ -11,8 +11,6 @@ class Edit extends DashboardPageController
     public function view($id)
     {
         $person = Person::getByID($id);
-        // wtfd($person);
-
 
         $this->set('person', $person);
 
@@ -26,9 +24,8 @@ class Edit extends DashboardPageController
 
     public function save($id) 
     {
-        $person = new Person();
+        $person = Person::getByID($id);
         // wtf($person, $this->post());
-        $person->setItemID($id);
         $person->setFirstname($this->post('formName'));
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));

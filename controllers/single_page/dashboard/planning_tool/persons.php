@@ -34,4 +34,9 @@ class persons extends DashboardPageController
     {
         // hier sla je op
     }
+    public function delete($id){
+        $person = Person::getByID($id);
+        wtfd($person);
+        $this->set('person', $person);
+    }
 } 
