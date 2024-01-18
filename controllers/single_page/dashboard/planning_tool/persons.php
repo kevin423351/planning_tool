@@ -21,7 +21,7 @@ class persons extends DashboardPageController
     protected function getItems()
     {
         $db = Database::connection();
-        $persons = $db->fetchAll("SELECT * FROM {$this->btTable}");
+        $persons = $db->fetchAll("SELECT * FROM {$this->btTable} WHERE deleted = 0");
         return $persons;  
     }
 
@@ -36,7 +36,8 @@ class persons extends DashboardPageController
     }
     public function delete($id){
         $person = Person::getByID($id);
-        wtfd($person);
-        $this->set('person', $person);
+        $person->setDeleted(1);
+        $person->save();
+        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
 } 

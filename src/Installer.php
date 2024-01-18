@@ -37,7 +37,7 @@ class Installer {
     //     $db->query("DROP TABLE IF EXISTS persons");
     //     $db->query("DROP TABLE IF EXISTS expertise");
     //     $db->query("DROP TABLE IF EXISTS appointments");
-    // }
+    }
     public function clearCache() {
         Localization::clearCache();
     }
@@ -48,5 +48,4 @@ class Installer {
         $manager = new DatabaseStructureManager($em);
         $manager->refreshEntities();
     }
-}
 }

@@ -94,6 +94,21 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->formDate = $formDate;
     }
 
+	/**
+     * @ORM\Column(type="integer", length=150)
+     */
+    protected $deleted;
+
+    public function getDeleted()
+    {
+        return $this->deleted;
+    }
+
+    public function setDeleted($deleted)
+    {
+        $this->deleted = $deleted;
+    }
+
     public function save()
     {
         $em = dbORM::entityManager();
