@@ -4,7 +4,23 @@ $persons = $persons ?? [];
 // als er geen details of save of edit of add gezet is
 
 ?>
-<a href="<?= URL::to('/dashboard/planning_tool/add')?>" class="btn btn-secondary"><?=t('Add new'); ?></a>
+<header>
+   <div class="ccm-dashboard-header-row">
+      <div class="ccm-dashboard-header-title">
+         <a href="#" class="ccm-dashboard-page-header-bookmark" data-page-id="266" data-token="1705653565:e5faf00324231840c3bce81d134830e7" data-bookmark-action="add-favorite">
+            <span class="header-icon">
+               <svg class="icon-bookmark ">
+                  <use xlink:href="#icon-bookmark-page"></use>
+               </svg>
+            </span>
+         </a>
+         <h1>Persons</h1>
+      </div>
+      <div class="ccm-dashboard-header-menu">
+         <a href="<?= URL::to('/dashboard/planning_tool/add')?>" class="btn btn-success btn-sm">Add new</a>
+      </div>
+   </div>
+</header>
 <div class="table-responsive">
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
        <thead>
@@ -36,4 +52,3 @@ $persons = $persons ?? [];
        </tbody>    
     </table>
  </div>
- 
