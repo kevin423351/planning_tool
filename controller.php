@@ -73,7 +73,6 @@ class Controller extends Package {
 		$p = new Pages();
         $p->setPackage($pkg);
         $p->setPage('/dashboard/planning_tool/persons');
-        $p->setPage('/dashboard/planning_tool/edit');
         $p->install();
 	}
 }
