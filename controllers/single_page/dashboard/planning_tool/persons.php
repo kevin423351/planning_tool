@@ -61,12 +61,12 @@ class persons extends DashboardPageController
 
     public function saveform($id){
         $person = Person::getByID($id);
-        // wtf($person, $this->post());
+
         $person->setFirstname($this->post('formName'));
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
-        // wtfd($person, $this->post());  
+
         $person->save();
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }

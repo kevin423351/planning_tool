@@ -27,7 +27,7 @@ class expertises extends DashboardPageController
 
     public function edit($id) 
     {
-        $expertise = expertise::getByID($id);
+        $expertise = Expertise::getByID($id);
         $this->set('expertise', $expertise);
     }
 
@@ -38,7 +38,7 @@ class expertises extends DashboardPageController
 
     public function save() 
     {
-        $expertise = new expertise();
+        $expertise = new Expertise();
         
         $expertise->setFirstname($this->post('expertiseName'));
         $expertise->setDeleted(0);
@@ -49,14 +49,14 @@ class expertises extends DashboardPageController
     }
 
     public function delete($id){
-        $expertise = expertise::getByID($id);
+        $expertise = Expertise::getByID($id);
         $expertise->setDeleted(1);
         $expertise->save();
         $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
     }
 
     public function saveform($id){
-        $expertise = expertise::getByID($id);
+        $expertise = Expertise::getByID($id);
 
         $expertise->setFirstname($this->post('expertiseName'));
 
