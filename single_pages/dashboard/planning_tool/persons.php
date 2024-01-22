@@ -17,7 +17,7 @@ $persons = $persons ?? [];
             <h1>Persons</h1>
          </div>
          <div class="ccm-dashboard-header-menu">
-            <a href="<?= URL::to('/dashboard/planning_tool/add')?>" class="btn btn-success btn-sm">Add new</a>
+            <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
          </div>
       </div>
    </header>

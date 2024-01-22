@@ -27,12 +27,12 @@ class persons extends DashboardPageController
 
     public function edit($personID) 
     {
-        // haal hier persoon op
+        
     }
 
     public function add() 
     {
-        // haal hier persoon op
+        
     }
 
     public function save() 
