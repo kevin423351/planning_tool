@@ -1,9 +1,13 @@
 <?php
+
 namespace Concrete\Package\PlanningTool;
+defined('C5_EXECUTE') or die("Access Denied.");
 
 use Concrete\Core\Asset\AssetList;
 use \Concrete\Package\PlanningTool\Src\Installer;
 use \Concrete\Core\Package\Package;
+use \Concrete\Package\PlanningTool\Src\Installer\Pages;
+use \Concrete\Core\Page\Page;
 
 class Controller extends Package {
 
@@ -32,9 +36,10 @@ class Controller extends Package {
     public function install()
     {
         // Run install
-        parent::install();
+        $pkg = parent::install();
 
         // Do some install stuff of package
+        $this->createPages($pkg);
         $installer = new Installer();
         $installer->install();
 
@@ -43,9 +48,10 @@ class Controller extends Package {
     public function upgrade()
     {
         // Run upgrade
-        parent::upgrade();
+        $pkg = parent::install();
 
         // Do some upgrade stuff of package
+        $this->createPages($pkg);
         $installer = new Installer();
         $installer->refreshEntities();
         $installer->upgrade();
@@ -62,5 +68,12 @@ class Controller extends Package {
         $installer->uninstall();
         $installer->clearCache();
     }
+    
+    public function createPages($pkg) {
+		$p = new Pages();
+        $p->setPackage($pkg);
+        $p->setPage('/dashboard/planning_tool/persons');
+        $p->install();
+	}
 }
 
