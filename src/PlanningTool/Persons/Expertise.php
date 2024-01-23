@@ -79,4 +79,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em->remove($this);
         $em->flush();
     }
+
+    public static function getAll()
+    {
+        $em = dbORM::entityManager();
+        $results = $em->getRepository(get_called_class())->findBy([], ['expertiseName' => 'ASC']);
+        return $results;
+    }
 }

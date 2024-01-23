@@ -5,20 +5,8 @@ $expertises = $expertises ?? [];
 ?>
 <?php if ($this->controller->getAction() == 'view') { ?>
    <header>
-      <div class="ccm-dashboard-header-row">
-         <div class="ccm-dashboard-header-title">
-            <a href="#" class="ccm-dashboard-page-header-bookmark" data-page-id="266" data-token="1705653565:e5faf00324231840c3bce81d134830e7" data-bookmark-action="add-favorite">
-               <span class="header-icon">
-                  <svg class="icon-bookmark ">
-                     <use xlink:href="#icon-bookmark-page"></use>
-                  </svg>
-               </span>
-            </a>
-            <h1>expertises</h1>
-         </div>
-         <div class="ccm-dashboard-header-menu">
-            <a href="<?= URL::to('/dashboard/planning_tool/expertises/add')?>" class="btn btn-success btn-sm">Add new</a>
-         </div>
+      <div class="ccm-dashboard-header-menu">
+         <a href="<?= URL::to('/dashboard/planning_tool/expertises/add')?>" class="btn btn-success btn-sm">Add new</a>
       </div>
    </header>
    <div class="table-responsive">

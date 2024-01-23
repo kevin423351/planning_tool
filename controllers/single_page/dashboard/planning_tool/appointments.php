@@ -9,9 +9,6 @@ class appointments extends DashboardPageController
 
     protected $btTable = 'appointments';
 
-    public function on_before_render() {}
-
-    public function on_start() {}
 
     public function view()
     {

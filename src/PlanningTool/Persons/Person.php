@@ -21,6 +21,31 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       */
     protected $personID;
 
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formName;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formLastname;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formEmail;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formDate;
+
+    /**
+     * @ORM\Column(type="integer", length=150)
+     */
+    protected $deleted;
+    
     public static function getByID($personID)
     {
         $em = dbORM::entityManager();
@@ -36,11 +61,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->personID = $personID;
     }
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formName;
-    
     public function getFirstname()
     {
         return $this->formName;
@@ -51,11 +71,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->formName = $formName;
     }
 
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formLastname;
-
     public function getLastname()
     {
         return $this->formLastname;
@@ -65,10 +80,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->formLastname = $formLastname;
     }
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formEmail;
 
     public function getEmail()
     {
@@ -79,10 +90,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->formEmail = $formEmail;
     }
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formDate;
 
     public function getDate()
     {
@@ -93,11 +100,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->formDate = $formDate;
     }
-
-	/**
-     * @ORM\Column(type="integer", length=150)
-     */
-    protected $deleted;
 
     public function getDeleted()
     {

@@ -4,21 +4,9 @@ $persons = $persons ?? [];
 // als er geen details of save of edit of add gezet is
 ?>
 <?php if ($this->controller->getAction() == 'view') { ?>
-   <header>
-      <div class="ccm-dashboard-header-row">
-         <div class="ccm-dashboard-header-title">
-            <a href="#" class="ccm-dashboard-page-header-bookmark" data-page-id="266" data-token="1705653565:e5faf00324231840c3bce81d134830e7" data-bookmark-action="add-favorite">
-               <span class="header-icon">
-                  <svg class="icon-bookmark ">
-                     <use xlink:href="#icon-bookmark-page"></use>
-                  </svg>
-               </span>
-            </a>
-            <h1>Persons</h1>
-         </div>
-         <div class="ccm-dashboard-header-menu">
-            <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
-         </div>
+   <header>  
+      <div class="ccm-dashboard-header-menu">
+         <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
       </div>
    </header>
    <div class="table-responsive">
@@ -67,6 +55,15 @@ $persons = $persons ?? [];
       <label for="date" class="form-label">date</label>
       <input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="" required><br>
 
+      <label for="expertise" class="form-label">Expertises</label><hr>
+      <?php
+         if (!empty($expertises)) {
+            foreach ($expertises as $expertise) { ?>
+               <div class="form-group">
+                  <input type="checkbox" id="expertise" name="expertise" value="<?php $expertise->getItemID(); ?>" class="form-check-input">
+                  <label for="expertise" class="form-label"><?php echo $expertise->getFirstname(); ?></label>
+               </div>
+            <?php }}?>
       <div class="ccm-dashboard-form-actions">
          <a href="#" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
@@ -79,18 +76,28 @@ $persons = $persons ?? [];
       <input type="text" id="formName" name="formName" class="form-control ccm-input-text" value="<?php echo $person->getFirstname(); ?>" required><br>
 
       <label for="lastname" class="form-label">lastname</label>
-      <input type="text" id="formLastname" name="formLastname" class="form-control ccm-input-text" value="<?php echo$person->getLastname(); ?>" required><br>
+      <input type="text" id="formLastname" name="formLastname" class="form-control ccm-input-text" value="<?php echo $person->getLastname(); ?>" required><br>
 
       <label for="email" class="form-label">Email</label>
       <input type="email" id="formEmail" name="formEmail" class="form-control ccm-input-text" value="<?php echo $person->getEmail(); ?>" required><br>
 
       <label for="date" class="form-label">date</label>
       <input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="<?php echo $person->getDate(); ?>" required><br>
-
+      <label for="expertise" class="form-label">Expertises</label><hr>
+      <?php
+         if (!empty($expertises)) {
+            foreach ($expertises as $expertise) { ?>
+               <div class="form-group">
+                  <input type="checkbox" id="expertise" name="expertise" value="<?php $expertise->getItemID(); ?>" class="form-check-input">
+                  <label for="expertise" class="form-label"><?php echo $expertise->getFirstname(); ?></label>
+               </div>
+      <?php }}?>
       <div class="ccm-dashboard-form-actions">
          <a href="#" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
       </div>
    </form>
 <?php } ?>
+
+
 

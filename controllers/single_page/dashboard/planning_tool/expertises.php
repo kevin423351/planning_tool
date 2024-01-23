@@ -9,16 +9,19 @@ class expertises extends DashboardPageController
 
     protected $btTable = 'expertises';
 
-    public function on_before_render() {}
+    
+    //public function __construct() {}
 
-    public function on_start() {}
+    //public function on_before_render() {}
+
+    //public function on_start() {}
 
     public function view()
     {
         $this->set('expertises', $this->getItems());
     }
 
-    protected function getItems()
+    public function getItems()
     {
         $db = Database::connection();
         $expertise = $db->fetchAll("SELECT * FROM {$this->btTable} WHERE deleted = 0");
