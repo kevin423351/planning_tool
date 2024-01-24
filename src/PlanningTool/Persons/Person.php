@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="persons", indexes={
@@ -45,7 +45,23 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      * @ORM\Column(type="integer", length=150)
      */
     protected $deleted;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Expertise", inversedBy="persons")
+     * @ORM\JoinTable(
+     *     name="person_expertise",
+     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="expertiseID", referencedColumnName="expertiseID")}
+     * )
+     */
+    protected $expertises;
     
+    public function __construct() 
+    {
+        $this->expertises = new ArrayCollection();
+    }
+
     public static function getByID($personID)
     {
         $em = dbORM::entityManager();
@@ -91,6 +107,19 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->formEmail = $formEmail;
     }
 
+    public function setExpertises($expertises)
+    {
+        $this->expertises = $expertises;
+    }
+    public function addExperise($expertise)
+    {
+        $this->expertises->add($expertise);
+    }
+    public function getExpertises()
+    {
+        return $this->expertises;
+    }
+
     public function getDate()
     {
         return $this->formDate;
@@ -123,5 +152,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $em->remove($this);
         $em->flush();
+    }
+    public static function getAll()
+    {
+        $em = dbORM::entityManager();
+        $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
+        return $results;
     }
 }

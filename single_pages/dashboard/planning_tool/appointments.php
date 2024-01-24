@@ -27,15 +27,15 @@ $appointments = $appointments ?? [];
                if (!empty($appointments)) {
                   foreach ($appointments as $appointment) { ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?= h($appointment['appointmentID']) ?></td>
-                     <td><?= h($appointment['appointmentName']) ?></td>
-                     <td><?= h($appointment['appointmentLastname']) ?></td>
-                     <td><?= h($appointment['appointmentEmail']) ?></td>
-                     <td><?= h($appointment['appointmentDate']) ?></td>
-                     <td><?= h($appointment['appointmentPhone']) ?></td>
-                     <td><?= h($appointment['appointmentComment']) ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/appointments/edit',  $appointment['appointmentID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment['appointmentID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
+                     <td><?php echo $appointment->getItemID(); ?></td>
+                     <td><?php echo $appointment->getFirstname(); ?></td>
+                     <td><?php echo $appointment->getLastname(); ?></td>
+                     <td><?php echo $appointment->getEmail(); ?></td>
+                     <td><?php echo $appointment->getDate(); ?></td>
+                     <td><?php echo $appointment->getPhonenumber(); ?></td>
+                     <td><?php echo $appointment->getComment(); ?></td>
+                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
                   <?php } 
                } else { ?>

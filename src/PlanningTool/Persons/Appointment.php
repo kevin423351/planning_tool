@@ -21,6 +21,42 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       */
     protected $appointmentID;
 
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentName;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentLastname;
+    
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentEmail;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentDate;
+  
+    /**
+     * @ORM\Column(type="string", length=25)
+     */
+    protected $appointmentPhone;
+
+    /**
+     * @ORM\Column(type="text", length=150)
+     */
+    protected $appointmentComment;
+
+    /**
+     * @ORM\Column(type="integer", length=150)
+     */
+    protected $deleted;
+
+
     public static function getByID($appointmentID)
     {
         $em = dbORM::entityManager();
@@ -35,16 +71,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->appointmentID = $appointmentID;
     }
-
-    // protected $personID;
-    // protected $appointmentID;
-
-    
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentName;
     
     public function getFirstname()
     {
@@ -55,12 +81,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->appointmentName = $appointmentName;
     }
-
-
-        /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentLastname;
     
     public function getLastname()
     {
@@ -72,11 +92,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->appointmentLastname = $appointmentLastname;
     }
 
-     	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentEmail;
-
     public function getEmail()
     {
         return $this->appointmentEmail;
@@ -86,11 +101,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->appointmentEmail = $appointmentEmail;
     }
-
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentDate;
 
     public function getDate()
     {
@@ -102,11 +112,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->appointmentDate = $appointmentDate;
     }
 
-    	/**
-     * @ORM\Column(type="string", length=25)
-     */
-    protected $appointmentPhone;
-
     public function getPhonenumber()
     {
         return $this->appointmentPhone;
@@ -117,11 +122,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->appointmentPhone = $appointmentPhone;
     }
 
-    	/**
-     * @ORM\Column(type="text", length=150)
-     */
-    protected $appointmentComment;
-
     public function getComment()
     {
         return $this->appointmentComment;
@@ -131,12 +131,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->appointmentComment = $appointmentComment;
     }
-
-   
-    	/**
-     * @ORM\Column(type="integer", length=150)
-     */
-    protected $deleted;
 
     public function getDeleted()
     {
@@ -160,5 +154,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $em->remove($this);
         $em->flush();
+    }
+    public static function getAll()
+    {
+        $em = dbORM::entityManager();
+        $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
+        return $results;
     }
 }

@@ -22,10 +22,10 @@ $expertises = $expertises ?? [];
                if (!empty($expertises)) {
                   foreach ($expertises as $expertise) { ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?= h($expertise['expertiseID']) ?></td>
-                     <td><?= h($expertise['expertiseName']) ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/expertises/edit',  $expertise['expertiseID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete',  $expertise['expertiseID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
+                     <td><?php echo $expertise->getItemID(); ?></td>
+                     <td><?php echo $expertise->getFirstname(); ?></td>
+                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/expertises/edit',  $expertise->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                     <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete',  $expertise->getItemID());?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
                   <?php } 
                } else { ?>

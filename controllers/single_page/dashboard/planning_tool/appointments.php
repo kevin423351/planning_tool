@@ -6,20 +6,10 @@ use Database;
 
 class appointments extends DashboardPageController
 {
-
-    protected $btTable = 'appointments';
-
-
     public function view()
     {
-        $this->set('appointments', $this->getItems());
-    }
-
-    protected function getItems()
-    {
-        $db = Database::connection();
-        $appointments = $db->fetchAll("SELECT * FROM {$this->btTable} WHERE deleted = 0");
-        return $appointments;  
+        $appointment = Appointment::getAll();
+        $this->set('appointments', $appointment);
     }
 
     public function edit($id) 
@@ -65,8 +55,8 @@ class appointments extends DashboardPageController
         $appointment->setLastname($this->post('appointmentLastname'));
         $appointment->setEmail($this->post('appointmentEmail'));
         $appointment->setDate($this->post('appointmentDate'));
-        $appointment->setEmail($this->post('appointmentPhone'));
-        $appointment->setDate($this->post('appointmentComment'));
+        $appointment->setPhonenumber($this->post('appointmentPhone'));
+        $appointment->setComment($this->post('appointmentComment'));
 
         $appointment->save();
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();

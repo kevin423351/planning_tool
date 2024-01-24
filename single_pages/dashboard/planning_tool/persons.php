@@ -25,13 +25,13 @@ $persons = $persons ?? [];
                if (!empty($persons)) {
                   foreach ($persons as $person) { ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?= h($person['personID']) ?></td>
-                     <td><?= h($person['formName']) ?></td>
-                     <td><?= h($person['formLastname']) ?></td>
-                     <td><?= h($person['formEmail']) ?></td>
-                     <td><?= h($person['formDate']) ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person['personID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person['personID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
+                     <td><?=$person->getItemID(); ?></td>
+                     <td><?=$person->getFirstname(); ?></td>
+                     <td><?=$person->getLastname(); ?></td>
+                     <td><?=$person->getEmail(); ?></td>
+                     <td><?=$person->getDate(); ?></td>
+                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                     <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
                   <?php } 
                } else { ?>
@@ -60,8 +60,9 @@ $persons = $persons ?? [];
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <input type="checkbox" id="expertise" name="expertise" value="<?php $expertise->getItemID(); ?>" class="form-check-input">
-                  <label for="expertise" class="form-label"><?php echo $expertise->getFirstname(); ?></label>
+                  <?php // =app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
+                  <input type="checkbox"  name="expertise[]" name="expertise[]" value="<?=$expertise->getItemID(); ?>" class="form-check-input">
+                  <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions">
@@ -73,25 +74,26 @@ $persons = $persons ?? [];
    <h2>Edit persons</h2>
    <form method="post" action="<?=$this->action('saveform', $person->getItemID()); ?>">
       <label for="name" class="form-label">Name</label>
-      <input type="text" id="formName" name="formName" class="form-control ccm-input-text" value="<?php echo $person->getFirstname(); ?>" required><br>
+      <input type="text" id="formName" name="formName" class="form-control ccm-input-text" value="<?=$person->getFirstname(); ?>" required><br>
 
       <label for="lastname" class="form-label">lastname</label>
-      <input type="text" id="formLastname" name="formLastname" class="form-control ccm-input-text" value="<?php echo $person->getLastname(); ?>" required><br>
+      <input type="text" id="formLastname" name="formLastname" class="form-control ccm-input-text" value="<?=$person->getLastname(); ?>" required><br>
 
       <label for="email" class="form-label">Email</label>
-      <input type="email" id="formEmail" name="formEmail" class="form-control ccm-input-text" value="<?php echo $person->getEmail(); ?>" required><br>
+      <input type="email" id="formEmail" name="formEmail" class="form-control ccm-input-text" value="<?=$person->getEmail(); ?>" required><br>
 
       <label for="date" class="form-label">date</label>
-      <input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="<?php echo $person->getDate(); ?>" required><br>
+      <input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="<?=$person->getDate(); ?>" required><br>
       <label for="expertise" class="form-label">Expertises</label><hr>
       <?php
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <input type="checkbox" id="expertise" name="expertise" value="<?php $expertise->getItemID(); ?>" class="form-check-input">
-                  <label for="expertise" class="form-label"><?php echo $expertise->getFirstname(); ?></label>
+                  <?php // =app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
+                  <input type="checkbox" name="expertise[]" value="<?=$expertise->getItemID(); ?>" class="form-check-input">
+                  <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
-      <?php }}?>
+            <?php }}?>
       <div class="ccm-dashboard-form-actions">
          <a href="#" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>

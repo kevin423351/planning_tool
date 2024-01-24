@@ -2,31 +2,16 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Core\Page\Controller\DashboardPageController;
-use Database;
 
 class expertises extends DashboardPageController
 {
 
-    protected $btTable = 'expertises';
-
-    
-    //public function __construct() {}
-
-    //public function on_before_render() {}
-
-    //public function on_start() {}
-
     public function view()
     {
-        $this->set('expertises', $this->getItems());
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
     }
 
-    public function getItems()
-    {
-        $db = Database::connection();
-        $expertise = $db->fetchAll("SELECT * FROM {$this->btTable} WHERE deleted = 0");
-        return $expertise;  
-    }
 
     public function edit($id) 
     {
