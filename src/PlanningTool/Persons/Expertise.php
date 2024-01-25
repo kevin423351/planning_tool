@@ -34,7 +34,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     /**
      * @ORM\ManyToMany(targetEntity="Person", mappedBy="expertises")
      */
-    private $persons;
+    protected $persons;
 
 
     public static function getByID($expertiseID)

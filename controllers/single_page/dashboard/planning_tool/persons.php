@@ -2,7 +2,6 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
-use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\PersonsExpertise;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class persons extends DashboardPageController
@@ -22,7 +21,12 @@ class persons extends DashboardPageController
 
         $expertises = Expertise::getAll();
         $this->set('expertises', $expertises);
-
+        
+        $selExp = array();
+        foreach($person->getExpertises() as $expertise) { 
+            $selExp[] = $expertise->getItemID(); 
+        }
+        $this->set('selectedExp', $selExp);
     }
 
     public function add() 

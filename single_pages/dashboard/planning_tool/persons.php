@@ -60,8 +60,8 @@ $persons = $persons ?? [];
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <?php // =app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
-                  <input type="checkbox"  name="expertise[]" name="expertise[]" value="<?=$expertise->getItemID(); ?>" class="form-check-input">
+                  <?php // app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
+                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
             <?php }}?>
@@ -89,8 +89,8 @@ $persons = $persons ?? [];
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <?php // =app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
-                  <input type="checkbox" name="expertise[]" value="<?=$expertise->getItemID(); ?>" class="form-check-input">
+                  <?php // app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
+                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=(in_array($expertise->getItemID(), $selectedExp)) ? 'checked' : ''; ?>>
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
             <?php }}?>
