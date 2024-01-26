@@ -5,20 +5,8 @@ $appointments = $appointments ?? [];
 ?>
 <?php if ($this->controller->getAction() == 'view') { ?>
    <header>
-      <div class="ccm-dashboard-header-row">
-         <div class="ccm-dashboard-header-title">
-            <a href="#" class="ccm-dashboard-page-header-bookmark" data-page-id="266" data-token="1705653565:e5faf00324231840c3bce81d134830e7" data-bookmark-action="add-favorite">
-               <span class="header-icon">
-                  <svg class="icon-bookmark ">
-                     <use xlink:href="#icon-bookmark-page"></use>
-                  </svg>
-               </span>
-            </a>
-            <h1>Appointments</h1>
-         </div>
-         <div class="ccm-dashboard-header-menu">
-            <a href="<?= URL::to('/dashboard/planning_tool/appointments/add')?>" class="btn btn-success btn-sm">Add new</a>
-         </div>
+      <div class="ccm-dashboard-header-menu">
+         <a href="<?= URL::to('/dashboard/planning_tool/appointments/add')?>" class="btn btn-success btn-sm">Add new</a>
       </div>
    </header>
    <div class="table-responsive">
@@ -39,15 +27,15 @@ $appointments = $appointments ?? [];
                if (!empty($appointments)) {
                   foreach ($appointments as $appointment) { ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?= h($appointment['appointmentID']) ?></td>
-                     <td><?= h($appointment['appointmentName']) ?></td>
-                     <td><?= h($appointment['appointmentLastname']) ?></td>
-                     <td><?= h($appointment['appointmentEmail']) ?></td>
-                     <td><?= h($appointment['appointmentDate']) ?></td>
-                     <td><?= h($appointment['appointmentPhone']) ?></td>
-                     <td><?= h($appointment['appointmentComment']) ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/appointments/edit',  $appointment['appointmentID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment['appointmentID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
+                     <td><?php echo $appointment->getItemID(); ?></td>
+                     <td><?php echo $appointment->getFirstname(); ?></td>
+                     <td><?php echo $appointment->getLastname(); ?></td>
+                     <td><?php echo $appointment->getEmail(); ?></td>
+                     <td><?php echo $appointment->getDate(); ?></td>
+                     <td><?php echo $appointment->getPhonenumber(); ?></td>
+                     <td><?php echo $appointment->getComment(); ?></td>
+                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
                   <?php } 
                } else { ?>

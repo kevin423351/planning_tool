@@ -1,39 +1,38 @@
 <?php
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Core\Page\Controller\DashboardPageController;
-use Database;
 
 class persons extends DashboardPageController
 {
 
-    protected $btTable = 'persons';
-
-    public function on_before_render() {}
-
-    public function on_start() {}
-
     public function view()
     {
-        $this->set('persons', $this->getItems());
+        $person = Person::getAll();
+        $this->set('persons', $person);
     }
 
-    protected function getItems()
-    {
-        $db = Database::connection();
-        $persons = $db->fetchAll("SELECT * FROM {$this->btTable} WHERE deleted = 0");
-        return $persons;  
-    }
 
     public function edit($id) 
     {
         $person = Person::getByID($id);
         $this->set('person', $person);
+
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
+        
+        $selExp = array();
+        foreach($person->getExpertises() as $expertise) { 
+            $selExp[] = $expertise->getItemID(); 
+        }
+        $this->set('selectedExp', $selExp);
     }
 
     public function add() 
     {
-        
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
     }
 
     public function save() 
@@ -45,8 +44,13 @@ class persons extends DashboardPageController
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
         $person->setDeleted(0);
-        
-        
+
+        $expertises = [];
+        foreach($this->post('expertise') as $expertiseID)
+        {
+            $expertises[] = Expertise::getByID($expertiseID);
+        }
+        $person->setExpertises($expertises);
         $person->save();
 
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
@@ -66,6 +70,13 @@ class persons extends DashboardPageController
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
+
+        $expertises = [];
+        foreach($this->post('expertise') as $expertiseID)
+        {
+            $expertises[] = Expertise::getByID($expertiseID);
+        }
+        $person->setExpertises($expertises);
 
         $person->save();
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();

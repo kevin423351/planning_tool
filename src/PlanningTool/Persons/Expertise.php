@@ -21,6 +21,22 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       */
     protected $expertiseID;
 
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $expertiseName;
+
+    /**
+     * @ORM\Column(type="integer", length=150)
+     */
+    protected $deleted;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Person", mappedBy="expertises")
+     */
+    protected $persons;
+
+
     public static function getByID($expertiseID)
     {
         $em = dbORM::entityManager();
@@ -35,11 +51,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->expertiseID = $expertiseID;
     }
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $expertiseName;
     
     public function getFirstname()
     {
@@ -50,11 +61,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->expertiseName = $expertiseName;
     }
-    
-    	/**
-     * @ORM\Column(type="integer", length=150)
-     */
-    protected $deleted;
 
     public function getDeleted()
     {
@@ -78,5 +84,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $em->remove($this);
         $em->flush();
+    }
+
+    public static function getAll()
+    {
+        $em = dbORM::entityManager();
+        $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
+        return $results;
     }
 }

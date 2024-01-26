@@ -5,20 +5,8 @@ $expertises = $expertises ?? [];
 ?>
 <?php if ($this->controller->getAction() == 'view') { ?>
    <header>
-      <div class="ccm-dashboard-header-row">
-         <div class="ccm-dashboard-header-title">
-            <a href="#" class="ccm-dashboard-page-header-bookmark" data-page-id="266" data-token="1705653565:e5faf00324231840c3bce81d134830e7" data-bookmark-action="add-favorite">
-               <span class="header-icon">
-                  <svg class="icon-bookmark ">
-                     <use xlink:href="#icon-bookmark-page"></use>
-                  </svg>
-               </span>
-            </a>
-            <h1>expertises</h1>
-         </div>
-         <div class="ccm-dashboard-header-menu">
-            <a href="<?= URL::to('/dashboard/planning_tool/expertises/add')?>" class="btn btn-success btn-sm">Add new</a>
-         </div>
+      <div class="ccm-dashboard-header-menu">
+         <a href="<?= URL::to('/dashboard/planning_tool/expertises/add')?>" class="btn btn-success btn-sm">Add new</a>
       </div>
    </header>
    <div class="table-responsive">
@@ -34,10 +22,10 @@ $expertises = $expertises ?? [];
                if (!empty($expertises)) {
                   foreach ($expertises as $expertise) { ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?= h($expertise['expertiseID']) ?></td>
-                     <td><?= h($expertise['expertiseName']) ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/expertises/edit',  $expertise['expertiseID']); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete',  $expertise['expertiseID'])?>"  class="btn btn-danger btn-sm">delete</a></td>
+                     <td><?php echo $expertise->getItemID(); ?></td>
+                     <td><?php echo $expertise->getFirstname(); ?></td>
+                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/expertises/edit',  $expertise->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                     <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete',  $expertise->getItemID());?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
                   <?php } 
                } else { ?>

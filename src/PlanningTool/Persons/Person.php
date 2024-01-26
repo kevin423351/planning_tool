@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
-
+use Doctrine\Common\Collections\ArrayCollection;
 /**
  * @ORM\Entity
  * @ORM\Table(name="persons", indexes={
@@ -20,6 +20,47 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       * @ORM\GeneratedValue
       */
     protected $personID;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formName;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formLastname;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formEmail;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $formDate;
+
+    /**
+     * @ORM\Column(type="integer", length=150)
+     */
+    protected $deleted;
+
+
+    /**
+     * @ORM\ManyToMany(targetEntity="Expertise", inversedBy="persons")
+     * @ORM\JoinTable(
+     *     name="person_expertise",
+     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="expertiseID", referencedColumnName="expertiseID")}
+     * )
+     */
+    protected $expertises;
+    
+    public function __construct() 
+    {
+        $this->expertises = new ArrayCollection();
+    }
 
     public static function getByID($personID)
     {
@@ -36,11 +77,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->personID = $personID;
     }
 
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formName;
-    
     public function getFirstname()
     {
         return $this->formName;
@@ -51,11 +87,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->formName = $formName;
     }
 
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formLastname;
-
     public function getLastname()
     {
         return $this->formLastname;
@@ -65,10 +96,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->formLastname = $formLastname;
     }
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formEmail;
 
     public function getEmail()
     {
@@ -79,10 +106,19 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->formEmail = $formEmail;
     }
-    	/**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $formDate;
+
+    public function setExpertises($expertises)
+    {
+        $this->expertises = $expertises;
+    }
+    public function addExperise($expertise)
+    {
+        $this->expertises->add($expertise);
+    }
+    public function getExpertises()
+    {
+        return $this->expertises;
+    }
 
     public function getDate()
     {
@@ -94,11 +130,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->formDate = $formDate;
     }
 
-	/**
-     * @ORM\Column(type="integer", length=150)
-     */
-    protected $deleted;
-
     public function getDeleted()
     {
         return $this->deleted;
@@ -108,6 +139,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->deleted = $deleted;
     }
+
 
     public function save()
     {
@@ -121,5 +153,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $em->remove($this);
         $em->flush();
+    }
+    public static function getAll()
+    {
+        $em = dbORM::entityManager();
+        $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
+        return $results;
     }
 }
