@@ -22,7 +22,7 @@ class persons extends DashboardPageController
         $expertises = Expertise::getAll();
         $this->set('expertises', $expertises);
         
-        $selExp = array();
+        $seleExp = array();
         foreach($person->getExpertises() as $expertise) { 
             $selExp[] = $expertise->getItemID(); 
         }
