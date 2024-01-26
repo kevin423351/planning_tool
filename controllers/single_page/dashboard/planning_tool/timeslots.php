@@ -13,12 +13,11 @@ class timeslots extends DashboardPageController
         
     }
 
-
-    // public function edit($id) 
-    // {
-    //     $expertise = Expertise::getByID($id);
-    //     $this->set('expertise', $expertise);
-    // }
+    public function edit($id) 
+    {
+        $timeSlot = TimeSlot::getByID($id);
+        $this->set('timeSlot', $timeSlot);
+    }
 
     public function add() 
     {
@@ -36,22 +35,23 @@ class timeslots extends DashboardPageController
         
         $timeSlot->save();
 
-        $this->buildRedirect('/dashboard/planning_tool/timeslot/')->send();
+        $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
     }
 
     public function delete($id){
-        $timeSlot = Expertise::getByID($id);
+        $timeSlot = TimeSlot::getByID($id);
         $timeSlot->setDeleted(1);
         $timeSlot->save();
-        $this->buildRedirect('/dashboard/planning_tool/timeslot/')->send();
+        $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
     }
 
-    // public function saveform($id){
-    //     $expertise = Expertise::getByID($id);
+    public function saveform($id){
+        $timeSlot = TimeSlot::getByID($id);
 
-    //     $expertise->setFirstname($this->post('expertiseName'));
-
-    //     $expertise->save();
-    //     $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
-    // }
+        $timeSlot->setDate($this->post('timeSlotsDate'));
+        $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
+        $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
+        $timeSlot->save();
+        $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
+    }
 } 

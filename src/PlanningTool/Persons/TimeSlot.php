@@ -19,74 +19,77 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue
       */
-    protected $timeSlotID;
+    protected $timeslotID;
 
     /**
      * @ORM\Column(type="string", length=150)
      */
-    protected $timeSlotsDate;
+    protected $timeslotsDate;
 
      /**
      * @ORM\Column(type="string", length=150)
      */
-    protected $timeSlotsStartTime;
+    protected $timeslotsStarttime;
 
      /**
      * @ORM\Column(type="string", length=150)
      */
-    protected $timeSlotsEndTime;
+    protected $timeslotsEndtime;
 
     /**
      * @ORM\Column(type="integer", length=150)
      */
     protected $deleted;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="Person", mappedBy="timeslots")
+     */
+    protected $per_timeslot;
 
-    public static function getByID($timeSlotID)
+    public static function getByID($timeslotID)
     {
         $em = dbORM::entityManager();
-        return $em->find(get_class(), $timeSlotID);
+        return $em->find(get_class(), $timeslotID);
     }
     public function getItemID()
     {
-        return $this->timeSlotID;
+        return $this->timeslotID;
     }
 
-    public function setItemID($timeSlotID)
+    public function setItemID($timeslotID)
     {
-        $this->timeSlotID = $timeSlotID;
+        $this->timeslotID = $timeslotID;
     }
 
     public function getDate()
     {
-        return $this->timeSlotsDate;
+        return $this->timeslotsDate;
     }
 
-    public function setDate($timeSlotsDate)
+    public function setDate($timeslotsDate)
     {
-        $this->timeSlotsDate = $timeSlotsDate;
+        $this->timeslotsDate = $timeslotsDate;
     }
 
     public function getStartTime()
     {
-        return $this->timeSlotsStartTime;
+        return $this->timeslotsStarttime;
     }
 
-    public function setStartTime($timeSlotsStartTime)
+    public function setStartTime($timeslotsStarttime)
     {
-        $this->timeSlotsStartTime = $timeSlotsStartTime;
+        $this->timeslotsStarttime = $timeslotsStarttime;
     }
 
     public function getEndTime()
     {
-        return $this->timeSlotsEndTime;
+        return $this->timeslotsEndtime;
     }
 
-    public function setEndTime($timeSlotsEndTime)
+    public function setEndTime($timeslotsEndtime)
     {
-        $this->timeSlotsEndTime = $timeSlotsEndTime;
+        $this->timeslotsEndtime = $timeslotsEndtime;
     }
-
 
     public function getDeleted()
     {
