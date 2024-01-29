@@ -24,7 +24,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     /**
      * @ORM\Column(type="string", length=150)
      */
-    protected $timeslotsDate;
+    protected $timeslotsDays;
 
      /**
      * @ORM\Column(type="string", length=150)
@@ -61,14 +61,14 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->timeslotID = $timeslotID;
     }
 
-    public function getDate()
+    public function getDay()
     {
-        return $this->timeslotsDate;
+        return $this->timeslotsDays;
     }
 
-    public function setDate($timeslotsDate)
+    public function setDay($timeslotsDays)
     {
-        $this->timeslotsDate = $timeslotsDate;
+        $this->timeslotsDays = $timeslotsDays;
     }
 
     public function getStartTime()

@@ -70,6 +70,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function __construct() 
     {
         $this->expertises = new ArrayCollection();
+        $this->timeslots = new ArrayCollection();
     }
 
     public static function getByID($personID)

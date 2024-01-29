@@ -28,7 +28,7 @@ class timeslots extends DashboardPageController
     {
         $timeSlot = new TimeSlot();
         
-        $timeSlot->setDate($this->post('timeSlotsDate'));
+        $timeSlot->setDay($this->post('timeslotsDays'));
         $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
         $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
         $timeSlot->setDeleted(0);
@@ -48,7 +48,7 @@ class timeslots extends DashboardPageController
     public function saveform($id){
         $timeSlot = TimeSlot::getByID($id);
 
-        $timeSlot->setDate($this->post('timeSlotsDate'));
+        $timeSlot->setDay($this->post('timeslotsDays'));
         $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
         $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
         $timeSlot->save();

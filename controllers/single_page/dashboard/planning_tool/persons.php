@@ -22,18 +22,30 @@ class persons extends DashboardPageController
 
         $expertises = Expertise::getAll();
         $this->set('expertises', $expertises);
+
+        $timeSlot = TimeSlot::getAll();
+        $this->set('timeSlots', $timeSlot);
         
-        $seleExp = array();
+        $expertises = [];
         foreach($person->getExpertises() as $expertise) { 
-            $selExp[] = $expertise->getItemID(); 
+            $expertises[] = $expertise->getItemID(); 
         }
-        $this->set('selectedExp', $selExp);
+        $this->set('selectedExp', $expertises);
+       
+        $timeSlots = [];
+        foreach($person->getTimeslots() as $timeSlot) { 
+            $timeSlots[] = $timeSlot->getItemID(); 
+        }
+        $this->set('selectedtimeslot', $timeSlots);
     }
 
     public function add() 
     {
         $expertises = Expertise::getAll();
         $this->set('expertises', $expertises);
+
+        $timeSlot = TimeSlot::getAll();
+        $this->set('timeSlots', $timeSlot);
     }
 
     public function save() 
@@ -52,6 +64,13 @@ class persons extends DashboardPageController
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
+
+        $timeSlots = [];
+        foreach($this->post('timeslot') as $timeslotID)
+        {
+            $timeSlots[] = TimeSlot::getByID($timeslotID);
+        }
+        $person->setTimeslots($timeSlots);
         $person->save();
 
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
@@ -79,6 +98,12 @@ class persons extends DashboardPageController
         }
         $person->setExpertises($expertises);
 
+        $timeSlots = [];
+        foreach($this->post('timeslot') as $timeslotID)
+        {
+            $timeSlots[] = TimeSlot::getByID($timeslotID);
+        }
+        $person->setTimeslots($timeSlots);
         $person->save();
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }

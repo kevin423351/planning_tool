@@ -18,6 +18,7 @@ $persons = $persons ?? [];
                <th class="">lastname</th>
                <th class="">email</th>
                <th class="">date</th>
+               <th class="">Expertise</th>
             </tr>
          </thead>
          <tbody>
@@ -41,7 +42,7 @@ $persons = $persons ?? [];
       </table>
    </div>
 <?php } else if ($this->controller->getAction() == 'add') { ?>
-   <h2>Add persons</h2>
+   <h2>Add person</h2>
    <form method="post" action="<?=$this->action('save')?>">
       <label for="name" class="form-label">Name</label>
       <input type="text" id="formName" name="formName" class="form-control ccm-input-text" value="" required><br>
@@ -63,6 +64,22 @@ $persons = $persons ?? [];
                   <?php // app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
                   <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+               </div>
+            <?php }}?>
+            <label for="expertise" class="form-label">time slots</label><hr>
+      <?php
+         if (!empty($timeSlots)) {
+            foreach ($timeSlots as $timeSlot) { ?>
+               <div class="form-group">
+                  <input type="checkbox" name="timeslot[]" class="form-check-input" value="<?=$timeSlot->getItemID(); ?>">
+                  <label for="timeslot" class="form-label">dag</label>
+                  <input type="text" id="timeslotsDays" name="timeslotsDays" value="<?=$timeSlot->getDay(); ?>" required>
+
+                  <label for="timeslot" class="form-label">Start time</label>
+                  <input type="time" name="timeSlotsStartTime" value="<?=$timeSlot->getStartTime(); ?>" required>
+
+                  <label for="timeslot" class="form-label">End time</label>
+                  <input type="time" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions">
@@ -92,6 +109,22 @@ $persons = $persons ?? [];
                   <?php // app()->make(Form::class)->checkbox('expertise[]', $expertise->getItemID(), true); ?>
                   <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=(in_array($expertise->getItemID(), $selectedExp)) ? 'checked' : ''; ?>>
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+               </div>
+            <?php }}?>
+            <label for="expertise" class="form-label">time slots</label><hr>
+      <?php
+         if (!empty($timeSlots)) {
+            foreach ($timeSlots as $timeSlot) { ?>
+               <div class="form-group">
+                  <input type="checkbox" name="timeslot[]" class="form-check-input" value="<?=$timeSlot->getItemID(); ?>" <?=(in_array($timeSlot->getItemID(), $selectedtimeslot)) ? 'checked' : ''; ?>>
+                  <label for="timeslot" class="form-label">dag</label>
+                  <input type="text" id="timeslotsDays" name="timeslotsDays" value="<?=$timeSlot->getDay(); ?>" required>
+
+                  <label for="timeslot" class="form-label">Start time</label>
+                  <input type="time" name="timeSlotsStartTime" value="<?=$timeSlot->getStartTime(); ?>" required>
+
+                  <label for="timeslot" class="form-label">End time</label>
+                  <input type="time" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions">

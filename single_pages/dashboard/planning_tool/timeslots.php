@@ -25,7 +25,7 @@ $timeSlots = $timeSlots ?? [];
                   foreach ($timeSlots as $timeSlot) { ?>
                   <tr data-launch-search-menu="" class="">
                      <td><?=$timeSlot->getItemID(); ?></td>
-                     <td><?=$timeSlot->getDate(); ?></td>
+                     <td><?=$timeSlot->getDay(); ?></td>
                      <td><?=$timeSlot->getStartTime(); ?></td>
                      <td><?=$timeSlot->getEndTime(); ?></td>
                      <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/timeslots/edit',  $timeSlot->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
@@ -41,8 +41,8 @@ $timeSlots = $timeSlots ?? [];
  <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add timeslots</h2>
    <form method="post" action="<?=$this->action('save')?>">
-      <label for="date" class="form-label">Datum</label>
-      <input type="date" id="timeSlotsDate" name="timeSlotsDate" required>
+      <label for="name" class="form-label">Datum</label>
+      <input type="text" id="timeslotsDays" name="timeslotsDays" required>
 
       <label for="startTime" class="form-label">Starttijd</label>
       <input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" required>
@@ -58,14 +58,14 @@ $timeSlots = $timeSlots ?? [];
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit persons</h2>
    <form method="post" action="<?=$this->action('saveform', $timeSlot->getItemID()); ?>">
-   <label for="date" class="form-label">Datum</label>
-      <input type="date" id="timeSlotsDate" name="timeSlotsDate" required>
+   <label for="name" class="form-label">Datum</label>
+      <input type="text" id="timeslotsDays" name="timeslotsDays" value="<?=$timeSlot->getDay(); ?>" required>
 
       <label for="startTime" class="form-label">Starttijd</label>
-      <input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" required>
+      <input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" value="<?=$timeSlot->getStartTime(); ?>" required>
 
       <label for="endTime" class="form-label">Eindtijd</label>
-      <input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" required>
+      <input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
 
 
       <div class="ccm-dashboard-form-actions">
