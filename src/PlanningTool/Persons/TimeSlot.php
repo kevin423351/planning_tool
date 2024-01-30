@@ -37,6 +37,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $timeslotsEndtime;
 
     /**
+     * @ORM\Column(type="integer", options={"default" : 30})
+     */
+    protected $appointmentTime = 30;
+
+    /**
      * @ORM\Column(type="integer", length=150)
      */
     protected $deleted;
@@ -91,6 +96,16 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->timeslotsEndtime = $timeslotsEndtime;
     }
 
+    public function getAppointmentTime()
+    {
+        return $this->appointmentTime;
+    }
+
+    public function setAppointmentTime($appointmentTime)
+    {
+        $this->appointmentTime = $appointmentTime;
+    }
+
     public function getDeleted()
     {
         return $this->deleted;
@@ -122,3 +137,15 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         return $results;
     }
 }
+
+// public function getDateAdded($display = false, $format = 'Y-m-d H:i:s')
+// {
+//     if (!$display) {
+//         return $this->rowAdded;
+//     }
+//     return app()->make('helper/date')->formatDateTime(strtotime($this->rowAdded->format($format)));
+// }
+// public function setDateAdded($rowAdded)
+// {
+//     $this->rowAdded = $rowAdded;
+// }

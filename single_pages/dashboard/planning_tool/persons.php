@@ -31,6 +31,11 @@ $persons = $persons ?? [];
                      <td><?=$person->getLastname(); ?></td>
                      <td><?=$person->getEmail(); ?></td>
                      <td><?=$person->getDate(); ?></td>
+                     <?php
+                     if (!empty($expertises)) {
+                        foreach ($expertises as $expertise) { ?>
+                           <td><?=$expertise->getFirstname(); ?></td>
+                        <?php }}?>                     
                      <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
                      <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
@@ -80,6 +85,9 @@ $persons = $persons ?? [];
 
                   <label for="timeslot" class="form-label">End time</label>
                   <input type="time" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
+
+                  <label for="timeslot" class="form-label">appointment time</label>
+                  <input type="integer" name="appointmentTime" value="<?=$timeSlot->getAppointmentTime(); ?>" required>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions">
@@ -125,6 +133,9 @@ $persons = $persons ?? [];
 
                   <label for="timeslot" class="form-label">End time</label>
                   <input type="time" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
+                  
+                  <label for="timeslot" class="form-label">appointment time</label>
+                  <input type="integer" name="appointmentTime" value="<?=$timeSlot->getAppointmentTime(); ?>" required>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions">

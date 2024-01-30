@@ -6,12 +6,18 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\TimeSlot;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class persons extends DashboardPageController
-{
+{   
 
     public function view()
     {
         $person = Person::getAll();
         $this->set('persons', $person);
+
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
+
+        $timeSlot = TimeSlot::getAll();
+        $this->set('timeSlots', $timeSlot);
     }
 
 
