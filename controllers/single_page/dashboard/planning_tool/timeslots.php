@@ -31,6 +31,7 @@ class timeslots extends DashboardPageController
         $timeSlot->setDay($this->post('timeslotsDays'));
         $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
         $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
+        $timeSlot->setAppointmentTime($this->post('appointmentTime'));
         $timeSlot->setDeleted(0);
         
         $timeSlot->save();
@@ -51,6 +52,7 @@ class timeslots extends DashboardPageController
         $timeSlot->setDay($this->post('timeslotsDays'));
         $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
         $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
+        $timeSlot->setAppointmentTime($this->post('appointmentTime'));
         $timeSlot->save();
         $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
     }

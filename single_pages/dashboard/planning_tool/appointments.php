@@ -1,8 +1,3 @@
-<?php
-$appointments = $appointments ?? [];
-
-// als er geen details of save of edit of add gezet is
-?>
 <?php if ($this->controller->getAction() == 'view') { ?>
    <header>
       <div class="ccm-dashboard-header-menu">
@@ -17,7 +12,7 @@ $appointments = $appointments ?? [];
                <th class="">Name</th>
                <th class="">Lastname</th>
                <th class="">Email</th>
-               <th class="">Date</th>
+               <th class="">Date of birth</th>
                <th class="">Phone number</th>
                <th class="">Comment</th>
             </tr>
@@ -56,7 +51,7 @@ $appointments = $appointments ?? [];
       <label for="email" class="form-label">Email</label>
       <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
 
-      <label for="date" class="form-label">date</label>
+      <label for="date" class="form-label">Date of birth</label>
       <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="" required><br>
 
       <label for="number" class="form-label">Phone number</label>
@@ -65,9 +60,11 @@ $appointments = $appointments ?? [];
       <label for="comment" class="form-label">comment</label>
       <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="" required><br>
 
-      <div class="ccm-dashboard-form-actions">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
-         <button class="float-end btn btn-primary" type="submit">Save</button>
+      <div class="ccm-dashboard-form-actions-wrapper">
+         <div class="ccm-dashboard-form-actions ">
+            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <button class="float-end btn btn-primary" type="submit">Save</button>
+         </div>
       </div>
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
@@ -82,7 +79,7 @@ $appointments = $appointments ?? [];
       <label for="email" class="form-label">Email</label>
       <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="<?php echo $appointment->getEmail(); ?>" required><br>
 
-      <label for="date" class="form-label">date</label>
+      <label for="date" class="form-label">Date of birth</label>
       <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="<?php echo $appointment->getDate(); ?>" required><br>
 
       <label for="number" class="form-label">Phone number</label>
@@ -91,9 +88,11 @@ $appointments = $appointments ?? [];
       <label for="comment" class="form-label">comment</label>
       <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>" required><br>
 
-      <div class="ccm-dashboard-form-actions">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
-         <button class="float-end btn btn-primary" type="submit">Save</button>
+      <div class="ccm-dashboard-form-actions-wrapper">
+         <div class="ccm-dashboard-form-actions ">
+            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <button class="float-end btn btn-primary" type="submit">Save</button>
+         </div>
       </div>
    </form>
 <?php } ?>

@@ -1,8 +1,3 @@
-<?php
-$timeSlots = $timeSlots ?? [];
-
-// als er geen details of save of edit of add gezet is
-?>
 <?php if ($this->controller->getAction() == 'view') { ?>
    <header>  
       <div class="ccm-dashboard-header-menu">
@@ -17,6 +12,7 @@ $timeSlots = $timeSlots ?? [];
                <th class="">Date</th>
                <th class="">Start date</th>
                <th class="">End time</th>
+               <th class="">Appointment time</th>
             </tr>
          </thead>
          <tbody>
@@ -28,6 +24,7 @@ $timeSlots = $timeSlots ?? [];
                      <td><?=$timeSlot->getDay(); ?></td>
                      <td><?=$timeSlot->getStartTime(); ?></td>
                      <td><?=$timeSlot->getEndTime(); ?></td>
+                     <td><?=$timeSlot->getAppointmentTime(); ?></td>
                      <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/timeslots/edit',  $timeSlot->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
                      <a href="<?= URL::to('/dashboard/planning_tool/timeslots/delete',  $timeSlot->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
                   </tr>
@@ -41,39 +38,59 @@ $timeSlots = $timeSlots ?? [];
  <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add timeslots</h2>
    <form method="post" action="<?=$this->action('save')?>">
-      <label for="name" class="form-label">Datum</label>
-      <input type="text" id="timeslotsDays" name="timeslotsDays" required>
+   <label for="name" class="form-label">Datum</label>
 
-      <label for="startTime" class="form-label">Starttijd</label>
-      <input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" required>
-
-      <label for="endTime" class="form-label">Eindtijd</label>
-      <input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" required>
-
-      <div class="ccm-dashboard-form-actions">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
-         <button class="float-end btn btn-primary" type="submit">Save</button>
+      <input type="text" id="timeslotsDays" name="timeslotsDays" class="form-control ccm-input-text mb-3" value="" required>
+      <div class="row">
+         <div class="col-12 col-md-6">
+            <div class="form-group">
+               <label for="startTime" class="form-label">Starttijd</label><input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" class="form-select"  value="" required>
+            </div>
+         </div>
+         <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="endTime" class="form-label">Eindtijd</label><input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" class="form-select" value="" required>
+            </div>
+         </div>
+      </div>
+      <label for="endTime" class="form-label">Appointment time</label>
+      <input type="integer" id="appointmentTime" name="appointmentTime" class="form-control ccm-input-text" value="" required>
+      <div class="ccm-dashboard-form-actions-wrapper">
+         <div class="ccm-dashboard-form-actions ">
+            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <button class="float-end btn btn-primary" type="submit">Save</button>
+         </div>
       </div>
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit persons</h2>
    <form method="post" action="<?=$this->action('saveform', $timeSlot->getItemID()); ?>">
    <label for="name" class="form-label">Datum</label>
-      <input type="text" id="timeslotsDays" name="timeslotsDays" value="<?=$timeSlot->getDay(); ?>" required>
+      <input type="text" id="timeslotsDays" name="timeslotsDays" class="form-control ccm-input-text mb-3" value="<?=$timeSlot->getDay(); ?>" required>
+      <div class="row">
+         <div class="col-12 col-md-6">
+            <div class="form-group">
+               <label for="startTime" class="form-label">Starttijd</label><input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" class="form-select" value="<?=$timeSlot->getStartTime(); ?>" required>
+            </div>
+         </div>
+         <div class="col-12 col-md-6">
+            <div class="form-group">
+              <label for="endTime" class="form-label">Eindtijd</label><input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" class="form-select" value="<?=$timeSlot->getEndTime(); ?>" required>
+            </div>
+         </div>
+      </div>
+      <label for="endTime" class="form-label">Appointment time</label>
+      <input type="integer" id="appointmentTime" name="appointmentTime" class="form-control ccm-input-text" value="<?=$timeSlot->getAppointmentTime(); ?>" required>
 
-      <label for="startTime" class="form-label">Starttijd</label>
-      <input type="time" id="timeSlotsStartTime" name="timeSlotsStartTime" value="<?=$timeSlot->getStartTime(); ?>" required>
-
-      <label for="endTime" class="form-label">Eindtijd</label>
-      <input type="time" id="timeSlotsEndTime" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
-
-
-      <div class="ccm-dashboard-form-actions">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
-         <button class="float-end btn btn-primary" type="submit">Save</button>
+      <div class="ccm-dashboard-form-actions-wrapper">
+         <div class="ccm-dashboard-form-actions ">
+            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <button class="float-end btn btn-primary" type="submit">Save</button>
+         </div>
       </div>
    </form>
 <?php } ?>
+
 
 <!-- <span class="ccm-input-time-wrapper row row-cols-auto gx-1 align-items-center" id="formScheduleDateFrom_tw">
    <div class="col-auto">
