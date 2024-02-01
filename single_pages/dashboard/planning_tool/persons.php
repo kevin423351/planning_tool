@@ -1,9 +1,7 @@
 <?php if ($this->controller->getAction() == 'view') { ?>
-   <header>  
-      <div class="ccm-dashboard-header-menu">
-         <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
-      </div>
-   </header>
+   <div class="ccm-dashboard-header-buttons">
+      <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
+    </div>
    <div class="table-responsive">
       <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
          <thead>

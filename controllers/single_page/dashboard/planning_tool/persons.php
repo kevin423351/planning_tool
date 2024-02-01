@@ -5,14 +5,12 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\TimeSlot;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
-class persons extends DashboardPageController
+class Persons extends DashboardPageController
 {   
-
-    public function view()
+    public function on_start()
     {
-        $person = Person::getAll();
-        $this->set('persons', $person);
-
+        parent::on_start();
+        
         $expertises = Expertise::getAll();
         $this->set('expertises', $expertises);
 
@@ -20,16 +18,16 @@ class persons extends DashboardPageController
         $this->set('timeSlots', $timeSlot);
     }
 
+    public function view()
+    {
+        $person = Person::getAll();
+        $this->set('persons', $person);
+    }
+
     public function edit($id) 
     {
         $person = Person::getByID($id);
         $this->set('person', $person);
-
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
-
-        $timeSlot = TimeSlot::getAll();
-        $this->set('timeSlots', $timeSlot);
         
         $expertises = [];
         foreach($person->getExpertises() as $expertise) { 
@@ -46,11 +44,7 @@ class persons extends DashboardPageController
 
     public function add() 
     {
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
-
-        $timeSlot = TimeSlot::getAll();
-        $this->set('timeSlots', $timeSlot);
+        // do nothing
     }
 
     public function save($id = null) 
@@ -91,4 +85,5 @@ class persons extends DashboardPageController
         $person->save();
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
+
 } 

@@ -18,9 +18,13 @@ class appointments extends DashboardPageController
         $this->set('appointment', $appointment);
     }
 
+    /*
+
+    */
     public function add() 
     {
-        
+        //TODO
+        // asdfasdfasdf asdf adsf adsf dsf
     }
 
     public function saveAppointment($id = null) 
