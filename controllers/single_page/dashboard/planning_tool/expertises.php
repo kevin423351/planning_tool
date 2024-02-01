@@ -24,17 +24,21 @@ class expertises extends DashboardPageController
         
     }
 
-    public function save() 
-    {
+    public function saveExpertise($id = null) 
+{
+    if ($id !== null) {
+        $expertise = Expertise::getByID($id);
+    } else {
         $expertise = new Expertise();
-        
-        $expertise->setFirstname($this->post('expertiseName'));
-        $expertise->setDeleted(0);
-        
-        $expertise->save();
-
-        $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
+        $expertise->setDeleted(0); 
     }
+    $expertise->setFirstname($this->post('expertiseName'));
+
+    $expertise->save();
+
+    $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
+}
+
 
     public function delete($id){
         $expertise = Expertise::getByID($id);
@@ -43,12 +47,5 @@ class expertises extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
     }
 
-    public function saveform($id){
-        $expertise = Expertise::getByID($id);
 
-        $expertise->setFirstname($this->post('expertiseName'));
-
-        $expertise->save();
-        $this->buildRedirect('/dashboard/planning_tool/expertises/')->send();
-    }
 } 

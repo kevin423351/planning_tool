@@ -37,9 +37,8 @@
    </div>
  <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add timeslots</h2>
-   <form method="post" action="<?=$this->action('save')?>">
+   <form method="post" action="<?=$this->action('saveTimeSlot')?>">
    <label for="name" class="form-label">Datum</label>
-
       <input type="text" id="timeslotsDays" name="timeslotsDays" class="form-control ccm-input-text mb-3" value="" required>
       <div class="row">
          <div class="col-12 col-md-6">
@@ -64,7 +63,7 @@
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit persons</h2>
-   <form method="post" action="<?=$this->action('saveform', $timeSlot->getItemID()); ?>">
+   <form method="post" action="<?=$this->action('saveTimeSlot', $timeSlot->getItemID()); ?>">
    <label for="name" class="form-label">Datum</label>
       <input type="text" id="timeslotsDays" name="timeslotsDays" class="form-control ccm-input-text mb-3" value="<?=$timeSlot->getDay(); ?>" required>
       <div class="row">

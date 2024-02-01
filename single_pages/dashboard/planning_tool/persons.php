@@ -77,17 +77,17 @@
             foreach ($timeSlots as $timeSlot) { ?>
                <div class="form-group">
                   <input type="checkbox" name="timeslot[]" class="form-check-input" value="<?=$timeSlot->getItemID(); ?>">
-                  <label for="timeslot" class="form-label">dag</label>
-                  <input type="text" id="timeslotsDays" name="timeslotsDays" value="<?=$timeSlot->getDay(); ?>" required>
 
-                  <label for="timeslot" class="form-label">Start time</label>
-                  <input type="time" name="timeSlotsStartTime" value="<?=$timeSlot->getStartTime(); ?>" required>
+                  <label for="timeslot3" class="form-label"><strong><?=$timeSlot->getDay(); ?>:<strong></label>
 
-                  <label for="timeslot" class="form-label">End time</label>
-                  <input type="time" name="timeSlotsEndTime" value="<?=$timeSlot->getEndTime(); ?>" required>
+                  <label for="timeslot" class="form-label">available from</label>
+                  <label for="timeslot" class="form-label"><?=$timeSlot->getStartTime(); ?></label>
 
+                  <label for="timeslot" class="form-label">until</label>
+                  <label for="timeslot" class="form-label"><?=$timeSlot->getEndTime(); ?></label>
+                  
                   <label for="timeslot" class="form-label">appointment time</label>
-                  <input type="integer" name="appointmentTime" value="<?=$timeSlot->getAppointmentTime(); ?>" required>
+                  <label for="timeslot" class="form-label"><?=$timeSlot->getAppointmentTime(); ?> minutes</label>
                </div>
             <?php }}?>
       <div class="ccm-dashboard-form-actions-wrapper">
@@ -99,7 +99,7 @@
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit persons</h2>
-   <form method="post" action="<?=$this->action('saveform', $person->getItemID()); ?>">
+   <form method="post" action="<?=$this->action('save', $person->getItemID()); ?>">
    <div class="row">
          <div class="col-12 col-md-6">
             <div class="form-group">

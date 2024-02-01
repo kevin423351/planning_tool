@@ -24,16 +24,20 @@ class timeslots extends DashboardPageController
         
     }
 
-    public function save() 
+    public function saveTimeSlot($id = null) 
     {
-        $timeSlot = new TimeSlot();
-        
+        if ($id !== null) {
+            $timeSlot = TimeSlot::getByID($id);
+        } else {
+            $timeSlot = new TimeSlot();
+            $timeSlot->setDeleted(0);
+        }
+
         $timeSlot->setDay($this->post('timeslotsDays'));
         $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
         $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
         $timeSlot->setAppointmentTime($this->post('appointmentTime'));
-        $timeSlot->setDeleted(0);
-        
+
         $timeSlot->save();
 
         $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
@@ -46,14 +50,5 @@ class timeslots extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
     }
 
-    public function saveform($id){
-        $timeSlot = TimeSlot::getByID($id);
 
-        $timeSlot->setDay($this->post('timeslotsDays'));
-        $timeSlot->setStartTime($this->post('timeSlotsStartTime'));
-        $timeSlot->setEndTime($this->post('timeSlotsEndTime'));
-        $timeSlot->setAppointmentTime($this->post('appointmentTime'));
-        $timeSlot->save();
-        $this->buildRedirect('/dashboard/planning_tool/timeslots/')->send();
-    }
 } 

@@ -20,7 +20,6 @@ class persons extends DashboardPageController
         $this->set('timeSlots', $timeSlot);
     }
 
-
     public function edit($id) 
     {
         $person = Person::getByID($id);
@@ -54,62 +53,41 @@ class persons extends DashboardPageController
         $this->set('timeSlots', $timeSlot);
     }
 
-    public function save() 
+    public function save($id = null) 
     {
-        $person = new Person();
-        
+        if ($id !== null) {
+            $person = Person::getByID($id);
+        } else {
+            $person = new Person();
+            $person->setDeleted(0);
+        }
+
         $person->setFirstname($this->post('formName'));
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
-        $person->setDeleted(0);
 
         $expertises = [];
-        foreach($this->post('expertise') as $expertiseID)
-        {
+        foreach ($this->post('expertise') as $expertiseID) {
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
 
         $timeSlots = [];
-        foreach($this->post('timeslot') as $timeslotID)
-        {
+        foreach ($this->post('timeslot') as $timeslotID) {
             $timeSlots[] = TimeSlot::getByID($timeslotID);
         }
         $person->setTimeslots($timeSlots);
+
         $person->save();
 
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
+
 
     public function delete($id){
         $person = Person::getByID($id);
         $person->setDeleted(1);
-        $person->save();
-        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
-    }
-
-    public function saveform($id){
-        $person = Person::getByID($id);
-
-        $person->setFirstname($this->post('formName'));
-        $person->setLastname($this->post('formLastname'));
-        $person->setEmail($this->post('formEmail'));
-        $person->setDate($this->post('formDate'));
-
-        $expertises = [];
-        foreach($this->post('expertise') as $expertiseID)
-        {
-            $expertises[] = Expertise::getByID($expertiseID);
-        }
-        $person->setExpertises($expertises);
-
-        $timeSlots = [];
-        foreach($this->post('timeslot') as $timeslotID)
-        {
-            $timeSlots[] = TimeSlot::getByID($timeslotID);
-        }
-        $person->setTimeslots($timeSlots);
         $person->save();
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }

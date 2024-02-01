@@ -41,7 +41,7 @@
    </div>
 <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add persons</h2>
-   <form method="post" action="<?=$this->action('save')?>">
+   <form method="post" action="<?=$this->action('saveAppointment')?>">
       <label for="name" class="form-label">Name</label>
       <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
 
@@ -69,7 +69,7 @@
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit persons</h2>
-   <form method="post" action="<?=$this->action('saveform', $appointment->getItemID()); ?>">
+   <form method="post" action="<?=$this->action('saveAppointment', $appointment->getItemID()); ?>">
       <label for="name" class="form-label">Name</label>
       <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="<?php echo $appointment->getFirstname(); ?>" required><br>
 
