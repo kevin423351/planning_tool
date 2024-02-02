@@ -58,7 +58,7 @@
          </div>
          <div class="w-100 px-2 mb-3">
             <div class="card shadow-sm rounded">
-               <div class="card-header bg-primary text-white text-center"><strong>Friday</strong><br />August 25</div>
+               <div class="card-header bg-primary text-white text-center"><strong>Saturday</strong><br />August 25</div>
                <div class="card-body">
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item border border-top-0 shadow-sm">10:30pm</li>
@@ -68,7 +68,7 @@
          </div>
          <div class="w-100 px-2 mb-3">
             <div class="card shadow-sm rounded">
-               <div class="card-header bg-primary text-white text-center"><strong>Friday</strong><br />August 25</div>
+               <div class="card-header bg-primary text-white text-center"><strong>Sunday</strong><br />August 25</div>
                <div class="card-body">
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item border border-top-0 shadow-sm">10:30pm</li>
