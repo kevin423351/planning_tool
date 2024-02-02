@@ -19,8 +19,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue
       */
-    protected $timeslotID;
-
+      protected $timeslotID;
+        /**
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="timeSlots")
+     * @ORM\JoinColumn(name="personID", referencedColumnName="personID")
+     */
+    private $person;
     /**
      * @ORM\Column(type="string", length=150)
      */

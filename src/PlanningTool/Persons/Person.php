@@ -57,15 +57,10 @@ use Doctrine\Common\Collections\ArrayCollection;
      */
     protected $expertises;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="TimeSlot", inversedBy="per_timeslot")
-     * @ORM\JoinTable(
-     *     name="person_timeslot",
-     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="timeslotID", referencedColumnName="timeslotID")}
-     * )
+     /**
+     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="person", cascade={"persist", "remove"})
      */
-    protected $timeslots;
+    private $timeSlots;
     
     public function __construct() 
     {
