@@ -70,6 +70,24 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->timeslotID = $timeslotID;
     }
 
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    public function getPersonObject()
+    {
+        return $this->getPerson();
+    }
+    public function setPerson($person)
+    {
+        if (!is_object($person) && (float)$person != 0) {
+            $person = Person::getByID($person);
+        }
+        if (is_object($person)) {
+            $this->person = $person;
+        }
+    }
+
     public function getDay()
     {
         return $this->timeslotsDays;

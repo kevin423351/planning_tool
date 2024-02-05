@@ -126,6 +126,26 @@ use Doctrine\Common\Collections\ArrayCollection;
         return $this->expertises;
     }
 
+
+    public function getTimeslotsByID($timeslotID)
+    {
+        return $this->timeSlots[$timeslotID];
+    }
+    public function getTimeslotsCount()
+    {
+        return count($this->getTimeslots());
+    }
+    public function removeTimeslots($timeslots)
+    {
+        if (is_object($timeslots)) {
+            $this->timeslots->removeElement($timeslots);
+        }
+        $this->timeslots->remove($timeslots);
+    }
+    public function clearTimeslots()
+    {
+        $this->timeslots->clear();
+    }
     public function setTimeslots($timeslots)
     {
         $this->timeslots = $timeslots;
@@ -138,6 +158,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     {
         return $this->timeslots;
     }
+
 
     public function getDate()
     {

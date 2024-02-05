@@ -42,7 +42,9 @@ class Persons extends DashboardPageController
     }
 
     public function save($id = null) 
-    {
+    {   
+        $orig = null;
+
         if ($id !== null) {
             $person = Person::getByID($id);
         } else {
@@ -63,6 +65,42 @@ class Persons extends DashboardPageController
         $person->save();
 
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
+
+
+        foreach (array_keys($post->get('companyAddressZipcode')) as $key)
+        {
+            $ca = new TimeSlot();
+            $ca->setPerson($person);
+
+            // Check if already there!
+            if ($orig && $key > 0) {
+                $ca = $person->getTimeslotsByID($key);
+            }
+
+            $timeslotsDays = $post->get('timeslotsDays');
+            if (isset($timeslotsDays[$key])) {
+                $ca->setDay($timeslotsDays[$key]);
+            }
+
+            $timeSlotsStartTime = $post->get('timeSlotsStartTime');
+            if (isset($timeSlotsStartTime[$key])) {
+                $ca->setStartTime($timeSlotsStartTime[$key]);
+            }
+
+            $timeSlotsEndTime = $post->get('timeSlotsEndTime');
+            if (isset($timeSlotsEndTime[$key])) {
+                $ca->setEndTime($timeSlotsEndTime[$key]);
+            }
+
+            $appointmentTime = $post->get('appointmentTime');
+            if (isset($appointmentTime[$key])) {
+                $ca->setAppointmentTime($appointmentTime[$key]);
+            }
+
+            if (!$orig || (int)$ca->getItemID() == 0) {
+                $person->addTimeslots($ca);
+            }
+        }
     }
 
 
