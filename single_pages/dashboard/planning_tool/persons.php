@@ -1,3 +1,7 @@
+<script>
+   var _tmp = -1;
+</script>
+
 <?php if ($this->controller->getAction() == 'view') { ?>
    <div class="ccm-dashboard-header-buttons">
       <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
@@ -76,33 +80,31 @@
                </div>
                <div class="card-body pt-0">
                   <div class="addresses">
+
                      <?php
-                        // $timeSlots = isset($person)?$person->getTimeSlots():[];
-                        // if (!count($timeSlots)) {
-                        //    $timeSlots = ['-1' => []];
-                        // }
+                        $timeSlots = isset($person)?$person->getTimeSlots():[];
+                        if (!count($timeSlots)) {
+                           $timeSlots = ['-1' => []];
+                        }
                         foreach ($timeSlots as $key => $timeSlot) {
                         ?>
-                     <!-- <div class="address">
+                        <div class="address">
                            <div class="col-auto">
                               <div class="input-group-append" style="margin-top:22px;">
                                  <button class="btn btn-danger remove_address" type="button" <?=!count($timeSlots)?'disabled':'';?>>
-                                 <i class="icon-trash mr-0"></i>
+                                    <i class="icon-trash mr-0"></i>
                                  </button>
                               </div>
                            </div>
-                        </div> -->
                            <div class="col">
                               <div class="form-group">
                                  <label for="timeslotsDays"><?=t('day');?></label>
                                  <?=$form->text('timeslotsDays['.$key.']', $timeSlot?$timeSlot->getDay():'', ['data-required' => 'all']);?>
                               </div>
-                           </div>
                               <div class="form-group">
                                  <label for="timeSlotsStartTime"><?=t('Start time');?></label>
                                  <?=$form->time('timeSlotsStartTime['.$key.']', $timeSlot?$timeSlot->getStartTime():'', ['data-required' => 'all']);?>
                               </div>
-                           </div>
                               <div class="form-group">
                                  <label for="timeSlotsEndTime"><?=t('End time');?></label>
                                  <?=$form->time('timeSlotsEndTime['.$key.']', $timeSlot?$timeSlot->getEndTime():'', ['data-required' => 'all']);?>
@@ -115,11 +117,72 @@
                         </div>
                      </div>
                      <?php } ?>
+
                      <div class="form-group text-right">
                         <button class="btn btn-primary add_address" type="button">
                         <i class="icon-plus mr-0"></i> <?=t('Add new');?>
                         </button>
                      </div>
+                     <script id="address" type="text/template">
+                        <div class="address">
+                           <div class="col-auto">
+                              <div class="input-group-append" style="margin-top:22px;">
+                                 <button class="btn btn-danger remove_address" type="button">
+                                 <i class="icon-trash mr-0"></i>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="form-group">
+                                 <label for="timeslotsDays"><?=t('day');?></label>
+                                 <?=$form->text('timeslotsDays[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeSlotsStartTime"><?=t('Start time');?></label>
+                                 <?=$form->time('timeSlotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeSlotsEndTime"><?=t('End time');?></label>
+                                 <?=$form->time('timeSlotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="appointmentTime"><?=t('Appointment time');?></label>
+                                 <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                           </div>
+                        </div>
+                     </script>
+                     <script>
+                        $(function() {
+                           $(document).on('click', '.remove_address', function() {
+                              var holder = $('.addresses');
+                              var count = $('.address', holder).length;
+                              var current = $(this).closest('.address');
+                              if (count > 1) {
+                                    current.remove();
+                              }
+                              else {
+                                    $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+                              }
+                           });
+
+                           $(document).on('click', '.add_address', function() {
+                              var holder = $('.addresses');
+                              var clone = $('#address').html().replace(/_tmp/g, _tmp);
+                              $(':input:not(.btn)', clone).each(function(i, row) {
+                                    $(row)
+                                       .val('')
+                                       .removeClass('is-valid')
+                                       .removeClass('is-invalid');
+                                    if ($(row).attr('type') == 'checkbox') {
+                                       $(row).val(1).prop('checked', false);
+                                    }
+                              });
+                              $(this).before(clone);
+                              _tmp--;
+                           });
+                        });
+                     </script>
                   </div>
                </div>
             </div>

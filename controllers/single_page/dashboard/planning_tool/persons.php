@@ -69,36 +69,42 @@ class Persons extends DashboardPageController
 
         foreach (array_keys($post->get('companyAddressZipcode')) as $key)
         {
-            $ca = new TimeSlot();
-            $ca->setPerson($person);
+            $ts = new TimeSlot();
+            $ts->setPerson($person);
 
             // Check if already there!
             if ($orig && $key > 0) {
-                $ca = $person->getTimeslotsByID($key);
+                $ts = $person->getTimeslotsByID($key);
             }
 
             $timeslotsDays = $post->get('timeslotsDays');
             if (isset($timeslotsDays[$key])) {
-                $ca->setDay($timeslotsDays[$key]);
+                $ts->setDay($timeslotsDays[$key]);
             }
 
             $timeSlotsStartTime = $post->get('timeSlotsStartTime');
             if (isset($timeSlotsStartTime[$key])) {
-                $ca->setStartTime($timeSlotsStartTime[$key]);
+                $ts->setStartTime($timeSlotsStartTime[$key]);
             }
 
             $timeSlotsEndTime = $post->get('timeSlotsEndTime');
             if (isset($timeSlotsEndTime[$key])) {
-                $ca->setEndTime($timeSlotsEndTime[$key]);
+                $ts->setEndTime($timeSlotsEndTime[$key]);
             }
 
             $appointmentTime = $post->get('appointmentTime');
             if (isset($appointmentTime[$key])) {
-                $ca->setAppointmentTime($appointmentTime[$key]);
+                $ts->setAppointmentTime($appointmentTime[$key]);
             }
 
-            if (!$orig || (int)$ca->getItemID() == 0) {
-                $person->addTimeslots($ca);
+            // $time = '';
+            // $appointmentTime = $post->get('appointmentTime');
+            // if (isset($appointmentTime[$key])) {
+            //     $time = $appointmentTime[$key];
+            // }
+
+            if (!$orig || (int)$ts->getItemID() == 0) {
+                $person->addTimeslots($ts);
             }
         }
     }
