@@ -56,10 +56,21 @@ use Doctrine\Common\Collections\ArrayCollection;
      * )
      */
     protected $expertises;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="TimeSlot", inversedBy="per_timeslot")
+     * @ORM\JoinTable(
+     *     name="person_timeslot",
+     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="timeslotID", referencedColumnName="timeslotID")}
+     * )
+     */
+    protected $timeslots;
     
     public function __construct() 
     {
         $this->expertises = new ArrayCollection();
+        $this->timeslots = new ArrayCollection();
     }
 
     public static function getByID($personID)
@@ -118,6 +129,19 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function getExpertises()
     {
         return $this->expertises;
+    }
+
+    public function setTimeslots($timeslots)
+    {
+        $this->timeslots = $timeslots;
+    }
+    public function addTimeslots($timeslots)
+    {
+        $this->timeslots->add($timeslots);
+    }
+    public function getTimeslots()
+    {
+        return $this->timeslots;
     }
 
     public function getDate()

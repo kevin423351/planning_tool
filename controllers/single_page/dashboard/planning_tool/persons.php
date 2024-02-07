@@ -2,10 +2,21 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\TimeSlot;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
-class persons extends DashboardPageController
-{
+class Persons extends DashboardPageController
+{   
+    public function on_start()
+    {
+        parent::on_start();
+        
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
+
+        $timeSlot = TimeSlot::getAll();
+        $this->set('timeSlots', $timeSlot);
+    }
 
     public function view()
     {
@@ -13,48 +24,60 @@ class persons extends DashboardPageController
         $this->set('persons', $person);
     }
 
-
     public function edit($id) 
     {
         $person = Person::getByID($id);
         $this->set('person', $person);
-
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
         
-        $selExp = array();
+        $expertises = [];
         foreach($person->getExpertises() as $expertise) { 
-            $selExp[] = $expertise->getItemID(); 
+            $expertises[] = $expertise->getItemID(); 
         }
-        $this->set('selectedExp', $selExp);
+        $this->set('selectedExp', $expertises);
+       
+        $timeSlots = [];
+        foreach($person->getTimeslots() as $timeSlot) { 
+            $timeSlots[] = $timeSlot->getItemID(); 
+        }
+        $this->set('selectedtimeslot', $timeSlots);
     }
 
     public function add() 
     {
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
+        // do nothing
     }
 
-    public function save() 
+    public function save($id = null) 
     {
-        $person = new Person();
-        
+        if ($id !== null) {
+            $person = Person::getByID($id);
+        } else {
+            $person = new Person();
+            $person->setDeleted(0);
+        }
+
         $person->setFirstname($this->post('formName'));
         $person->setLastname($this->post('formLastname'));
         $person->setEmail($this->post('formEmail'));
         $person->setDate($this->post('formDate'));
-        $person->setDeleted(0);
 
         $expertises = [];
-        foreach($this->post('expertise') as $expertiseID)
-        {
+        foreach ($this->post('expertise') as $expertiseID) {
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
+
+        $timeSlots = [];
+        foreach ($this->post('timeslot') as $timeslotID) {
+            $timeSlots[] = TimeSlot::getByID($timeslotID);
+        }
+        $person->setTimeslots($timeSlots);
+
         $person->save();
 
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
+
 
     public function delete($id){
         $person = Person::getByID($id);
@@ -63,22 +86,4 @@ class persons extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
     }
 
-    public function saveform($id){
-        $person = Person::getByID($id);
-
-        $person->setFirstname($this->post('formName'));
-        $person->setLastname($this->post('formLastname'));
-        $person->setEmail($this->post('formEmail'));
-        $person->setDate($this->post('formDate'));
-
-        $expertises = [];
-        foreach($this->post('expertise') as $expertiseID)
-        {
-            $expertises[] = Expertise::getByID($expertiseID);
-        }
-        $person->setExpertises($expertises);
-
-        $person->save();
-        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
-    }
 } 
