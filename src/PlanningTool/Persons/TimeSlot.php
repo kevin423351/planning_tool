@@ -19,12 +19,13 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       * @ORM\Column(type="integer")
       * @ORM\GeneratedValue
       */
-      protected $timeslotID;
-        /**
+    protected $timeslotID;
+    
+    /**
      * @ORM\ManyToOne(targetEntity="Person", inversedBy="timeSlots")
      * @ORM\JoinColumn(name="personID", referencedColumnName="personID")
      */
-    private $person;
+    protected $person;
     /**
      * @ORM\Column(type="string", length=150)
      */
@@ -46,9 +47,9 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $appointmentTime = 30;
 
     /**
-     * @ORM\Column(type="integer", length=150)
+     * @ORM\Column(type="integer", length=1, options={"default" : 30})
      */
-    protected $deleted;
+    protected $deleted = 0;
 
     /**
      * @ORM\ManyToMany(targetEntity="Person", mappedBy="timeslots")

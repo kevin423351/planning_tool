@@ -60,7 +60,7 @@
          </div>
          <div class="col-12 col-md-6">
             <div class="form-group">
-               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="" required><br>
+               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value=""><br>
             </div>
          </div>
       </div>
@@ -158,7 +158,7 @@
                               var holder = $('.addresses');
                               var count = $('.address', holder).length;
                               var current = $(this).closest('.address');
-                              if (count > 1) {
+                              if (count < 1) {
                                     current.remove();
                               }
                               else {
@@ -168,7 +168,7 @@
 
                            $(document).on('click', '.add_address', function() {
                               var holder = $('.addresses');
-                              var clone = $('#address').html().replace(/_tmp/g, _tmp);
+                              var clone = $('#address').html().replace(/_tmp/g, _tmp-1);
                               $(':input:not(.btn)', clone).each(function(i, row) {
                                     $(row)
                                        .val('')

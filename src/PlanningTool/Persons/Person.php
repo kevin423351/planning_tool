@@ -6,6 +6,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="persons", indexes={
@@ -58,9 +59,9 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $expertises;
 
      /**
-     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="person", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="reservation", indexBy="timeslotID", cascade={"persist"}, orphanRemoval=true)
      */
-    private $timeSlots;
+    protected $timeSlots;
     
     public function __construct() 
     {

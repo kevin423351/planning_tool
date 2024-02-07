@@ -43,6 +43,7 @@ class Persons extends DashboardPageController
 
     public function save($id = null) 
     {   
+        $post = $this->request->request;
         $orig = null;
 
         if ($id !== null) {
@@ -52,61 +53,57 @@ class Persons extends DashboardPageController
             $person->setDeleted(0);
         }
 
-        $person->setFirstname($this->post('formName'));
-        $person->setLastname($this->post('formLastname'));
-        $person->setEmail($this->post('formEmail'));
-        $person->setDate($this->post('formDate'));
+        $person->setFirstname($post->get('formName'));
+        $person->setLastname($post->get('formLastname'));
+        $person->setEmail($post->get('formEmail'));
+        $person->setDate($post->get('formDate'));
 
         $expertises = [];
-        foreach ($this->post('expertise') as $expertiseID) {
+        foreach ((array)$post->get('expertise') as $expertiseID) {
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
+        
         $person->save();
 
-        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
-
-
-        foreach (array_keys($post->get('companyAddressZipcode')) as $key)
+        foreach (array_keys($post->get('timeslotsDays')) as $key)
         {
-            $ts = new TimeSlot();
-            $ts->setPerson($person);
+        	$ts = new TimeSlot();
+        	$ts->setPerson($person);
 
-            // Check if already there!
-            if ($orig && $key > 0) {
-                $ts = $person->getTimeslotsByID($key);
-            }
+        	// Check if already there!
+        	if ($orig && $key > 0) {
+        	    $ts = $person->getTimeslotsByID($key);
+        	}
+	
+	        $timeslotsDays = $post->get('timeslotsDays');
+	        if (isset($timeslotsDays[$key])) {
+	            $ts->setDay($timeslotsDays[$key]);
+	        }
+	
+	        $timeSlotsStartTime = $post->get('timeSlotsStartTime');
+	        if (isset($timeSlotsStartTime[$key])) {
+	            $ts->setStartTime($timeSlotsStartTime[$key]);
+	        }
+	
+	        $timeSlotsEndTime = $post->get('timeSlotsEndTime');
+	        if (isset($timeSlotsEndTime[$key])) {
+	            $ts->setEndTime($timeSlotsEndTime[$key]);
+	        }
+	
+	        $appointmentTime = $post->get('appointmentTime');
+	        if (isset($appointmentTime[$key])) {
+	            $ts->setAppointmentTime($appointmentTime[$key]);
+        	}
 
-            $timeslotsDays = $post->get('timeslotsDays');
-            if (isset($timeslotsDays[$key])) {
-                $ts->setDay($timeslotsDays[$key]);
-            }
+	        if (!$orig || (int)$ts->getItemID() == 0) {
+	            $person->addTimeslots($ts);
+         	}
 
-            $timeSlotsStartTime = $post->get('timeSlotsStartTime');
-            if (isset($timeSlotsStartTime[$key])) {
-                $ts->setStartTime($timeSlotsStartTime[$key]);
-            }
 
-            $timeSlotsEndTime = $post->get('timeSlotsEndTime');
-            if (isset($timeSlotsEndTime[$key])) {
-                $ts->setEndTime($timeSlotsEndTime[$key]);
-            }
-
-            $appointmentTime = $post->get('appointmentTime');
-            if (isset($appointmentTime[$key])) {
-                $ts->setAppointmentTime($appointmentTime[$key]);
-            }
-
-            // $time = '';
-            // $appointmentTime = $post->get('appointmentTime');
-            // if (isset($appointmentTime[$key])) {
-            //     $time = $appointmentTime[$key];
-            // }
-
-            if (!$orig || (int)$ts->getItemID() == 0) {
-                $person->addTimeslots($ts);
-            }
-        }
+            $ts->save();
+	    }
+	    $this->buildRedirect('/dashboard/planning_tool/persons/')->send();  
     }
 
 
