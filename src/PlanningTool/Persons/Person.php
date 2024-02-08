@@ -59,9 +59,9 @@ use Doctrine\Common\Collections\ArrayCollection;
     protected $expertises;
 
      /**
-     * @ORM\OneToMany(targetEntity="TimeSlot", mappedBy="reservation", indexBy="timeslotID", cascade={"persist"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Timeslot", mappedBy="person", indexBy="timeslotID", cascade={"persist"}, orphanRemoval=true)
      */
-    protected $timeSlots;
+    protected $timeslots;
     
     public function __construct() 
     {
@@ -130,7 +130,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
     public function getTimeslotsByID($timeslotID)
     {
-        return $this->timeSlots[$timeslotID];
+        return $this->timeslots[$timeslotID];
     }
     public function getTimeslotsCount()
     {

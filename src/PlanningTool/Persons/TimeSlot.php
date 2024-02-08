@@ -8,11 +8,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="timeSlots", indexes={
+ * @ORM\Table(name="timeslots", indexes={
  * })
  */
 
- class TimeSlot
+ class Timeslot
  {
     /**
       * @ORM\Id
@@ -22,7 +22,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $timeslotID;
     
     /**
-     * @ORM\ManyToOne(targetEntity="Person", inversedBy="timeSlots")
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="timeslots")
      * @ORM\JoinColumn(name="personID", referencedColumnName="personID")
      */
     protected $person;
@@ -50,11 +50,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      * @ORM\Column(type="integer", length=1, options={"default" : 30})
      */
     protected $deleted = 0;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="timeslots")
-     */
-    protected $per_timeslot;
 
     public static function getByID($timeslotID)
     {

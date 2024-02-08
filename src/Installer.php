@@ -37,7 +37,7 @@ class Installer {
     //     $db->query("DROP TABLE IF EXISTS Person");
     //     $db->query("DROP TABLE IF EXISTS Expertise");
     //     $db->query("DROP TABLE IF EXISTS Appointment");
-    //     $db->query("DROP TABLE IF EXISTS TimeSlots");
+    //     $db->query("DROP TABLE IF EXISTS Timeslots");
     }
     public function clearCache() {
         Localization::clearCache();
