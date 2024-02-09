@@ -126,7 +126,14 @@ use Doctrine\Common\Collections\ArrayCollection;
     {
         return $this->expertises;
     }
-
+    public function hasExpertise($expertiseToCheck) {
+        foreach ($this->getExpertises() as $expertise) {
+            if ($expertise->getItemID() === $expertiseToCheck->getItemID()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public function getTimeslotsByID($timeslotID)
     {

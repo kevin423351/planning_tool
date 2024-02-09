@@ -26,18 +26,9 @@ class Persons extends DashboardPageController
     {
         $person = Person::getByID($id); // Retrieve a Person object by ID
         $this->set('person', $person); // Set the 'person' variable in the current instance to hold the retrieved person
-        
-        $expertises = []; // Initialize an empty array to store expertise item IDs
-        foreach($person->getExpertises() as $expertise) {  // Iterate through each expertise associated with the Person object
-            $expertises[] = $expertise->getItemID();   // Add the item ID of each expertise to the $expertises array
-        }
-        $this->set('selectedExp', $expertises); // Set the 'selectedExp' variable in the current instance to hold the array of expertise item IDs
 
-        $timeslots = $person->getTimeslots();
-        if (!is_array($timeslots) || !count($timeSlots)) {
-           $timeslots = ['-1' => []];
-        } 
-        $this->set('timeslots', $timeslots);  
+        $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
+        $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
     }
 
     public function add() 
@@ -75,13 +66,14 @@ class Persons extends DashboardPageController
         // Process and save time slots associated with the person
         foreach (array_keys($post->get('timeslotsDays')) as $key)
         {
-
-            if ($id !== null) {
-                $person = Person::getByID($id);
+            // get the timeslot ID
+            if ($key !== null) {
+                $ts = TimeSlot::getByID($key);
+                
             } else {
-                 // If $id is not provided, create a new Person object
-                 $ts = new Timeslot();
-                 $ts->setPerson($person);
+                // If $id is not provided, create a new Timeslot object
+                $ts = new Timeslot();
+                $ts->setPerson($person);
             }
 
         	// Check if already existing

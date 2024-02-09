@@ -194,10 +194,11 @@
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=(in_array($expertise->getItemID(), $selectedExp)) ? 'checked' : ''; ?>>
+               <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=($person->hasExpertise($expertise)) ? 'checked' : ''; ?>>
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
             <?php }}?>
+
             <label for="expertise" class="form-label">time slots</label><hr>
             <div class="card">
                <div class="card-header">
@@ -205,14 +206,13 @@
                </div>
                <div class="card-body pt-0">
                   <div class="addresses">
-
-                     <?php
+                     <?php 
                         foreach ($timeslots as $key => $timeslot) {
                         ?>
                         <div class="address">
                            <div class="col-auto">
                               <div class="input-group-append" style="margin-top:22px;">
-                                 <button class="btn btn-danger remove_address" type="button" <?=!count($timeslot)?'disabled':'';?>>
+                                 <button class="btn btn-danger remove_address" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
                                     <i class="icon-trash mr-0"></i>
                                  </button>
                               </div>
