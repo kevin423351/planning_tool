@@ -6,6 +6,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="persons", indexes={
@@ -57,13 +58,8 @@ use Doctrine\Common\Collections\ArrayCollection;
      */
     protected $expertises;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="TimeSlot", inversedBy="per_timeslot")
-     * @ORM\JoinTable(
-     *     name="person_timeslot",
-     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="timeslotID", referencedColumnName="timeslotID")}
-     * )
+     /**
+     * @ORM\OneToMany(targetEntity="Timeslot", mappedBy="person", indexBy="timeslotID", cascade={"persist"}, orphanRemoval=true)
      */
     protected $timeslots;
     
@@ -130,7 +126,34 @@ use Doctrine\Common\Collections\ArrayCollection;
     {
         return $this->expertises;
     }
+    public function hasExpertise($expertiseToCheck) {
+        foreach ($this->getExpertises() as $expertise) {
+            if ($expertise->getItemID() === $expertiseToCheck->getItemID()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
+    public function getTimeslotsByID($timeslotID)
+    {
+        return $this->timeslots[$timeslotID];
+    }
+    public function getTimeslotsCount()
+    {
+        return count($this->getTimeslots());
+    }
+    public function removeTimeslots($timeslots)
+    {
+        if (is_object($timeslots)) {
+            $this->timeslots->removeElement($timeslots);
+        }
+        $this->timeslots->remove($timeslots);
+    }
+    public function clearTimeslots()
+    {
+        $this->timeslots->clear();
+    }
     public function setTimeslots($timeslots)
     {
         $this->timeslots = $timeslots;
@@ -143,6 +166,7 @@ use Doctrine\Common\Collections\ArrayCollection;
     {
         return $this->timeslots;
     }
+
 
     public function getDate()
     {

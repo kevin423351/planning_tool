@@ -2,80 +2,114 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
-use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\TimeSlot;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class Persons extends DashboardPageController
 {   
     public function on_start()
-    {
-        parent::on_start();
-        
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
+    {      
 
-        $timeSlot = TimeSlot::getAll();
-        $this->set('timeSlots', $timeSlot);
+        parent::on_start(); // Call the parent class's on_start method
+        
+        $expertises = Expertise::getAll(); // Get all expertises using the Expertise::getAll() method
+        $this->set('expertises', $expertises); // Set the 'expertises' variable in the current instance to hold the retrieved expertises
     }
 
     public function view()
     {
-        $person = Person::getAll();
-        $this->set('persons', $person);
+        $person = Person::getAll(); // Get all expertises using the Person::getAll() method
+        $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
     }
 
     public function edit($id) 
     {
-        $person = Person::getByID($id);
-        $this->set('person', $person);
-        
-        $expertises = [];
-        foreach($person->getExpertises() as $expertise) { 
-            $expertises[] = $expertise->getItemID(); 
-        }
-        $this->set('selectedExp', $expertises);
-       
-        $timeSlots = [];
-        foreach($person->getTimeslots() as $timeSlot) { 
-            $timeSlots[] = $timeSlot->getItemID(); 
-        }
-        $this->set('selectedtimeslot', $timeSlots);
+        $person = Person::getByID($id); // Retrieve a Person object by ID
+        $this->set('person', $person); // Set the 'person' variable in the current instance to hold the retrieved person
+
+        $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
+        $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
     }
 
     public function add() 
     {
-        // do nothing
+        // $this->set('timeslots', $timeslots);  
     }
 
     public function save($id = null) 
-    {
+    {   
+        $post = $this->request->request;
+        $orig = null;
+        // Check if $id is provided
         if ($id !== null) {
             $person = Person::getByID($id);
         } else {
+             // If $id is not provided, create a new Person object
             $person = new Person();
             $person->setDeleted(0);
         }
+        // Set person attributes based on form data
+        $person->setFirstname($post->get('formName'));
+        $person->setLastname($post->get('formLastname'));
+        $person->setEmail($post->get('formEmail'));
+        $person->setDate($post->get('formDate'));
 
-        $person->setFirstname($this->post('formName'));
-        $person->setLastname($this->post('formLastname'));
-        $person->setEmail($this->post('formEmail'));
-        $person->setDate($this->post('formDate'));
-
+        // Process and set expertises associated with the person
         $expertises = [];
-        foreach ($this->post('expertise') as $expertiseID) {
+        foreach ((array)$post->get('expertise') as $expertiseID) {
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
-
-        $timeSlots = [];
-        foreach ($this->post('timeslot') as $timeslotID) {
-            $timeSlots[] = TimeSlot::getByID($timeslotID);
-        }
-        $person->setTimeslots($timeSlots);
-
+        // Save the person object
         $person->save();
 
-        $this->buildRedirect('/dashboard/planning_tool/persons/')->send();
+        // Process and save time slots associated with the person
+        foreach (array_keys($post->get('timeslotsDays')) as $key)
+        {
+            // get the timeslot ID
+            if ($key !== null) {
+                $ts = TimeSlot::getByID($key);
+                
+            } else {
+                // If $id is not provided, create a new Timeslot object
+                $ts = new Timeslot();
+                $ts->setPerson($person);
+            }
+
+        	// Check if already existing
+        	if ($orig && $key > 0) {
+        	    $ts = $person->getTimeslotsByID($key);
+        	}
+
+            // Set time slot attributes based on form data
+	        $timeslotsDays = $post->get('timeslotsDays');
+	        if (isset($timeslotsDays[$key])) {
+	            $ts->setDay($timeslotsDays[$key]);
+	        }
+	
+	        $timeslotsStartTime = $post->get('timeslotsStartTime');
+	        if (isset($timeslotsStartTime[$key])) {
+	            $ts->setStartTime($timeslotsStartTime[$key]);
+	        }
+	
+	        $timeslotsEndTime = $post->get('timeslotsEndTime');
+	        if (isset($timeslotsEndTime[$key])) {
+	            $ts->setEndTime($timeslotsEndTime[$key]);
+	        }
+	
+	        $appointmentTime = $post->get('appointmentTime');
+	        if (isset($appointmentTime[$key])) {
+	            $ts->setAppointmentTime($appointmentTime[$key]);
+        	}
+            // If a new time slot or not existing, add it to the person's time slots
+	        if (!$orig || (int)$ts->getItemID() == 0) {
+	            $person->addTimeslots($ts);
+         	}
+
+            $ts->save();
+	    }
+        // Redirect after processing the form
+	    $this->buildRedirect('/dashboard/planning_tool/persons/')->send();  
     }
 
 

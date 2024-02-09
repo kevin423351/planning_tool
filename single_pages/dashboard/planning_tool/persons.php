@@ -1,3 +1,7 @@
+<script>
+   var _tmp = -1;
+</script>
+
 <?php if ($this->controller->getAction() == 'view') { ?>
    <div class="ccm-dashboard-header-buttons">
       <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
@@ -56,7 +60,7 @@
          </div>
          <div class="col-12 col-md-6">
             <div class="form-group">
-               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="" required><br>
+               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value=""><br>
             </div>
          </div>
       </div>
@@ -70,24 +74,87 @@
                </div>
             <?php }}?>
             <label for="expertise" class="form-label">time slots</label><hr>
-      <?php
-         if (!empty($timeSlots)) {
-            foreach ($timeSlots as $timeSlot) { ?>
-               <div class="form-group">
-                  <input type="checkbox" name="timeslot[]" class="form-check-input" value="<?=$timeSlot->getItemID(); ?>">
-
-                  <label for="timeslot3" class="form-label"><strong><?=$timeSlot->getDay(); ?>:<strong></label>
-
-                  <label for="timeslot" class="form-label">available from</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getStartTime(); ?></label>
-
-                  <label for="timeslot" class="form-label">until</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getEndTime(); ?></label>
-                  
-                  <label for="timeslot" class="form-label">appointment time</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getAppointmentTime(); ?> minutes</label>
+            <div class="card">
+               <div class="card-header">
+                  <div class="card-title"><?=t('Address(es)');?></div>
                </div>
-            <?php }}?>
+               <div class="card-body pt-0">
+                  <div class="addresses">
+
+                     <?php
+                        $timeslots = isset($person)?$person->getTimeslots():[];
+                        if (!count($timeslots)) {
+                           $timeslots = ['-1' => []];
+                        }
+                        foreach ($timeslots as $key => $timeslot) {
+                        ?>
+                        <div class="address">
+                           <div class="col-auto">
+                              <div class="input-group-append" style="margin-top:22px;">
+                                 <button class="btn btn-danger remove_address" type="button" <?=!count($timeslots)?'disabled':'';?>>
+                                    <i class="icon-trash mr-0"></i>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="form-group">
+                                 <label for="timeslotsDays"><?=t('day');?></label>
+                                 <?=$form->text('timeslotsDays['.$key.']', $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                                 <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsEndTime"><?=t('End time');?></label>
+                                 <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="appointmentTime"><?=t('Appointment time');?></label>
+                                 <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <?php } ?>
+
+                     <div class="form-group text-right">
+                        <button class="btn btn-primary add_address" type="button">
+                        <i class="icon-plus mr-0"></i> <?=t('Add new');?>
+                        </button>
+                     </div>
+                     <script id="address" type="text/template">
+                        <div class="address">
+                           <div class="col-auto">
+                              <div class="input-group-append" style="margin-top:22px;">
+                                 <button class="btn btn-danger remove_address" type="button">
+                                 <i class="icon-trash mr-0"></i>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="form-group">
+                                 <label for="timeslotsDays"><?=t('day');?></label>
+                                 <?=$form->text('timeslotsDays[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                                 <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsEndTime"><?=t('End time');?></label>
+                                 <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="appointmentTime"><?=t('Appointment time');?></label>
+                                 <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                           </div>
+                        </div>
+                     </script>
+                  </div>
+               </div>
+            </div>
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
             <a href="#" class="btn btn-secondary float-start">Cancel</a>
@@ -118,7 +185,7 @@
          </div>
          <div class="col-12 col-md-6">
             <div class="form-group">
-               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="<?=$person->getDate(); ?>" required><br>
+               <label for="date" class="form-label">Date of birth</label><input type="text" id="formDate" name="formDate" class="form-control ccm-input-text" value="<?=$person->getDate(); ?>"><br>
             </div>
          </div>
       </div>
@@ -127,29 +194,88 @@
          if (!empty($expertises)) {
             foreach ($expertises as $expertise) { ?>
                <div class="form-group">
-                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=(in_array($expertise->getItemID(), $selectedExp)) ? 'checked' : ''; ?>>
+               <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=($person->hasExpertise($expertise)) ? 'checked' : ''; ?>>
                   <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
                </div>
             <?php }}?>
+
             <label for="expertise" class="form-label">time slots</label><hr>
-      <?php
-         if (!empty($timeSlots)) {
-            foreach ($timeSlots as $timeSlot) { ?>
-               <div class="form-group">
-                  <input type="checkbox" name="timeslot[]" class="form-check-input" value="<?=$timeSlot->getItemID(); ?>" <?=(in_array($timeSlot->getItemID(), $selectedtimeslot)) ? 'checked' : ''; ?>>
-
-                  <label for="timeslot3" class="form-label"><strong><?=$timeSlot->getDay(); ?>:<strong></label>
-
-                  <label for="timeslot" class="form-label">available from</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getStartTime(); ?></label>
-
-                  <label for="timeslot" class="form-label">until</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getEndTime(); ?></label>
-                  
-                  <label for="timeslot" class="form-label">appointment time</label>
-                  <label for="timeslot" class="form-label"><?=$timeSlot->getAppointmentTime(); ?> minutes</label>
+            <div class="card">
+               <div class="card-header">
+                  <div class="card-title"><?=t('Address(es)');?></div>
                </div>
-            <?php }}?>
+               <div class="card-body pt-0">
+                  <div class="addresses">
+                     <?php 
+                        foreach ($timeslots as $key => $timeslot) {
+                        ?>
+                        <div class="address">
+                           <div class="col-auto">
+                              <div class="input-group-append" style="margin-top:22px;">
+                                 <button class="btn btn-danger remove_address" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
+                                    <i class="icon-trash mr-0"></i>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="form-group">
+                                 <label for="timeslotsDays"><?=t('day');?></label>
+                                 <?=$form->text('timeslotsDays['.$key.']', $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                                 <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsEndTime"><?=t('End time');?></label>
+                                 <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="appointmentTime"><?=t('Appointment time');?></label>
+                                 <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                     <?php } ?>
+
+                     <div class="form-group text-right">
+                        <button class="btn btn-primary add_address" type="button">
+                        <i class="icon-plus mr-0"></i> <?=t('Add new');?>
+                        </button>
+                     </div>
+                     <script id="address" type="text/template">
+                        <div class="address">
+                           <div class="col-auto">
+                              <div class="input-group-append" style="margin-top:22px;">
+                                 <button class="btn btn-danger remove_address" type="button">
+                                 <i class="icon-trash mr-0"></i>
+                                 </button>
+                              </div>
+                           </div>
+                           <div class="col">
+                              <div class="form-group">
+                                 <label for="timeslotsDays"><?=t('day');?></label>
+                                 <?=$form->text('timeslotsDays[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                                 <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="timeslotsEndTime"><?=t('End time');?></label>
+                                 <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                              <div class="form-group">
+                                 <label for="appointmentTime"><?=t('Appointment time');?></label>
+                                 <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                              </div>
+                           </div>
+                        </div>
+                     </script>
+                  </div>
+               </div>
+            </div>
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
             <a href="#" class="btn btn-secondary float-start">Cancel</a>
@@ -158,6 +284,34 @@
       </div>
    </form>
 <?php } ?>
+<script>
+   $(function() {
+      $(document).on('click', '.remove_address', function() {
+         var holder = $('.addresses');
+         var count = $('.address', holder).length;
+         var current = $(this).closest('.address');
+         if (count > -1) {
+               current.remove();
+         }
+         else {
+               $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+         }
+      });
 
-
-
+      $(document).on('click', '.add_address', function() {
+         var holder = $('.addresses');
+         var clone = $('#address').html().replace(/_tmp/g, _tmp-1);
+         $(':input:not(.btn)', clone).each(function(i, row) {
+               $(row)
+                  .val('')
+                  .removeClass('is-valid')
+                  .removeClass('is-invalid');
+               if ($(row).attr('type') == 'checkbox') {
+                  $(row).val(1).prop('checked', false);
+               }
+         });
+         $(this).before(clone);
+         _tmp--;
+      });
+   });
+</script>

@@ -58,7 +58,7 @@
          </div>
          <div class="w-100 px-2 mb-3">
             <div class="card shadow-sm rounded">
-               <div class="card-header bg-primary text-white text-center"><strong>Friday</strong><br />August 25</div>
+               <div class="card-header bg-primary text-white text-center"><strong>Saturday</strong><br />August 25</div>
                <div class="card-body">
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item border border-top-0 shadow-sm">10:30pm</li>
@@ -68,7 +68,7 @@
          </div>
          <div class="w-100 px-2 mb-3">
             <div class="card shadow-sm rounded">
-               <div class="card-header bg-primary text-white text-center"><strong>Friday</strong><br />August 25</div>
+               <div class="card-header bg-primary text-white text-center"><strong>Sunday</strong><br />August 25</div>
                <div class="card-body">
                   <ul class="list-group list-group-flush">
                      <li class="list-group-item border border-top-0 shadow-sm">10:30pm</li>
@@ -127,13 +127,13 @@
       <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
 
       <label for="date" class="form-label">Date of birth</label>
-      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="" required><br>
+      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value=""><br>
 
       <label for="number" class="form-label">Phone number</label>
       <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
 
       <label for="comment" class="form-label">comment</label>
-      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="" required><br>
+      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
 
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
@@ -155,13 +155,13 @@
       <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="<?php echo $appointment->getEmail(); ?>" required><br>
 
       <label for="date" class="form-label">Date of birth</label>
-      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="<?php echo $appointment->getDate(); ?>" required><br>
+      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="<?php echo $appointment->getDate(); ?>"><br>
 
       <label for="number" class="form-label">Phone number</label>
       <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="<?php echo $appointment->getPhonenumber(); ?>" required><br>
 
       <label for="comment" class="form-label">comment</label>
-      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>" required><br>
+      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>"><br>
 
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">

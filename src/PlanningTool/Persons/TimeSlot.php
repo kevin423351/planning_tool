@@ -8,11 +8,11 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="timeSlots", indexes={
+ * @ORM\Table(name="timeslots", indexes={
  * })
  */
 
- class TimeSlot
+ class Timeslot
  {
     /**
       * @ORM\Id
@@ -20,7 +20,12 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       * @ORM\GeneratedValue
       */
     protected $timeslotID;
-
+    
+    /**
+     * @ORM\ManyToOne(targetEntity="Person", inversedBy="timeslots")
+     * @ORM\JoinColumn(name="personID", referencedColumnName="personID")
+     */
+    protected $person;
     /**
      * @ORM\Column(type="string", length=150)
      */
@@ -42,14 +47,9 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $appointmentTime = 30;
 
     /**
-     * @ORM\Column(type="integer", length=150)
+     * @ORM\Column(type="integer", length=1, options={"default" : 30})
      */
-    protected $deleted;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="timeslots")
-     */
-    protected $per_timeslot;
+    protected $deleted = 0;
 
     public static function getByID($timeslotID)
     {
@@ -64,6 +64,24 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     public function setItemID($timeslotID)
     {
         $this->timeslotID = $timeslotID;
+    }
+
+    public function getPerson()
+    {
+        return $this->person;
+    }
+    public function getPersonObject()
+    {
+        return $this->getPerson();
+    }
+    public function setPerson($person)
+    {
+        if (!is_object($person) && (float)$person != 0) {
+            $person = Person::getByID($person);
+        }
+        if (is_object($person)) {
+            $this->person = $person;
+        }
     }
 
     public function getDay()
