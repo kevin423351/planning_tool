@@ -39,7 +39,6 @@ class Persons extends DashboardPageController
     public function save($id = null) 
     {   
         $post = $this->request->request;
-        $orig = null;
         // Check if $id is provided
         if ($id !== null) {
             $person = Person::getByID($id);
@@ -67,19 +66,16 @@ class Persons extends DashboardPageController
         foreach (array_keys($post->get('timeslotsDays')) as $key)
         {
             // get the timeslot ID
-            if ($key !== null) {
+            $ts = null;
+            if ((int)$key > 0) {
                 $ts = TimeSlot::getByID($key);
-                
-            } else {
+            } 
+
+            if (!is_object($ts)) {
                 // If $id is not provided, create a new Timeslot object
                 $ts = new Timeslot();
                 $ts->setPerson($person);
             }
-
-        	// Check if already existing
-        	if ($orig && $key > 0) {
-        	    $ts = $person->getTimeslotsByID($key);
-        	}
 
             // Set time slot attributes based on form data
 	        $timeslotsDays = $post->get('timeslotsDays');
@@ -101,13 +97,13 @@ class Persons extends DashboardPageController
 	        if (isset($appointmentTime[$key])) {
 	            $ts->setAppointmentTime($appointmentTime[$key]);
         	}
+    
             // If a new time slot or not existing, add it to the person's time slots
-	        if (!$orig || (int)$ts->getItemID() == 0) {
-	            $person->addTimeslots($ts);
-         	}
+	        $person->addTimeslots($ts);
 
             $ts->save();
 	    }
+
         // Redirect after processing the form
 	    $this->buildRedirect('/dashboard/planning_tool/persons/')->send();  
     }
