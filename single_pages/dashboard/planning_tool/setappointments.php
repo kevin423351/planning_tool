@@ -24,12 +24,10 @@
                     <?php
                         $startTime = new DateTime($timeslot->getStartTime());
                         $endTime = new DateTime($timeslot->getEndTime());
-
                         // Loop door de blokken van 30 minuten
                         while ($startTime < $endTime) {
                             $blockEndTime = clone $startTime;
                             $blockEndTime->add(new DateInterval('PT30M')); // Voeg 30 minuten toe aan de starttijd
-
                             // Toon de blokken als buttons
                         ?>
                         <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">

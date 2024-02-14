@@ -69,10 +69,10 @@
    <?php
       if (!empty($expertises)) {
          foreach ($expertises as $expertise) { ?>
-   <div class="form-group">
-      <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
-      <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
-   </div>
+            <div class="form-group">
+               <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
+               <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+            </div>
    <?php }}?>
    <label for="expertise" class="form-label">time slots</label>
    <hr>
