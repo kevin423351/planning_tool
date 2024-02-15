@@ -21,11 +21,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
       */
     protected $unavailableID;
     
-   /**
-     * @ORM\ManyToMany(targetEntity="Person", mappedBy="unavailable")
-     */
-    protected $personUA;
-    
     /**
      * @ORM\Column(type="string", length=150)
      */
@@ -42,9 +37,14 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $unavailableEndtime;
 
     /**
+     * @ORM\Column(type="integer", length=11 )
+     */
+    protected $personID;
+    /**
      * @ORM\Column(type="integer", length=1, options={"default" : 30})
      */
     protected $deleted = 0;
+
 
     public static function getByID($unavailableID)
     {
@@ -63,19 +63,20 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getPerson()
     {
-        return $this->personAV;
+        return $this->personID;
     }
+
     public function getPersonObject()
     {
         return $this->getPerson();
     }
-    public function setPerson($personAV)
+    public function setPerson($personID)
     {
-        if (!is_object($personAV) && (float)$personAV != 0) {
-            $personAV = Person::getByID($personAV);
+        if (!is_object($personID) && (float)$personID != 0) {
+            $personID = Person::getByID($personID);
         }
-        if (is_object($personAV)) {
-            $this->personAV = $personAV;
+        if (is_object($personID)) {
+            $this->personID = $personID;
         }
     }
 

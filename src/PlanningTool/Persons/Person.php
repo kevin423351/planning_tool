@@ -58,16 +58,6 @@ use Doctrine\Common\Collections\ArrayCollection;
      */
     protected $expertises;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Unavailable", inversedBy="personUA")
-     * @ORM\JoinTable(
-     *     name="person_unavailable",
-     *     joinColumns={@ORM\JoinColumn(name="personID", referencedColumnName="personID")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="unavailableID", referencedColumnName="unavailableID")}
-     * )
-     */
-    protected $unavailable;
-
      /**
      * @ORM\OneToMany(targetEntity="Timeslot", mappedBy="person", indexBy="timeslotID", cascade={"persist"}, orphanRemoval=true)
      */

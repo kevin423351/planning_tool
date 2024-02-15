@@ -9,8 +9,6 @@
             </select>
         </div>
 
-        <input type="hidden" name="unavailableID" value="<?= $unavailable->getItemID(); ?>">   
-
         <div class="form-group">
             <label for="unavailableDate">Date:</label>
             <input type="date" id="unavailableDate" name="unavailableDate" required>
