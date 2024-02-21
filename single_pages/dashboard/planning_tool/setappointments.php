@@ -14,29 +14,29 @@
 
 <div class="container mt-4">
     <div class="d-flex align-items-start justify-content-between">
-        <?php foreach ($timeslots as $timeslot) : ?>
+        <?php foreach ($buttons as $date => $timeslot) { ?>
             <div class="w-100 px-2 mb-3">
                 <div class="card shadow-sm rounded">
                     <div class="card-header bg-primary text-white text-center">
-                        <strong><?= $timeslot->getday(); ?></strong><br/>  
-                        <?= $currentDates[$timeslot->getday()]; ?>
+                        <strong><?= date('l', strtotime($date)); ?></strong><br/>  
+                        <?= $date; ?>
                     </div>
                     <div class="card-body">
-                        <?php if (isset($buttons[$timeslot->getday()])) : ?>
-                            <?php foreach ($buttons[$timeslot->getday()] as $button) : ?>
+                        <?php if (isset($buttons[$date])) { ?>
+                            <?php foreach ($timeslot as $button){ ?>
                                 <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">
                                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/', ['startTime' => $button['startTime'], 'endTime' => $button['endTime']]); ?>" class="btn btn-sm text-center">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </ul>
-                            <?php endforeach; ?>
-                        <?php else : ?>
+                            <?php } ?>
+                        <?php } else { ?>
                             <p>No time slots available for this day.</p>
-                        <?php endif; ?>
+                        <?php } ?>
                     </div>
                 </div>
             </div>
-        <?php endforeach; ?>
+        <?php } ?>
     </div>
 </div>
 <?php } else if ($this->controller->getAction() == 'expertiseview') { ?> 

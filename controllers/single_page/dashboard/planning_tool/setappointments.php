@@ -21,73 +21,58 @@ class Setappointments extends DashboardPageController
     
     public function view()
     {
-        
+     
     }
+
     public function personview($personID = 1)
     {
         if ((int)$personID != 0) {
             $person = Person::getByID($personID);
             $timeslots = $person->getTimeslots();
 
-            // $unavailable = Unavailable::getAll();
-            // $unavailableDate = $_POST['unavailableDate'];
-            // $unavailableStartTime = $_POST['unavailableStarttime'];
-            // $unavailableEndTime = $_POST['unavailableEndtime'];
-            
-            $buttons = $this->generateTimeSlotButtons($timeslots, $unavailable, $unavailableDate, $unavailableStartTime, $unavailableEndTime);
+            $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
         
             // $this->set('unavailable', $unavailable); 
             $this->set('buttons', $buttons);
             $this->set('timeslots', $timeslots); 
-
-            $currentDates = [];
-            foreach ($timeslots as $timeslot) {
-                $currentDates[$timeslot->getday()] = $this->getCurrentDateForDay($timeslot->getday())->format('Y-m-d');
-            }
-            $this->set('currentDates', $currentDates);
         }
     }
-    function getCurrentDateForDay($day)
+
+
+    public function generateTimeSlotButtons($personID, $timeslots)
     {
-        // Get the current date
-        $currentDate = new DateTime();
-        // Find the current day of the week
-        $currentDay = strtolower($currentDate->format('l'));
-        // Calculate the difference in days between the current day and the desired day
-        $dayDiff = array_search(strtolower($day), ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']) - array_search($currentDay, ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']);
-        // Add the difference to the current date to get the desired date
-        $currentDate->modify("+$dayDiff days");
-        return $currentDate;
+        $buttons = [];
+    
+        foreach ($timeslots as $timeslot) {
+            $startTime = new DateTime($timeslot->getStartTime());
+            $endTime = new DateTime($timeslot->getEndTime());
+            $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
+    
+            if (!isset($buttons[$date])) {
+                $buttons[$date] = array();
+            }
+
+            // Loop through the blocks of 30 minutes
+            while ($startTime < $endTime) {
+                $blockEndTime = clone $startTime;
+                $blockEndTime->add(new DateInterval('PT30M'));
+
+                $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
+    
+                if (!$isUnavailable) {
+                    // Time slot is not within any unavailable range, add to buttons array
+                    $buttons[$date][] = [
+                        'startTime' => $startTime->format('H:i'),
+                        'endTime' => $blockEndTime->format('H:i'),
+                    ];
+                }
+                $startTime = $blockEndTime;
+            }
+        }
+    
+        return $buttons;
     }
-
-    public function generateTimeSlotButtons($timeslots, $unavailable, $unavailableDate, $unavailableStartTime, $unavailableEndTime)
-    {
-    $buttons = [];
-    foreach ($timeslots as $timeslot) {
-        $startTime = new DateTime($timeslot->getStartTime());
-        $endTime = new DateTime($timeslot->getEndTime());
-
-        // Loop through the blocks of 30 minutes
-        while ($startTime < $endTime) {
-            $blockEndTime = clone $startTime;
-            $blockEndTime->add(new DateInterval('PT30M'));
-
-            // Check if the current time slot falls within the unavailable range
-            // $unavailableStart = new DateTime($unavailable->getDate() . ' ' . $unavailable->getStartTime());
-            // $unavailableEnd = new DateTime($unavailable->getDate() . ' ' . $unavailable->getEndTime());
-
-            // if (!($blockEndTime <= $unavailableStart || $startTime >= $unavailableEnd)) {
-                // Time slot is not within the unavailable range, add to buttons array
-                $buttons[$timeslot->getday()][] = [
-                    'startTime' => $startTime->format('H:i'),
-                    'endTime' => $blockEndTime->format('H:i'),
-                ];
-            // }
-            $startTime = $blockEndTime;
-        } 
-    }
-    return $buttons;
-    }
+    
 
     public function expertiseview()
     {
