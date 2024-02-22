@@ -4,6 +4,7 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Unavailable;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use DateTime;
 use DateInterval;
@@ -17,6 +18,9 @@ class Setappointments extends DashboardPageController
 
         $person = Person::getAll(); // Get all expertises using the Person::getAll() method
         $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
+
+        $appointment = Appointment::getAll();
+        $this->set('appointment', $appointment);
     }
     
     public function view()
@@ -34,6 +38,7 @@ class Setappointments extends DashboardPageController
         
             // $this->set('unavailable', $unavailable); 
             $this->set('buttons', $buttons);
+            $this->set('personID', $personID);
             $this->set('timeslots', $timeslots); 
         }
     }
@@ -51,7 +56,6 @@ class Setappointments extends DashboardPageController
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
             }
-
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
                 $blockEndTime = clone $startTime;
@@ -71,6 +75,42 @@ class Setappointments extends DashboardPageController
         }
     
         return $buttons;
+    }
+
+    public function appointment()
+    {
+        // $appointmentURL = $this->generateTimeSlotButtons($personID, $timeslots);
+    }
+
+    // function generateAppointmentURL($button, $person) {
+    //     $personID = $person->getItemID();
+    //     $urlParams = http_build_query([
+    //         'startTime' => $button['startTime'],
+    //         'endTime' => $button['endTime'],
+    //         'personID' => $personID
+    //     ]);
+    //     return URL::to('/dashboard/planning_tool/setappointments/appointment') . '?' . $urlParams;
+    // }
+
+    public function saveAppointment($id = null) 
+    {
+        if ($id !== null) {
+            $appointment = Appointment::getByID($id);
+        } else {
+            $appointment = new Appointment();
+            $appointment->setDeleted(0); 
+        }
+    
+        $appointment->setFirstname($this->post('appointmentName'));
+        $appointment->setLastname($this->post('appointmentLastname'));
+        $appointment->setEmail($this->post('appointmentEmail'));
+        $appointment->setDate($this->post('appointmentDate'));
+        $appointment->setPhonenumber($this->post('appointmentPhone'));
+        $appointment->setComment($this->post('appointmentComment'));
+
+        $appointment->save();
+    
+        $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
 
