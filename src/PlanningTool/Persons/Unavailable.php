@@ -68,16 +68,13 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function getPersonObject()
     {
-        return $this->getPerson();
+        return Person::getByID($this->personID);
     }
+
     public function setPerson($personID)
     {
-        if (!is_object($personID) && (float)$personID != 0) {
-            $personID = Person::getByID($personID);
-        }
-        if (is_object($personID)) {
-            $this->personID = $personID;
-        }
+        // Store only the personID
+        $this->personID = $personID;
     }
 
     public function getDate()
@@ -139,5 +136,25 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
+    }
+
+    public function bestaatIeAl($personID, $date, $time) 
+    {
+        $db = \Database::get()->createQueryBuilder();
+ 
+        $query = $db->select('unavailableID')
+        ->from('unavailable')
+        ->where('unavailableDate = :unavailableDate')
+        ->andWhere(':time BETWEEN unavailableStarttime AND unavailableEndtime')
+        ->andWhere('PersonID = :personID')
+        ->setParameter('personID', $personID)
+        ->setParameter('unavailableDate', $date)
+        ->setParameter('time', $time)
+        ->execute();
+
+        if (count($query->fetchAll()) >= 1) {
+            return true;
+        }
+        return false;
     }
 }
