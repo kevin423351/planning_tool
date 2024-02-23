@@ -77,36 +77,34 @@ class Setappointments extends DashboardPageController
         return $buttons;
     }
 
-    public function appointment()
+    public function appointment($personID, $date, $start, $end)
     {
-        // $appointmentURL = $this->generateTimeSlotButtons($personID, $timeslots);
+        $start = str_replace('-', ':', $start);
+        $end = str_replace('-', ':', $end);
+
+        $this->set('personID', $personID);
+        $this->set('date', $date);
+        $this->set('start', $start); 
+        $this->set('end', $end); 
     }
 
-    // function generateAppointmentURL($button, $person) {
-    //     $personID = $person->getItemID();
-    //     $urlParams = http_build_query([
-    //         'startTime' => $button['startTime'],
-    //         'endTime' => $button['endTime'],
-    //         'personID' => $personID
-    //     ]);
-    //     return URL::to('/dashboard/planning_tool/setappointments/appointment') . '?' . $urlParams;
-    // }
-
-    public function saveAppointment($id = null) 
+    public function saveAppointment() 
     {
-        if ($id !== null) {
-            $appointment = Appointment::getByID($id);
-        } else {
-            $appointment = new Appointment();
-            $appointment->setDeleted(0); 
-        }
+        $post = $this->request->request;
+
+        $appointment = new Appointment();
+        $appointment->setDeleted(0); 
     
-        $appointment->setFirstname($this->post('appointmentName'));
-        $appointment->setLastname($this->post('appointmentLastname'));
-        $appointment->setEmail($this->post('appointmentEmail'));
-        $appointment->setDate($this->post('appointmentDate'));
-        $appointment->setPhonenumber($this->post('appointmentPhone'));
-        $appointment->setComment($this->post('appointmentComment'));
+        $appointment->setPerson($post->get('personID'));
+        $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
+        $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
+        $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
+        $appointment->setFirstname($post->get('appointmentName'));
+        $appointment->setLastname($post->get('appointmentLastname'));
+        $appointment->setEmail($post->get('appointmentEmail'));
+        $appointment->setDate($post->get('appointmentDate'));
+        $appointment->setPhonenumber($post->get('appointmentPhone'));
+        $appointment->setComment($post->get('appointmentComment'));
 
         $appointment->save();
     

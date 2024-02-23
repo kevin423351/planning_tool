@@ -67,39 +67,7 @@ use DateInterval;
     {
         $this->timeslotID = $timeslotID;
     }
-
-    // public function generateTimeSlotButtons($unavailableDate, $unavailableStartTime, $unavailableEndTime)
-    // {
-    //     $buttons = [];
-    
-    //     $startTime = new DateTime($this->getStartTime());
-    //     $endTime = new DateTime($this->getEndTime());
-    
-    //     // Loop through the blocks of 30 minutes
-    //     while ($startTime < $endTime) {
-    //         $blockEndTime = clone $startTime;
-    //         $blockEndTime->add(new DateInterval('PT30M'));
-    
-    //         // Check if the current time slot falls within the unavailable range
-    //         $unavailableStart = new DateTime($unavailableDate . ' ' . $unavailableStartTime);
-    //         $unavailableEnd = new DateTime($unavailableDate . ' ' . $unavailableEndTime);
-    
-    //         if (!($blockEndTime <= $unavailableStart || $startTime >= $unavailableEnd)) {
-    //             // Time slot is not within the unavailable range, add to buttons array
-    //             $buttons[] = [
-    //                 'startTime' => $startTime->format('H:i'),
-    //                 'endTime' => $blockEndTime->format('H:i'),
-    //             ];
-    //         }
-    
-    //         $startTime = $blockEndTime;
-    //     }
-    
-    //     return $buttons;
-    // }
-
         
-
     public function getPerson()
     {
         return $this->person;

@@ -6,9 +6,9 @@
 <div class="form-group">
     <label for="personID" class="form-label">With who?</label>
     <select id="personID" name="personID" class="form-select">
-        <?php foreach ($persons as $person): ?>
-            <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
-        <?php endforeach; ?>
+        <?php foreach ($persons as $person){ ?>
+            <option value="<?= $person->getItemID(); ?>" <?= $person->getFirstname(); ?></option>
+        <?php } ?>
     </select>
 </div>
 
@@ -25,7 +25,7 @@
                         <?php if (isset($buttons[$date])) { ?>
                             <?php foreach ($timeslot as $button){ ?>
                                 <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', ['personID' => $personID,  'startTime' => $button['startTime'], 'endTime' => $button['endTime']]); ?>" class="btn btn-sm text-center">
+                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </ul>
@@ -39,8 +39,15 @@
         <?php } ?>
     </div>
 </div>
+
 <?php } else if ($this->controller->getAction() == 'appointment') { ?> 
     <form method="post" action="<?=$this->action('saveAppointment')?>">
+
+      <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
+      <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
+      <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $start ?>">
+      <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $end ?>">
+
       <label for="name" class="form-label">Name</label>
       <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
 
