@@ -4,6 +4,7 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Unavailable;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use DateTime;
 use DateInterval;
@@ -17,6 +18,9 @@ class Setappointments extends DashboardPageController
 
         $person = Person::getAll(); // Get all expertises using the Person::getAll() method
         $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
+
+        $appointment = Appointment::getAll();
+        $this->set('appointment', $appointment);
     }
     
     public function view()
@@ -34,6 +38,7 @@ class Setappointments extends DashboardPageController
         
             // $this->set('unavailable', $unavailable); 
             $this->set('buttons', $buttons);
+            $this->set('personID', $personID);
             $this->set('timeslots', $timeslots); 
         }
     }
@@ -51,7 +56,6 @@ class Setappointments extends DashboardPageController
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
             }
-
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
                 $blockEndTime = clone $startTime;
@@ -71,6 +75,40 @@ class Setappointments extends DashboardPageController
         }
     
         return $buttons;
+    }
+
+    public function appointment($personID, $date, $start, $end)
+    {
+        $start = str_replace('-', ':', $start);
+        $end = str_replace('-', ':', $end);
+
+        $this->set('personID', $personID);
+        $this->set('date', $date);
+        $this->set('start', $start); 
+        $this->set('end', $end); 
+    }
+
+    public function saveAppointment() 
+    {
+        $post = $this->request->request;
+
+        $appointment = new Appointment();
+        $appointment->setDeleted(0); 
+    
+        $appointment->setPerson($post->get('personID'));
+        $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
+        $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
+        $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
+        $appointment->setFirstname($post->get('appointmentName'));
+        $appointment->setLastname($post->get('appointmentLastname'));
+        $appointment->setEmail($post->get('appointmentEmail'));
+        $appointment->setDate($post->get('appointmentDate'));
+        $appointment->setPhonenumber($post->get('appointmentPhone'));
+        $appointment->setComment($post->get('appointmentComment'));
+
+        $appointment->save();
+    
+        $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
 

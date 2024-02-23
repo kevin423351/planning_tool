@@ -13,7 +13,6 @@
             <th class="">Name</th>
             <th class="">lastname</th>
             <th class="">Email</th>
-            <th class="">Date of birth</th>
          </tr>
       </thead>
       <tbody>
@@ -25,7 +24,6 @@
             <td><?=$person->getFirstname(); ?></td>
             <td><?=$person->getLastname(); ?></td>
             <td><?=$person->getEmail(); ?></td>
-            <td><?=$person->getDate(); ?></td>
             <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
                <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a>
             </td>

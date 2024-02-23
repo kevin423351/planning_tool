@@ -52,6 +52,26 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $appointmentComment;
 
     /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentDatetime;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentStartTime;
+
+    /**
+     * @ORM\Column(type="string", length=150)
+     */
+    protected $appointmentEndTime;
+
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    protected $personID;
+
+    /**
      * @ORM\Column(type="integer", length=150)
      */
     protected $deleted;
@@ -141,6 +161,55 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->deleted = $deleted;
     }
+
+    
+    public function getPerson()
+    {
+        return $this->personID;
+    }
+
+    public function getPersonObject()
+    {
+        return Person::getByID($this->personID);
+    }
+
+    public function setPerson($personID)
+    {
+        // Store only the personID
+        $this->personID = $personID;
+    }
+
+    public function getAppointmentDatetime()
+    {
+        return $this->appointmentDatetime;
+    }
+
+
+    public function setAppointmentDatetime($appointmentDatetime)
+    {
+        $this->appointmentDatetime = $appointmentDatetime;
+    }
+
+    public function getAppointmentStartTime()
+    {
+        return $this->appointmentStartTime;
+    }
+
+    public function setAppointmentStartTime($appointmentStartTime)
+    {
+        $this->appointmentStartTime = $appointmentStartTime;
+    }
+
+    public function getAppointmentEndTime()
+    {
+        return $this->appointmentEndTime;
+    }
+
+    public function setAppointmentEndTime($appointmentEndTime)
+    {
+        $this->appointmentEndTime = $appointmentEndTime;
+    }
+
 
     public function save()
     {
