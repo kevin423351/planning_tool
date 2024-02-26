@@ -86,6 +86,7 @@
                   $timeslots = ['-1' => []];
                }
                foreach ($timeslots as $key => $timeslot) {
+                  
                ?>
             <div class="address">
                <div class="col-auto">
@@ -98,7 +99,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->text('timeslotsDays['.$key.']', $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $selectedDay, ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -133,7 +134,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->text('timeslotsDays[_tmp]', '', ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays[_tmp]', '', $daysOfWeek, ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -219,7 +220,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->text('timeslotsDays['.$key.']', $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $selectedDay, ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>

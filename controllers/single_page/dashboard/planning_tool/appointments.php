@@ -17,18 +17,11 @@ class appointments extends DashboardPageController
         $appointment = Appointment::getByID($id);
         $this->set('appointment', $appointment);
     }
-
-    /*
-
-    */
-    public function add() 
-    {
-        //TODO
-        // asdfasdfasdf asdf adsf adsf dsf
-    }
-
+    
     public function saveAppointment($id = null) 
     {
+        $post = $this->request->request;
+
         if ($id !== null) {
             $appointment = Appointment::getByID($id);
         } else {
@@ -36,13 +29,16 @@ class appointments extends DashboardPageController
             $appointment->setDeleted(0); 
         }
     
-        $appointment->setFirstname($this->post('appointmentName'));
-        $appointment->setLastname($this->post('appointmentLastname'));
-        $appointment->setEmail($this->post('appointmentEmail'));
-        $appointment->setDate($this->post('appointmentDate'));
-        $appointment->setPhonenumber($this->post('appointmentPhone'));
-        $appointment->setComment($this->post('appointmentComment'));
-
+        $appointment->setPerson($post->get('personID'));
+        $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
+        $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
+        $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
+        $appointment->setFirstname($post->get('appointmentName'));
+        $appointment->setLastname($post->get('appointmentLastname'));
+        $appointment->setEmail($post->get('appointmentEmail'));
+        $appointment->setDate($post->get('appointmentDate'));
+        $appointment->setPhonenumber($post->get('appointmentPhone'));
+        $appointment->setComment($post->get('appointmentComment'));
         $appointment->save();
     
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();

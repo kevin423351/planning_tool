@@ -61,8 +61,20 @@
       <label for="number" class="form-label">Phone number</label>
       <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="<?php echo $appointment->getPhonenumber(); ?>" required><br>
 
-      <label for="comment" class="form-label">comment</label>
+      <label for="comment" class="form-label">Comment</label>
       <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>"><br>
+
+      <label for="comment" class="form-label">Person</label>
+      <input type="text" id="personID" name="personID" class="form-control ccm-input-text" value="<?php echo $appointment->getPerson(); ?>"><br>
+
+      <label for="comment" class="form-label">Date</label>
+      <input type="text" id="appointmentDatetime" name="appointmentDatetime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentDatetime(); ?>"><br>
+
+      <label for="comment" class="form-label">Start time</label>
+      <input type="time" id="appointmentStartTime" name="appointmentStartTime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentStartTime(); ?>"><br>
+
+      <label for="comment" class="form-label">End time</label>
+      <input type="time" id="appointmentEndTime" name="appointmentEndTime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentEndTime(); ?>"><br>
 
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">

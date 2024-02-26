@@ -74,7 +74,7 @@ use Doctrine\Common\Collections\ArrayCollection;
         $em = dbORM::entityManager();
         return $em->find(get_class(), $personID);
     }
-    public function ()
+    public function getItemID()
     {
         return $this->personID;
     }
