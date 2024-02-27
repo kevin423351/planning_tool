@@ -230,7 +230,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
     }
-    public function bestaatIeAll($personID, $date, $time) 
+    public function appointmentExist($personID, $date, $time) 
     {
         $db = \Database::get()->createQueryBuilder();
  

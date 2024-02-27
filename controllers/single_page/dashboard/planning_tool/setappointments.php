@@ -59,8 +59,8 @@ class Setappointments extends DashboardPageController
                 $blockEndTime = clone $startTime;
                 $blockEndTime->add(new DateInterval('PT30M'));
     
-                $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
-                $isChosen = Appointment::bestaatIeAll($personID, $date, $startTime->format('H:i'));
+                $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
+                $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
 
                 if (!$isUnavailable && !$isChosen) {
                     // Voeg tijdslot toe aan beschikbare tijdslots
@@ -74,8 +74,6 @@ class Setappointments extends DashboardPageController
         }
         return $buttons;
     }
-
-
 
     public function appointment($personID, $date, $start, $end)
     {
@@ -111,9 +109,17 @@ class Setappointments extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
-
-    public function expertiseview()
+    public function expertiseview($personID = 1)
     {
-        
+        if ((int)$personID != 0) {
+            $person = Person::getByID($personID);
+            $timeslots = $person->getTimeslots();
+
+            $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
+
+            $this->set('buttons', $buttons);
+            $this->set('personID', $personID);
+            $this->set('timeslots', $timeslots); 
+        }
     }
 } 

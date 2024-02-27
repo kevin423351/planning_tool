@@ -91,7 +91,7 @@
             <div class="timeslot">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
-                     <button class="btn btn-danger remove_address" type="button" <?=!count($timeslots)?'disabled':'';?>>
+                     <button class="btn btn-danger remove_timeslot" type="button" <?=!count($timeslots)?'disabled':'';?>>
                      <i class="icon-trash mr-0"></i>
                      </button>
                   </div>
@@ -134,7 +134,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays[_tmp]', '', $daysOfWeek, ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -255,7 +255,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->text('timeslotsDays[_tmp]', '', ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
