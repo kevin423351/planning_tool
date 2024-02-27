@@ -35,14 +35,12 @@ class Setappointments extends DashboardPageController
             $timeslots = $person->getTimeslots();
 
             $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
-        
-            // $this->set('unavailable', $unavailable); 
+
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
             $this->set('timeslots', $timeslots); 
         }
     }
-
 
     public function generateTimeSlotButtons($personID, $timeslots)
     {
@@ -52,7 +50,7 @@ class Setappointments extends DashboardPageController
             $startTime = new DateTime($timeslot->getStartTime());
             $endTime = new DateTime($timeslot->getEndTime());
             $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
-    
+            // if unavaileble it returns a empty day
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
             }
@@ -60,11 +58,12 @@ class Setappointments extends DashboardPageController
             while ($startTime < $endTime) {
                 $blockEndTime = clone $startTime;
                 $blockEndTime->add(new DateInterval('PT30M'));
-
-                $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
     
-                if (!$isUnavailable) {
-                    // Time slot is not within any unavailable range, add to buttons array
+                $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
+                $isChosen = Appointment::bestaatIeAll($personID, $date, $startTime->format('H:i'));
+
+                if (!$isUnavailable && !$isChosen) {
+                    // Voeg tijdslot toe aan beschikbare tijdslots
                     $buttons[$date][] = [
                         'startTime' => $startTime->format('H:i'),
                         'endTime' => $blockEndTime->format('H:i'),
@@ -73,9 +72,10 @@ class Setappointments extends DashboardPageController
                 $startTime = $blockEndTime;
             }
         }
-    
         return $buttons;
     }
+
+
 
     public function appointment($personID, $date, $start, $end)
     {

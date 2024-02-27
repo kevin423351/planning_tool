@@ -7,7 +7,7 @@
     <label for="personID" class="form-label">With who?</label>
     <select id="personID" name="personID" class="form-select">
         <?php foreach ($persons as $person){ ?>
-            <option value="<?= $person->getItemID(); ?>" <?= $person->getFirstname(); ?></option>
+            <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
         <?php } ?>
     </select>
 </div>

@@ -12,6 +12,12 @@ class Persons extends DashboardPageController
 
         parent::on_start(); // Call the parent class's on_start method
         
+        $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        $selectedDay = $timeslot ? $timeslot->getDay() : ''; // Vervang dit door de werkelijke logica om de geselecteerde dag te krijgen
+
+        $daysAssoc = array_combine($daysOfWeek, $daysOfWeek);
+        $this->set('daysAssoc', $daysAssoc);
+        
         $expertises = Expertise::getAll(); // Get all expertises using the Expertise::getAll() method
         $this->set('expertises', $expertises); // Set the 'expertises' variable in the current instance to hold the retrieved expertises
     }
