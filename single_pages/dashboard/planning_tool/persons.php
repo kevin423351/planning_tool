@@ -76,10 +76,10 @@
    <hr>
    <div class="card">
       <div class="card-header">
-         <div class="card-title"><?=t('Address(es)');?></div>
+         <div class="card-title"><?=t('timeslot(s)');?></div>
       </div>
       <div class="card-body pt-0">
-         <div class="addresses">
+         <div class="timeslots">
             <?php
                $timeslots = isset($person)?$person->getTimeslots():[];
                if (!count($timeslots)) {
@@ -88,7 +88,7 @@
                foreach ($timeslots as $key => $timeslot) {
                   
                ?>
-            <div class="address">
+            <div class="timeslot">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
                      <button class="btn btn-danger remove_address" type="button" <?=!count($timeslots)?'disabled':'';?>>
@@ -118,15 +118,15 @@
          </div>
          <?php } ?>
          <div class="form-group text-right">
-            <button class="btn btn-primary add_address" type="button">
+            <button class="btn btn-primary add_timeslot" type="button">
             <i class="icon-plus mr-0"></i> <?=t('Add new');?>
             </button>
          </div>
-         <script id="address" type="text/template">
-            <div class="address">
+         <script id="timeslot" type="text/template">
+            <div class="timeslot">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
-                     <button class="btn btn-danger remove_address" type="button">
+                     <button class="btn btn-danger remove_timeslot" type="button">
                          <i class="icon-trash mr-0"></i>
                      </button>
                   </div>
@@ -202,17 +202,17 @@
    <hr>
    <div class="card">
       <div class="card-header">
-         <div class="card-title"><?=t('Address(es)');?></div>
+         <div class="card-title"><?=t('timeslot(s)');?></div>
       </div>
       <div class="card-body pt-0">
-         <div class="addresses">
+         <div class="timeslots">
             <?php 
                foreach ($timeslots as $key => $timeslot) {
                ?>
-            <div class="address">
+            <div class="timeslot">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
-                     <button class="btn btn-danger remove_address" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
+                     <button class="btn btn-danger remove_timeslot" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
                      <i class="icon-trash mr-0"></i>
                      </button>
                   </div>
@@ -239,15 +239,15 @@
             <?php } ?>
          </div>
          <div class="form-group text-right">
-            <button class="btn btn-primary add_address" type="button">
+            <button class="btn btn-primary add_timeslot" type="button">
             <i class="icon-plus mr-0"></i> <?=t('Add new');?>
             </button>
          </div>
-         <script id="address" type="text/template">
-            <div class="address">
+         <script id="timeslot" type="text/template">
+            <div class="timeslot">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
-                     <button class="btn btn-danger remove_address" type="button">
+                     <button class="btn btn-danger remove_timeslot" type="button">
                      <i class="icon-trash mr-0"></i>
                      </button>
                   </div>
@@ -285,10 +285,10 @@
 <?php } ?>
 <script>
    $(function() {
-      $(document).on('click', '.remove_address', function() {
-         var holder = $('.addresses');
-         var count = $('.address', holder).length;
-         var current = $(this).closest('.address');
+      $(document).on('click', '.remove_timeslot', function() {
+         var holder = $('.timeslots');
+         var count = $('.timeslot', holder).length;
+         var current = $(this).closest('.timeslot');
          if (count > -1) {
                current.remove();
          }
@@ -297,9 +297,9 @@
          }
       });
    
-      $(document).on('click', '.add_address', function() {
-         var holder = $('.addresses');
-         var clone = $('#address').html().replace(/_tmp/g, _tmp-1);
+      $(document).on('click', '.add_timeslot', function() {
+         var holder = $('.timeslots');
+         var clone = $('#timeslot').html().replace(/_tmp/g, _tmp-1);
          $(':input:not(.btn)', clone).each(function(i, row) {
                $(row)
                   .val('')

@@ -34,27 +34,15 @@ class Setappointments extends DashboardPageController
             $person = Person::getByID($personID);
             $timeslots = $person->getTimeslots();
 
-            $chosenTimeSlots = $this->addToChosenTimeSlots([], '2024-02-26', '09:00', '09:30');
-            
-            $buttons = $this->generateTimeSlotButtons($personID, $timeslots, $chosenTimeSlots);
-            // $this->set('unavailable', $unavailable); 
+            $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
+
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
             $this->set('timeslots', $timeslots); 
         }
     }
 
-
-    function addToChosenTimeSlots($chosenTimeSlots, $date, $startTime, $endTime) {
-        $chosenTimeSlots[] = [
-            'date' => $date,
-            'startTime' => $startTime,
-            'endTime' => $endTime,
-        ];
-        return $chosenTimeSlots;
-    }
-
-    public function generateTimeSlotButtons($personID, $timeslots, $chosenTimeSlots)
+    public function generateTimeSlotButtons($personID, $timeslots)
     {
         $buttons = [];
     
@@ -72,13 +60,8 @@ class Setappointments extends DashboardPageController
                 $blockEndTime->add(new DateInterval('PT30M'));
     
                 $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
-                // Controleer of het tijdslot al is gekozen
-                $isChosen = in_array([
-                    'date' => $date,
-                    'startTime' => $startTime->format('H:i'),
-                    'endTime' => $blockEndTime->format('H:i'),
-                ], $chosenTimeSlots);
-    
+                $isChosen = Appointment::bestaatIeAll($personID, $date, $startTime->format('H:i'));
+
                 if (!$isUnavailable && !$isChosen) {
                     // Voeg tijdslot toe aan beschikbare tijdslots
                     $buttons[$date][] = [

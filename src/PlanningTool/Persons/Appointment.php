@@ -230,4 +230,24 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
     }
+    public function bestaatIeAll($personID, $date, $time) 
+    {
+        $db = \Database::get()->createQueryBuilder();
+ 
+        $query = $db->select('appointmentID')
+        ->from('appointments')
+        ->where('appointmentDatetime = :appointmentDatetime')
+        ->andWhere(':time BETWEEN appointmentStartTime AND appointmentEndTime')
+        ->andWhere(':time != appointmentEndTime')
+        ->andWhere('PersonID = :personID')
+        ->setParameter('personID', $personID)
+        ->setParameter('appointmentDatetime', $date)
+        ->setParameter('time', $time)
+        ->execute();
+
+        if (count($query->fetchAll()) >= 1) {
+            return true;
+        }
+        return false;
+    }
 }
