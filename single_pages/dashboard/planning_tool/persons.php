@@ -99,7 +99,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $selectedDay, ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -134,7 +134,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -220,7 +220,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $selectedDay, ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>
@@ -255,7 +255,7 @@
                <div class="col">
                   <div class="form-group">
                      <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, ['data-required' => 'all']);?>
+                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
                   </div>
                   <div class="form-group">
                      <label for="timeslotsStartTime"><?=t('Start time');?></label>

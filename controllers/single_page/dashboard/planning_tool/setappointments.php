@@ -49,7 +49,10 @@ class Setappointments extends DashboardPageController
         foreach ($timeslots as $timeslot) {
             $startTime = new DateTime($timeslot->getStartTime());
             $endTime = new DateTime($timeslot->getEndTime());
+            $appointmentTime = $timeslot->getAppointmentTime();
+            $interval = 'PT' . $appointmentTime . 'M';
             $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
+            
             // if unavaileble it returns a empty day
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
@@ -57,7 +60,7 @@ class Setappointments extends DashboardPageController
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
                 $blockEndTime = clone $startTime;
-                $blockEndTime->add(new DateInterval('PT30M'));
+                $blockEndTime->add(new DateInterval($interval));
     
                 $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                 $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
