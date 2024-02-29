@@ -75,10 +75,10 @@
     </form>
 <?php } else if ($this->controller->getAction() == 'expertiseview') { ?> 
 <div class="form-group">
-    <label for="personID" class="form-label">With who?</label>
-    <select id="personID" name="personID" class="form-select">
-        <?php foreach ($persons as $person){ ?>
-            <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
+    <label for="expertiseID" class="form-label">With who?</label>
+    <select id="expertiseID" name="expertiseID" class="form-select">
+        <?php foreach ($expertises as $expertise){ ?>
+            <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
         <?php } ?>
     </select>
 </div>
@@ -96,7 +96,7 @@
                         <?php if (isset($buttons[$date])) { ?>
                             <?php foreach ($timeslot as $button){ ?>
                                 <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">
-                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
+                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </ul>
@@ -110,12 +110,19 @@
         <?php } ?>
     </div>
 </div>
-<?php } ?>
+
+
+<?php } ?> 
 
 <script>
     $(document).ready(function () {
         $('select[name="personID"]').on('change', function() {
             window.location.href = '<?=$this->action('personview');?>/'+$(this).val();
+        });
+    });
+    $(document).ready(function () {
+        $('select[name="expertiseID"]').on('change', function() {
+            window.location.href = '<?=$this->action('expertiseview');?>/'+$(this).val();
         });
     });
 </script>
