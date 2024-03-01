@@ -30,7 +30,19 @@
                         <td><?php echo $appointment->getEmail(); ?></td>
                         <td><?php echo $appointment->getPhonenumber(); ?></td>
                         <td><?php echo $appointment->getComment(); ?></td>
-                        <td><?php echo $appointment->getPersonObject()->getFirstname();?></td>
+                        <td>
+                           <?php
+                           $personObject = $appointment->getPersonObject();
+
+                           // Check if the personObject is not null before accessing its properties
+                           if ($personObject !== null) {
+                              echo $personObject->getFirstname();
+                           } else {
+                              // Handle the case where personObject is null
+                              echo 'N/A';
+                           }
+                           ?>
+                        </td>
                         <td><?php echo $appointment->getAppointmentDatetime(); ?></td>
                         <td><?php echo $appointment->getAppointmentStartTime(); ?></td>
                         <td><?php echo $appointment->getAppointmentEndTime(); ?></td>
