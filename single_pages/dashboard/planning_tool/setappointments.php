@@ -96,7 +96,7 @@
                         <?php if (isset($buttons[$date])) { ?>
                             <?php foreach ($timeslot as $button){ ?>
                                 <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">
-                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
+                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </ul>

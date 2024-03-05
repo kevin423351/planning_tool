@@ -7,7 +7,9 @@
                     <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
                 <?php } ?>
             </select>
-            <div class="help-block">select the person that is unavailable</div>
+
+                    
+
         </div>
         
         <div class="form-group">

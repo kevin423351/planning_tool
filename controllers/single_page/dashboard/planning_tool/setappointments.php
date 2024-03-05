@@ -88,7 +88,6 @@ class Setappointments extends DashboardPageController
         $start = str_replace('-', ':', $start);
         $end = str_replace('-', ':', $end);
 
-        $this->set('expertiseID', $expertiseID);
         $this->set('personID', $personID);
         $this->set('date', $date);
         $this->set('start', $start); 
@@ -120,35 +119,32 @@ class Setappointments extends DashboardPageController
     
     public function expertiseview($expertiseID = 1)
     {
-
         $buttons = $this->getAvailableTimeSlotss($expertiseID);
     
         $this->set('buttons', $buttons);
-
     }
 
     public function getAvailableTimeSlotss($expertiseID)
     {
-
         $persons = Expertise::getPersonsByExpertiseID($expertiseID);
-
         $buttons = [];
 
-        // Loop door alle personen met de expertise
+        // Loop through all persons with the expertise
         foreach ($persons as $person) {
             $personID = $person->getItemID();
+            $this->set('personID', $personID);
             $timeslots = $person->getTimeslots();
 
-            // Loop door alle tijdsloten van de persoon
+            // Loop through all time slots of the person
             foreach ($timeslots as $timeslot) {
                 $startTime = new DateTime($timeslot->getStartTime());
                 $endTime = new DateTime($timeslot->getEndTime());
                 $appointmentTime = $timeslot->getAppointmentTime();
-                $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
+                $date = date('Y-m-d', strtotime((string) $timeslot->getday() . ' this week'));
 
                 // if unavailable it returns an empty day
                 if (!isset($buttons[$date])) {
-                    $buttons[$date] = array();
+                    $buttons[$date] = [];
                 }
 
                 // Loop through the blocks of 30 minutes
@@ -160,18 +156,26 @@ class Setappointments extends DashboardPageController
                     $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
 
                     if (!$isUnavailable && !$isChosen) {
-                        // Voeg tijdslot toe aan beschikbare tijdslots
-                        $buttons[$date][] = [
-                            'startTime' => $startTime->format('H:i'),
-                            'endTime' => $blockEndTime->format('H:i'),
-                            'personID' => $personID,
-                        ];
+                        if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
+                            $buttons[$date][$startTime->format('H:i')] = [
+                                'startTime' => $startTime->format('H:i'),
+                                'endTime' => $blockEndTime->format('H:i'),
+                                'personID' => $personID,
+                            ];
+                        }
                     }
                     $startTime = $blockEndTime;
                 }
             }
         }
+
         ksort($buttons);
+        
+        foreach($buttons as $key => $data) {
+            ksort($data);
+            $buttons[$key] = $data;
+        }
+
         return $buttons;
     }
 } 
@@ -179,95 +183,3 @@ class Setappointments extends DashboardPageController
 
 
 
-// public function getAvailableTimeSlotss($expertiseID)
-// {
-//     $persons = Expertise::getPersonsByExpertiseID($expertiseID);
-
-//     $chosenTimeSlots = [];
-//     $buttons = [];
-
-//     // Loop through all persons with the expertise
-//     foreach ($persons as $person) {
-//         $personID = $person->getItemID();
-//         $timeslots = $person->getTimeslots();
-
-//         // Loop through all time slots of the person
-//         foreach ($timeslots as $timeslot) {
-//             $startTime = new DateTime($timeslot->getStartTime());
-//             $endTime = new DateTime($timeslot->getEndTime());
-//             $appointmentTime = $timeslot->getAppointmentTime();
-//             $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
-
-//             // if unavailable it returns an empty day
-//             if (!isset($buttons[$date])) {
-//                 $buttons[$date] = [];
-//             }
-
-//             // Loop through the blocks of 30 minutes
-//             while ($startTime < $endTime) {
-//                 $blockEndTime = clone $startTime;
-//                 $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
-
-//                 $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
-//                 $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
-
-//                 if (!$isUnavailable && !$isChosen) {
-//                     // Voeg tijdslot toe aan beschikbare tijdslots
-//                     $buttons[$date][] = [
-//                         'startTime' => $startTime->format('H:i'),
-//                         'endTime' => $blockEndTime->format('H:i'),
-//                         'personID' => $personID,
-//                     ];
-//                 }
-
-//                 $startTime = $blockEndTime;
-//             }
-//         }
-//     }
-
-//     // Check if any time slots have been chosen by the user for any person
-//     $userChosen = false;
-//     foreach ($chosenTimeSlots as $date => $timeSlots) {
-//         if (!empty($timeSlots)) {
-//             $userChosen = true;
-//             break;
-//         }
-//     }
-
-//     // If a user has chosen a time slot, filter out overlapping time slots for other persons
-//     if ($userChosen) {
-//         foreach ($buttons as $date => &$availableTimeSlots) {
-//             foreach ($availableTimeSlots as $index => $availableTimeSlot) {
-//                 $availablePersonID = $availableTimeSlot['personID'];
-
-//                 // Check if the time slot belongs to a person whose time slot has been chosen
-//                 if (isset($chosenTimeSlots[$date][$availablePersonID])) {
-//                     continue;
-//                 }
-
-//                 $availableStartTime = new DateTime($availableTimeSlot['startTime']);
-//                 $availableEndTime = new DateTime($availableTimeSlot['endTime']);
-
-//                 // Check for overlapping time slots and remove them
-//                 foreach ($chosenTimeSlots[$date] as $chosenPersonID => $chosenTimeSlot) {
-//                     $chosenStartTime = new DateTime($chosenTimeSlot['startTime']);
-//                     $chosenEndTime = new DateTime($chosenTimeSlot['endTime']);
-
-//                     if (
-//                         ($availableStartTime >= $chosenStartTime && $availableStartTime < $chosenEndTime) ||
-//                         ($availableEndTime > $chosenStartTime && $availableEndTime <= $chosenEndTime) ||
-//                         ($availableStartTime <= $chosenStartTime && $availableEndTime >= $chosenEndTime)
-//                     ) {
-//                         unset($availableTimeSlots[$index]);
-//                         break;
-//                     }
-//                 }
-//             }
-//         }
-//     }
-
-//     // Sort the buttons array by date
-//     ksort($buttons);
-
-//     return $buttons;
-// }
