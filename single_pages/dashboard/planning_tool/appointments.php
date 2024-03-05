@@ -20,27 +20,43 @@
          </thead>
          <tbody>
             <?php
-               if (!empty($appointments)) {
-                  foreach ($appointments as $appointment) { ?>
+            if (!empty($appointments)) {
+               foreach ($appointments as $appointment) {                 
+                  ?>
                   <tr data-launch-search-menu="" class="">
-                     <td><?php echo $appointment->getItemID(); ?></td>
-                     <td><?php echo $appointment->getFirstname(); ?></td>
-                     <td><?php echo $appointment->getLastname(); ?></td>
-                     <td><?php echo $appointment->getEmail(); ?></td>
-                     <td><?php echo $appointment->getPhonenumber(); ?></td>
-                     <td><?php echo $appointment->getComment(); ?></td>
-                     <td><?php echo $appointment->getPerson(); ?></td>
-                     <td><?php echo $appointment->getAppointmentDatetime(); ?></td>
-                     <td><?php echo $appointment->getAppointmentStartTime(); ?></td>
-                     <td><?php echo $appointment->getAppointmentEndTime(); ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a></td>
+                        <td><?php echo $appointment->getItemID(); ?></td>
+                        <td><?php echo $appointment->getFirstname(); ?></td>
+                        <td><?php echo $appointment->getLastname(); ?></td>
+                        <td><?php echo $appointment->getEmail(); ?></td>
+                        <td><?php echo $appointment->getPhonenumber(); ?></td>
+                        <td><?php echo $appointment->getComment(); ?></td>
+                        <td>
+                           <?php
+                           $personObject = $appointment->getPersonObject();
+
+                           // Check if the personObject is not null before accessing its properties
+                           if ($personObject !== null) {
+                              echo $personObject->getFirstname();
+                           } else {
+                              // Handle the case where personObject is null
+                              echo 'N/A';
+                           }
+                           ?>
+                        </td>
+                        <td><?php echo $appointment->getAppointmentDatetime(); ?></td>
+                        <td><?php echo $appointment->getAppointmentStartTime(); ?></td>
+                        <td><?php echo $appointment->getAppointmentEndTime(); ?></td>
+                        <td align="right">
+                           <a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
+                           <a href="<?= URL::to('/dashboard/planning_tool/appointments/delete',  $appointment->getItemID()); ?>" class="btn btn-danger btn-sm">delete</a>
+                        </td>
                   </tr>
-                  <?php } 
-               } else { ?>
-                  <p>No data found.</p>
-               <?php } ?>
-         </tbody>    
+                  <?php
+               }
+            } else { ?>
+               <p>No data found.</p>
+            <?php } ?>
+         </tbody>
       </table>
    </div>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>

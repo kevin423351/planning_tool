@@ -7,10 +7,11 @@
                     <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
                 <?php } ?>
             </select>
-            <div class="help-block">select the person that is unavailable</div>
+
+                    
+
         </div>
         
-
         <div class="form-group">
             <label for="unavailableDate">Date:</label>
             <input class="form-control ccm-input-date hasDatepicker" type="date" id="unavailableDate" name="unavailableDate" required>
@@ -23,6 +24,11 @@
             <label for="unavailableEndtime">End Time:</label>
             <input class="form-control ccm-input-time" type="time" id="unavailableEndtime" name="unavailableEndtime" required>
         </div>
-        <button type="submit" class="btn btn-sm btn-primary">save</button>
+        <div class="ccm-dashboard-form-actions-wrapper">
+            <div class="ccm-dashboard-form-actions ">
+                <a href="#" class="btn btn-secondary float-start">Cancel</a>
+                <button class="float-end btn btn-primary" type="submit">Save</button>
+            </div>
+        </div>
     </form>
 <?php } ?>
