@@ -6,35 +6,46 @@
    <a href="<?= URL::to('/dashboard/planning_tool/persons/add')?>" class="btn btn-success btn-sm">Add new</a>
 </div>
 <div class="table-responsive">
-   <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
-      <thead>
-         <tr>
-            <th class="">id</th>
-            <th class="">Name</th>
-            <th class="">lastname</th>
-            <th class="">Email</th>
-         </tr>
-      </thead>
-      <tbody>
-         <?php
+    <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
+        <thead>
+            <tr>
+                <th class="">id</th>
+                <th class="">Name</th>
+                <th class="">Lastname</th>
+                <th class="">Email</th>
+                <th class="">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
             if (!empty($persons)) {
-               foreach ($persons as $person) { ?>
-         <tr data-launch-search-menu="" class="">
-            <td><?=$person->getItemID(); ?></td>
-            <td><?=$person->getFirstname(); ?></td>
-            <td><?=$person->getLastname(); ?></td>
-            <td><?=$person->getEmail(); ?></td>
-            <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
-               <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person->getItemID()); ?>"  class="btn btn-danger btn-sm">delete</a>
-            </td>
-         </tr>
-         <?php } 
+                foreach ($persons as $person) { ?>
+                    <tr data-launch-search-menu="" class="">
+                        <td><?=$person->getItemID(); ?></td>
+                        <td><?=$person->getFirstname(); ?></td>
+                        <td><?=$person->getLastname(); ?></td>
+                        <td><?=$person->getEmail(); ?></td>
+                        <td align="right">
+                            <div class="btn-group" role="group">
+                                <a href="<?= URL::to('/dashboard/planning_tool/persons/edit',  $person->getItemID()); ?>" class="btn btn-sm">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <a href="<?= URL::to('/dashboard/planning_tool/persons/delete',  $person->getItemID()); ?>" class="btn btn-sm">
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php } 
             } else { ?>
-         <p>No data found.</p>
-         <?php } ?>
-      </tbody>
-   </table>
+                <tr>
+                    <td colspan="5" class="text-center">No data found.</td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
 </div>
+
 <?php } else if ($this->controller->getAction() == 'add') { ?>
 <h2>Add person</h2>
 <form method="post" action="<?=$this->action('save')?>">

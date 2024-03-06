@@ -9,8 +9,6 @@
             </select>
             <div class="help-block">select the person that is unavailable</div>
         </div>
-        
-
         <div class="form-group">
             <label for="unavailableDate">Date:</label>
             <input class="form-control ccm-input-date hasDatepicker" type="date" id="unavailableDate" name="unavailableDate" required>

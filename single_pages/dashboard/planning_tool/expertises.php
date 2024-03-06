@@ -3,30 +3,41 @@
       <a href="<?= URL::to('/dashboard/planning_tool/expertises/add')?>" class="btn btn-success btn-sm">Add new</a>
    </div>
    <div class="table-responsive">
-      <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
-         <thead>
+    <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
+        <thead>
             <tr>
-               <th class="">id</th>
-               <th class="">Expertise Name</th>
+                <th class="">id</th>
+                <th class="">Expertise Name</th>
             </tr>
-         </thead>
-         <tbody>
+        </thead>
+        <tbody>
             <?php
-               if (!empty($expertises)) {
-                  foreach ($expertises as $expertise) { ?>
-                  <tr data-launch-search-menu="" class="">
-                     <td><?php echo $expertise->getItemID(); ?></td>
-                     <td><?php echo $expertise->getFirstname(); ?></td>
-                     <td align="right"><a href="<?= URL::to('/dashboard/planning_tool/expertises/edit',  $expertise->getItemID()); ?>" class="btn btn-primary btn-sm">edit</a>
-                     <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete',  $expertise->getItemID());?>"  class="btn btn-danger btn-sm">delete</a></td>
-                  </tr>
-                  <?php } 
-               } else { ?>
-                  <p>No data found.</p>
-               <?php } ?>
-         </tbody>    
-      </table>
-   </div>
+            if (!empty($expertises)) {
+                foreach ($expertises as $expertise) { ?>
+                    <tr data-launch-search-menu="" class="">
+                        <td><?php echo $expertise->getItemID(); ?></td>
+                        <td><?php echo $expertise->getFirstname(); ?></td>
+                        <td align="right">
+                            <div class="btn-group" role="group">
+                                <a href="<?= URL::to('/dashboard/planning_tool/expertises/edit', $expertise->getItemID()); ?>" class="btn btn-sm">
+                                    <i class="fas fa-edit"></i> 
+                                </a>
+                                <a href="<?= URL::to('/dashboard/planning_tool/expertises/delete', $expertise->getItemID());?>" class="btn btn-sm">
+                                    <i class="fas fa-trash-alt"></i> 
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                <?php } 
+            } else { ?>
+                <tr>
+                    <td colspan="3" class="text-center">No data found.</td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
+
 <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add persons</h2>
    <form method="post" action="<?=$this->action('saveExpertise')?>">

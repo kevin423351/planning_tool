@@ -16,22 +16,22 @@
     <div class="d-flex align-items-start justify-content-between">
         <?php foreach ($buttons as $date => $timeslot) { ?>
             <div class="w-100 px-2 mb-3">
-                <div class="card shadow-sm rounded">
-                    <div class="card-header bg-primary text-white text-center">
-                        <strong><?= date('l', strtotime($date)); ?></strong><br/>  
+                <div class="card border-dark rounded-top">
+                    <div class="card-header bg-primary text-white text-center font-weight-bold">
+                        <?= date('l', strtotime($date)); ?><br/>
                         <?= $date; ?>
                     </div>
                     <div class="card-body">
-                        <?php if (isset($buttons[$date])) { ?>
-                            <?php foreach ($timeslot as $button){ ?>
-                                <ul id="timeslotList" class="list-group-item border border-top-0 shadow-sm mb-1">
-                                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment',  $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-sm text-center">
+                        <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
+                            <?php foreach ($timeslot as $button) { ?>
+                                <div class="mb-2 border-top-0">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-dark btn-sm w-100">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
-                                </ul>
+                                </div>
                             <?php } ?>
                         <?php } else { ?>
-                            <p>No time slots available for this day.</p>
+                            <p class="text-muted text-center">No time slots available for this day.</p>
                         <?php } ?>
                     </div>
                 </div>
@@ -39,6 +39,8 @@
         <?php } ?>
     </div>
 </div>
+
+
 
 <?php } else if ($this->controller->getAction() == 'appointment') { ?> 
     <form method="post" action="<?=$this->action('saveAppointment')?>">
@@ -74,7 +76,45 @@
       </div>
     </form>
 <?php } else if ($this->controller->getAction() == 'expertiseview') { ?> 
-<?php } ?>
+<div class="form-group">
+    <label for="expertiseID" class="form-label">With who?</label>
+    <select id="expertiseID" name="expertiseID" class="form-select">
+        <?php foreach ($expertises as $expertise){ ?>
+            <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
+        <?php } ?>
+    </select>
+</div>
+
+<div class="container mt-4">
+    <div class="d-flex align-items-start justify-content-between">
+        <?php foreach ($buttons as $date => $timeslot) { ?>
+            <div class="w-100 px-2 mb-3">
+                <div class="card border-dark rounded-top">
+                    <div class="card-header bg-primary text-white text-center font-weight-bold">
+                        <?= date('l', strtotime($date)); ?><br/>
+                        <?= $date; ?>
+                    </div>
+                    <div class="card-body">
+                        <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
+                            <?php foreach ($timeslot as $button) { ?>
+                                <div class="mb-1">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-primary btn-sm w-100">
+                                        <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
+                                    </a>
+                                </div>
+                            <?php } ?>
+                        <?php } else { ?>
+                            <p class="text-muted text-center">No time slots available for this day.</p>
+                        <?php } ?>
+                    </div>
+                </div>
+            </div>
+        <?php } ?> 
+    </div>
+</div>
+
+
+<?php } ?> 
 
 <script>
     $(document).ready(function () {
