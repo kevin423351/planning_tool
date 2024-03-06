@@ -138,7 +138,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         return $results;
     }
 
-    public function bestaatIeAl($personID, $date, $time) 
+    public function unavailableExist($personID, $date, $time) 
     {
         $db = \Database::get()->createQueryBuilder();
  

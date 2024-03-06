@@ -85,11 +85,11 @@
    <?php }}?>
    <label for="expertise" class="form-label">time slots</label>
    <hr>
-   <div class="card">
-      <div class="card-header">
-         <div class="card-title"><?=t('timeslot(s)');?></div>
+   <div class="">
+      <div class="">
+         <div class=""><?=t('timeslot(s)');?></div>
       </div>
-      <div class="card-body pt-0">
+      <div class="">
          <div class="timeslots">
             <?php
                $timeslots = isset($person)?$person->getTimeslots():[];
@@ -211,11 +211,11 @@
    <?php }}?>
    <label for="expertise" class="form-label">time slots</label>
    <hr>
-   <div class="card">
-      <div class="card-header">
-         <div class="card-title"><?=t('timeslot(s)');?></div>
+   <div class="">
+      <div class="">
+         <div class=""><?=t('timeslot(s)');?></div>
       </div>
-      <div class="card-body pt-0">
+      <div class="">
          <div class="timeslots">
             <?php 
                foreach ($timeslots as $key => $timeslot) {

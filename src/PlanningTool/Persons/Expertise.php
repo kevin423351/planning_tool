@@ -51,6 +51,34 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         $this->expertiseID = $expertiseID;
     }
+
+    public static function getPersonsByExpertiseID($expertiseID)
+    {
+        $em = dbORM::entityManager();
+        $expertise = $em->find(get_called_class(), $expertiseID);
+
+        if ($expertise) {
+            return $expertise->getPersons();
+        }
+
+        return [];
+    }
+
+    public function getPersons()
+    {
+        return $this->persons;
+    }
+
+    public function getPersonObject()
+    {
+        return Person::getByID($this->persons);
+    }
+
+    public function setPersons($persons)
+    {
+        // Store only the personID
+        $this->persons = $persons;
+    }
     
     public function getFirstname()
     {

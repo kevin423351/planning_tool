@@ -21,6 +21,11 @@ class Setappointments extends DashboardPageController
 
         $appointment = Appointment::getAll();
         $this->set('appointment', $appointment);
+
+        $expertise = Expertise::getAll();
+        $this->set('expertises', $expertise);
+
+
     }
     
     public function view()
@@ -49,7 +54,10 @@ class Setappointments extends DashboardPageController
         foreach ($timeslots as $timeslot) {
             $startTime = new DateTime($timeslot->getStartTime());
             $endTime = new DateTime($timeslot->getEndTime());
+            $appointmentTime = $timeslot->getAppointmentTime();
+            $interval = 'PT' . $appointmentTime . 'M';
             $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
+            
             // if unavaileble it returns a empty day
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
@@ -57,10 +65,10 @@ class Setappointments extends DashboardPageController
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
                 $blockEndTime = clone $startTime;
-                $blockEndTime->add(new DateInterval('PT30M'));
+                $blockEndTime->add(new DateInterval($interval));
     
-                $isUnavailable = Unavailable::bestaatIeAl($personID, $date, $startTime->format('H:i'));
-                $isChosen = Appointment::bestaatIeAll($personID, $date, $startTime->format('H:i'));
+                $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
+                $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
 
                 if (!$isUnavailable && !$isChosen) {
                     // Voeg tijdslot toe aan beschikbare tijdslots
@@ -74,8 +82,6 @@ class Setappointments extends DashboardPageController
         }
         return $buttons;
     }
-
-
 
     public function appointment($personID, $date, $start, $end)
     {
@@ -111,9 +117,64 @@ class Setappointments extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
-
-    public function expertiseview()
+    public function expertiseview($expertiseID = 1)
     {
+        $buttons = $this->getAvailableTimeSlotss($expertiseID);
+        $this->set('buttons', $buttons);
+    }
+
+    public function getAvailableTimeSlotss($expertiseID)
+    {
+        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+        $buttons = [];
+
+        // Loop through all persons with the expertise
+        foreach ($persons as $person) {
+            $personID = $person->getItemID();
+            $this->set('personID', $personID);
+            $timeslots = $person->getTimeslots();
+
+            // Loop through all time slots of the person
+            foreach ($timeslots as $timeslot) {
+                $startTime = new DateTime($timeslot->getStartTime());
+                $endTime = new DateTime($timeslot->getEndTime());
+                $appointmentTime = $timeslot->getAppointmentTime();
+                $date = date('Y-m-d', strtotime((string) $timeslot->getday() . ' this week'));
+
+                // if unavailable it returns an empty day
+                if (!isset($buttons[$date])) {
+                    $buttons[$date] = [];
+                }
+
+                // Loop through the blocks of 30 minutes
+                while ($startTime < $endTime) {
+                    $blockEndTime = clone $startTime;
+                    $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
+
+                    $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
+                    $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
+
+                    if (!$isUnavailable && !$isChosen) {
+                        if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
+                            $buttons[$date][$startTime->format('H:i')] = [
+                                'startTime' => $startTime->format('H:i'),
+                                'endTime' => $blockEndTime->format('H:i'),
+                                'personID' => $personID,
+                            ];
+                        }
+                    }
+                    $startTime = $blockEndTime;
+                }
+            }
+        }
+
+        ksort($buttons);
         
+        foreach($buttons as $key => $data) {
+            ksort($data);
+            $buttons[$key] = $data;
+        }
+
+        return $buttons;
     }
 } 
