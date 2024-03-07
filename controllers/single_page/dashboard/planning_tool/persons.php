@@ -13,7 +13,6 @@ class Persons extends DashboardPageController
         parent::on_start(); // Call the parent class's on_start method
         
         $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-        $selectedDay = $timeslot ? $timeslot->getDay() : ''; // Vervang dit door de werkelijke logica om de geselecteerde dag te krijgen
 
         $daysAssoc = array_combine($daysOfWeek, $daysOfWeek);
         $this->set('daysAssoc', $daysAssoc);
@@ -35,11 +34,12 @@ class Persons extends DashboardPageController
 
         $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
         $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
+        
     }
 
     public function add() 
     {
-        // $this->set('timeslots', $timeslots);  
+
     }
 
     public function save($id = null) 

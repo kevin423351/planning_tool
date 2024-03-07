@@ -16,6 +16,7 @@
                 <th class="">Date</th>
                 <th class="">Start time</th>
                 <th class="">End time</th>
+                <th class="">Expertise</th>
             </tr>
         </thead>
         <tbody>
@@ -45,6 +46,19 @@
                         <td><?php echo $appointment->getAppointmentDatetime(); ?></td>
                         <td><?php echo $appointment->getAppointmentStartTime(); ?></td>
                         <td><?php echo $appointment->getAppointmentEndTime(); ?></td>
+                        <td>
+                            <?php
+                            $expertiseObject = $appointment->getExpertiseObject();
+
+                            // Check if the personObject is not null before accessing its properties
+                            if ($expertiseObject !== null) {
+                                echo $expertiseObject->getFirstname();
+                            } else {
+                                // Handle the case where personObject is null
+                                echo 'N/A';
+                            }
+                            ?>
+                        </td>
                         <td align="right">
                             <div class="btn-group" role="group">
                                 <a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-sm">

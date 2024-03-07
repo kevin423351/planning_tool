@@ -83,11 +83,12 @@ class Setappointments extends DashboardPageController
         return $buttons;
     }
 
-    public function appointment($personID, $date, $start, $end)
+    public function appointment($personID, $expertiseID=0, $date='', $start='', $end='')
     {
         $start = str_replace('-', ':', $start);
         $end = str_replace('-', ':', $end);
 
+        $this->set('expertiseID', $expertiseID);
         $this->set('personID', $personID);
         $this->set('date', $date);
         $this->set('start', $start); 
@@ -102,6 +103,7 @@ class Setappointments extends DashboardPageController
         $appointment->setDeleted(0); 
     
         $appointment->setPerson($post->get('personID'));
+        $appointment->setExpertise($post->get('expertiseID'));
         $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
         $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
         $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
@@ -121,6 +123,7 @@ class Setappointments extends DashboardPageController
     {
         $buttons = $this->getAvailableTimeSlotss($expertiseID);
         $this->set('buttons', $buttons);
+        $this->set('expertiseID', $expertiseID);
     }
 
     public function getAvailableTimeSlotss($expertiseID)
@@ -131,7 +134,6 @@ class Setappointments extends DashboardPageController
         // Loop through all persons with the expertise
         foreach ($persons as $person) {
             $personID = $person->getItemID();
-            $this->set('personID', $personID);
             $timeslots = $person->getTimeslots();
 
             // Loop through all time slots of the person
@@ -156,11 +158,14 @@ class Setappointments extends DashboardPageController
 
                     if (!$isUnavailable && !$isChosen) {
                         if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
+                            // Update $personID based on the current person being processed
                             $buttons[$date][$startTime->format('H:i')] = [
                                 'startTime' => $startTime->format('H:i'),
                                 'endTime' => $blockEndTime->format('H:i'),
-                                'personID' => $personID,
+                                'personID' => $personID, // Updated here
+                                
                             ];
+                            $this->set('personID', $personID);
                         }
                     }
                     $startTime = $blockEndTime;

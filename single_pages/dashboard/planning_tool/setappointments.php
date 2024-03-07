@@ -40,12 +40,11 @@
     </div>
 </div>
 
-
-
 <?php } else if ($this->controller->getAction() == 'appointment') { ?> 
     <form method="post" action="<?=$this->action('saveAppointment')?>">
 
       <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
+      <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
       <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
       <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $start ?>">
       <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $end ?>">
@@ -98,7 +97,7 @@
                         <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                             <?php foreach ($timeslot as $button) { ?>
                                 <div class="mb-1">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-primary btn-sm w-100">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-primary btn-sm w-100">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </div>
@@ -120,6 +119,11 @@
     $(document).ready(function () {
         $('select[name="personID"]').on('change', function() {
             window.location.href = '<?=$this->action('personview');?>/'+$(this).val();
+        });
+    });
+    $(document).ready(function () {
+        $('select[name="expertiseID"]').on('change', function() {
+            window.location.href = '<?=$this->action('expertiseview');?>/'+$(this).val();
         });
     });
 </script>
