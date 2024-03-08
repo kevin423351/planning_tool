@@ -9,7 +9,6 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
-                <th class="">id</th>
                 <th class="">Name</th>
                 <th class="">Lastname</th>
                 <th class="">Email</th>
@@ -20,7 +19,6 @@
             if (!empty($persons)) {
                 foreach ($persons as $person) { ?>
                     <tr data-launch-search-menu="" class="">
-                        <td><?=$person->getItemID(); ?></td>
                         <td><?=$person->getFirstname(); ?></td>
                         <td><?=$person->getLastname(); ?></td>
                         <td><?=$person->getEmail(); ?></td>
@@ -74,14 +72,18 @@
    </div>
    <label for="expertise" class="form-label">Expertises</label>
    <hr>
+   <div class="row">
    <?php
       if (!empty($expertises)) {
          foreach ($expertises as $expertise) { ?>
-            <div class="form-group">
-               <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
-               <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+            <div class="col-6 col-sm-2">
+               <div class="form-group">
+                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>">
+                  <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+               </div>
             </div>
    <?php }}?>
+   </div>
    <label for="expertise" class="form-label">time slots</label>
    <hr>
    <div class="">
@@ -106,22 +108,30 @@
                      </button>
                   </div>
                </div>
-               <div class="col">
-                  <div class="form-group">
-                     <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+               <div class="row">
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsDays"><?=t('day');?></label>
+                        <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsStartTime"><?=t('Start time');?></label>
-                     <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                        <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsEndTime"><?=t('End time');?></label>
-                     <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsEndTime"><?=t('End time');?></label>
+                        <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="appointmentTime"><?=t('Appointment time');?></label>
-                     <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="appointmentTime"><?=t('Appointment time');?></label>
+                        <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
                </div>
             </div>
@@ -141,22 +151,30 @@
                      </button>
                   </div>
                </div>
-               <div class="col">
-                  <div class="form-group">
-                     <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+               <div class="row">
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsDays"><?=t('day');?></label>
+                        <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsStartTime"><?=t('Start time');?></label>
-                     <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">   
+                     <div class="form-group">
+                        <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                        <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsEndTime"><?=t('End time');?></label>
-                     <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsEndTime"><?=t('End time');?></label>
+                        <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="appointmentTime"><?=t('Appointment time');?></label>
-                     <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="appointmentTime"><?=t('Appointment time');?></label>
+                        <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
                </div>
             </div>
@@ -200,14 +218,18 @@
    </div>
    <label for="expertise" class="form-label">Expertises</label>
    <hr>
+   <div class="row">
    <?php
       if (!empty($expertises)) {
          foreach ($expertises as $expertise) { ?>
-   <div class="form-group">
-      <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=($person->hasExpertise($expertise)) ? 'checked' : ''; ?>>
-      <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
-   </div>
+            <div class="col-6 col-sm-2">
+               <div class="form-group">
+                  <input type="checkbox" name="expertise[]" class="form-check-input" value="<?=$expertise->getItemID(); ?>" <?=($person->hasExpertise($expertise)) ? 'checked' : ''; ?>>
+                  <label for="expertise" class="form-label"><?=$expertise->getFirstname(); ?></label>
+               </div>
+            </div>
    <?php }}?>
+   </div>
    <label for="expertise" class="form-label">time slots</label>
    <hr>
    <div class="">
@@ -227,22 +249,30 @@
                      </button>
                   </div>
                </div>
-               <div class="col">
-                  <div class="form-group">
-                     <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
+               <div class="row">
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsDays"><?=t('day');?></label>
+                        <?=$form->select('timeslotsDays['.$key.']', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsStartTime"><?=t('Start time');?></label>
-                     <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                        <?=$form->time('timeslotsStartTime['.$key.']', $timeslot?$timeslot->getStartTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsEndTime"><?=t('End time');?></label>
-                     <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsEndTime"><?=t('End time');?></label>
+                        <?=$form->time('timeslotsEndTime['.$key.']', $timeslot?$timeslot->getEndTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="appointmentTime"><?=t('Appointment time');?></label>
-                     <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="appointmentTime"><?=t('Appointment time');?></label>
+                        <?=$form->number('appointmentTime['.$key.']', $timeslot?$timeslot->getAppointmentTime():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
                </div>
             </div>
@@ -262,22 +292,30 @@
                      </button>
                   </div>
                </div>
-               <div class="col">
-                  <div class="form-group">
-                     <label for="timeslotsDays"><?=t('day');?></label>
-                     <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot->getDay(), ['data-required' => 'all']);?>
+               <div class="row">
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsDays"><?=t('day');?></label>
+                        <?=$form->select('timeslotsDays[_tmp]', $daysAssoc, $timeslot?$timeslot->getDay():'', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsStartTime"><?=t('Start time');?></label>
-                     <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">   
+                     <div class="form-group">
+                        <label for="timeslotsStartTime"><?=t('Start time');?></label>
+                        <?=$form->time('timeslotsStartTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="timeslotsEndTime"><?=t('End time');?></label>
-                     <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="timeslotsEndTime"><?=t('End time');?></label>
+                        <?=$form->time('timeslotsEndTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
-                  <div class="form-group">
-                     <label for="appointmentTime"><?=t('Appointment time');?></label>
-                     <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                  <div class="col">
+                     <div class="form-group">
+                        <label for="appointmentTime"><?=t('Appointment time');?></label>
+                        <?=$form->number('appointmentTime[_tmp]', '', ['data-required' => 'all']);?>
+                     </div>
                   </div>
                </div>
             </div>

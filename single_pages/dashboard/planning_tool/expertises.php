@@ -6,7 +6,6 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
-                <th class="">id</th>
                 <th class="">Expertise Name</th>
             </tr>
         </thead>
@@ -15,7 +14,6 @@
             if (!empty($expertises)) {
                 foreach ($expertises as $expertise) { ?>
                     <tr data-launch-search-menu="" class="">
-                        <td><?php echo $expertise->getItemID(); ?></td>
                         <td><?php echo $expertise->getFirstname(); ?></td>
                         <td align="right">
                             <div class="btn-group" role="group">
@@ -39,7 +37,7 @@
 </div>
 
 <?php } else if ($this->controller->getAction() == 'add') { ?>
-   <h2>Add persons</h2>
+   <h2>Add expertise</h2>
    <form method="post" action="<?=$this->action('saveExpertise')?>">
       <label for="name" class="form-label">Expertise Name</label>
       <input type="text" id="expertiseName" name="expertiseName" class="form-control ccm-input-text" value="" required><br>
@@ -52,7 +50,7 @@
       </div>
    </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
-   <h2>Edit persons</h2>
+   <h2>Edit expertise</h2>
    <form method="post" action="<?=$this->action('saveExpertise', $expertise->getItemID()); ?>">
       <label for="name" class="form-label">Expertise Name</label>
       <input type="text" id="expertiseName" name="expertiseName" class="form-control ccm-input-text" value="<?php echo $expertise->getFirstname(); ?>" required><br>

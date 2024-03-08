@@ -6,7 +6,6 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
-                <th class="">id</th>
                 <th class="">Name</th>
                 <th class="">Lastname</th>
                 <th class="">Email</th>
@@ -24,7 +23,6 @@
             if (!empty($appointments)) {
                 foreach ($appointments as $appointment) { ?>
                     <tr data-launch-search-menu="" class="">
-                        <td><?php echo $appointment->getItemID(); ?></td>
                         <td><?php echo $appointment->getFirstname(); ?></td>
                         <td><?php echo $appointment->getLastname(); ?></td>
                         <td><?php echo $appointment->getEmail(); ?></td>
@@ -101,9 +99,13 @@
 
       <label for="comment" class="form-label">Comment</label>
       <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>"><br>
-
-      <label for="comment" class="form-label">Person</label>
-      <input type="text" id="personID" name="personID" class="form-control ccm-input-text" value="<?php echo $appointment->getPerson(); ?>"><br>
+      
+      <label for="personID" class="form-label">With who?</label>
+      <select id="personID" name="personID" class="form-select" value="<?php echo $appointment->getPerson();?>" selected >
+          <?php foreach ($persons as $person){ ?>
+              <option><?= $person->getFirstname(); ?></option>a
+          <?php } ?>
+      </select>
 
       <label for="comment" class="form-label">Date</label>
       <input type="text" id="appointmentDatetime" name="appointmentDatetime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentDatetime(); ?>"><br>
@@ -113,6 +115,9 @@
 
       <label for="comment" class="form-label">End time</label>
       <input type="time" id="appointmentEndTime" name="appointmentEndTime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentEndTime(); ?>"><br>
+
+      <label for="comment" class="form-label">Expertise</label>
+      <input type="text" id="expertiseID" name="expertiseID" class="form-control ccm-input-text" value="<?php echo $appointment->getExpertise(); ?>"><br>
 
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
