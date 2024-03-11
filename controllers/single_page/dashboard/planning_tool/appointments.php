@@ -19,6 +19,7 @@ class appointments extends DashboardPageController
         $this->set('appointment', $appointment);
 
         $expertiseID = $appointment->getExpertise();
+        
         $persons = Expertise::getPersonsByExpertiseID($expertiseID);
         $this->set('persons', $persons);
     }

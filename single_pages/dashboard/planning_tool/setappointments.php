@@ -25,7 +25,7 @@
                         <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                             <?php foreach ($timeslot as $button) { ?>
                                 <div class="mb-2 border-top-0">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-dark btn-sm w-100">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-primary btn-sm w-100">
                                         <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
                                     </a>
                                 </div>
@@ -89,16 +89,17 @@
         <?php foreach ($buttons as $date => $timeslot) { ?>
             <div class="w-100 px-2 mb-3">
                 <div class="card border-dark rounded-top">
-                    <div class="card-header bg-primary text-white text-center font-weight-bold">
+                    <div class="ps-3 pt-2 text-primary font-weight-bold">
                         <?= date('l', strtotime($date)); ?><br/>
                         <?= $date; ?>
                     </div>
                     <div class="card-body">
                         <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                             <?php foreach ($timeslot as $button) { ?>
-                                <div class="mb-1">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn btn-outline-primary btn-sm w-100">
-                                        <?= $button['startTime'] . ' - ' . $button['endTime']; ?>
+                                <div class="mb-2 d-flex align-items-center">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center">
+                                        <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
+                                        <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                     </a>
                                 </div>
                             <?php } ?>

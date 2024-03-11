@@ -152,7 +152,7 @@ class Setappointments extends DashboardPageController
                 while ($startTime < $endTime) {
                     $blockEndTime = clone $startTime;
                     $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
-
+                    // code review over dit 
                     $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                     $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
 
@@ -163,7 +163,6 @@ class Setappointments extends DashboardPageController
                                 'startTime' => $startTime->format('H:i'),
                                 'endTime' => $blockEndTime->format('H:i'),
                                 'personID' => $personID, // Updated here
-                                
                             ];
                             $this->set('personID', $personID);
                         }

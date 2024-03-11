@@ -99,11 +99,13 @@
 
       <label for="comment" class="form-label">Comment</label>
       <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>"><br>
-      
+
       <label for="personID" class="form-label">With who?</label>
-      <select id="personID" name="personID" class="form-select" value="<?php echo $appointment->getPerson();?>" selected >
-          <?php foreach ($persons as $person){ ?>
-              <option><?= $person->getFirstname(); ?></option>a
+      <select id="personID" name="personID" class="form-select">
+          <?php foreach ($persons as $person) { ?>
+              <option value="<?= $person->getItemID(); ?>" <?php if ($appointment->getPerson() == $person->getItemID()) echo 'selected'; ?>>
+                  <?= $person->getFirstname(); ?>
+              </option>
           <?php } ?>
       </select>
 
