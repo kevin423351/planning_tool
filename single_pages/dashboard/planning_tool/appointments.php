@@ -80,47 +80,90 @@
 </div>
 
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
-   <h2>Edit persons</h2>
-   <form method="post" action="<?=$this->action('saveAppointment', $appointment->getItemID()); ?>">
-      <label for="name" class="form-label">Name</label>
-      <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="<?php echo $appointment->getFirstname(); ?>" required><br>
+   <h2>Edit appointment</h2><br>
+   <form method="post" action="<?=$this->action('saveAppointment', $appointment->getItemID()); ?>" class="row g-3">
 
-      <label for="lastname" class="form-label">lastname</label>
-      <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="<?php echo $appointment->getLastname(); ?>" required><br>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="<?php echo $appointment->getFirstname(); ?>" required>
+            </div>
+        </div>
 
-      <label for="email" class="form-label">Email</label>
-      <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="<?php echo $appointment->getEmail(); ?>" required><br>
+        <div class="col">
+            <div class="form-group">
+                <label for="lastname" class="form-label">Lastname</label>
+                <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="<?php echo $appointment->getLastname(); ?>" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="<?php echo $appointment->getEmail(); ?>" required>
+            </div>
+        </div>
 
-      <label for="date" class="form-label">Date of birth</label>
-      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value="<?php echo $appointment->getDate(); ?>"><br>
+        <div class="col">
+            <div class="form-group">
+                <label for="number" class="form-label">Phone number</label>
+                <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="<?php echo $appointment->getPhonenumber(); ?>" required>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="comment" class="form-label">Comment</label>
+                <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>">
+            <div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="form-group">
+                <label for="personID" class="form-label">With who?</label>
+                <select id="personID" name="personID" class="form-select">
+                    <?php foreach ($persons as $person) { ?>
+                        <option value="<?= $person->getItemID(); ?>" <?php if ($appointment->getPerson() == $person->getItemID()) echo 'selected'; ?>>
+                            <?= $person->getFirstname(); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <div class="help-block">"Select the person you have a appointment with."</div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="form-group">
+                <label for="comment" class="form-label">Expertise</label>
+                <input type="text" id="expertiseID" name="expertiseID" class="form-control" value="<?php echo $appointment->getExpertise(); ?>">
+                <div class="help-block">"Select the expertise that the appointment is about."</div>
+            </div>    
+        </div>
+    </div>
 
-      <label for="number" class="form-label">Phone number</label>
-      <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="<?php echo $appointment->getPhonenumber(); ?>" required><br>
-
-      <label for="comment" class="form-label">Comment</label>
-      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value="<?php echo $appointment->getComment(); ?>"><br>
-
-      <label for="personID" class="form-label">With who?</label>
-      <select id="personID" name="personID" class="form-select">
-          <?php foreach ($persons as $person) { ?>
-              <option value="<?= $person->getItemID(); ?>" <?php if ($appointment->getPerson() == $person->getItemID()) echo 'selected'; ?>>
-                  <?= $person->getFirstname(); ?>
-              </option>
-          <?php } ?>
-      </select>
-
-      <label for="comment" class="form-label">Date</label>
-      <input type="text" id="appointmentDatetime" name="appointmentDatetime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentDatetime(); ?>"><br>
-
-      <label for="comment" class="form-label">Start time</label>
-      <input type="time" id="appointmentStartTime" name="appointmentStartTime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentStartTime(); ?>"><br>
-
-      <label for="comment" class="form-label">End time</label>
-      <input type="time" id="appointmentEndTime" name="appointmentEndTime" class="form-control ccm-input-text" value="<?php echo $appointment->getAppointmentEndTime(); ?>"><br>
-
-      <label for="comment" class="form-label">Expertise</label>
-      <input type="text" id="expertiseID" name="expertiseID" class="form-control ccm-input-text" value="<?php echo $appointment->getExpertise(); ?>"><br>
-
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="comment" class="form-label">Date</label>
+                <input type="date" id="appointmentDatetime" name="appointmentDatetime" class="form-control hasDatepicker" value="<?php echo $appointment->getAppointmentDatetime(); ?>">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="comment" class="form-label">Start time</label>
+                <input type="time" id="appointmentStartTime" name="appointmentStartTime" class="form-control" value="<?php echo $appointment->getAppointmentStartTime(); ?>">
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label for="comment" class="form-label">End time</label>
+                <input type="time" id="appointmentEndTime" name="appointmentEndTime" class="form-control" value="<?php echo $appointment->getAppointmentEndTime(); ?>">
+            </div>
+        </div>
+    </div>
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
             <a href="#" class="btn btn-secondary float-start">Cancel</a>

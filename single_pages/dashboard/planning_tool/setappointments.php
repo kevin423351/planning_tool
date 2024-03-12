@@ -42,37 +42,41 @@
 
 <?php } else if ($this->controller->getAction() == 'appointment') { ?> 
     <form method="post" action="<?=$this->action('saveAppointment')?>">
-
-      <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
-      <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
-      <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
-      <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $start ?>">
-      <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $end ?>">
-
-      <label for="name" class="form-label">Name</label>
-      <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
-
-      <label for="lastname" class="form-label">lastname</label>
-      <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" required><br>
-
-      <label for="email" class="form-label">Email</label>
-      <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
-
-      <label for="date" class="form-label">Date of birth</label>
-      <input type="text" id="appointmentDate" name="appointmentDate" class="form-control ccm-input-text" value=""><br>
-
-      <label for="number" class="form-label">Phone number</label>
-      <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
-
-      <label for="comment" class="form-label">comment</label>
-      <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
-
-      <div class="ccm-dashboard-form-actions-wrapper">
-         <div class="ccm-dashboard-form-actions ">
-            <a href="#" class="btn btn-secondary float-start">Cancel</a>
-            <button class="float-end btn btn-primary" type="submit">Save</button>
-         </div>
-      </div>
+        <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
+        <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
+        <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
+        <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $start ?>">
+        <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $end ?>">
+        <div class="row">
+            <div class="col">
+                <label for="name" class="form-label">Name</label>
+                <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
+            </div>
+            <div class="col">
+                <label for="lastname" class="form-label">lastname</label>
+                <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" required><br>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
+            </div>
+            <div class="col">
+                <label for="number" class="form-label">Phone number</label>
+                <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
+            </div>
+        </div>
+        <div class="row">
+           <label for="comment" class="form-label">comment</label>
+           <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
+        </div>
+        <div class="ccm-dashboard-form-actions-wrapper">
+            <div class="ccm-dashboard-form-actions ">
+                <a href="#" class="btn btn-secondary float-start">Cancel</a>
+                <button class="float-end btn btn-primary" type="submit">Save</button>
+            </div>
+        </div>
     </form>
 <?php } else if ($this->controller->getAction() == 'expertiseview') { ?> 
 <div class="form-group">
@@ -96,8 +100,8 @@
                     <div class="card-body">
                         <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                             <?php foreach ($timeslot as $button) { ?>
-                                <div class="mb-2 d-flex align-items-center">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center">
+                                <div class="mb-1 d-flex align-items-center">
+                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $personID, $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
                                         <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
                                         <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                     </a>
@@ -127,5 +131,31 @@
         });
     });
 </script>
+<style>
+  .custom-button {
+    color: #4a90e2;
+    background-color: #fff;
+  }
 
+  .custom-button:hover {
+    background-color: #d0e6ff;
+    color: #fff;
+  }
+
+  .custom-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.5);
+  }
+
+  .custom-button:active {
+    background-color: #4a90e2;
+    color: #fff;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+
+  .custom-button:disabled {
+    color: #4a90e2;
+    background-color: transparent;
+    border-color: #4a90e2;
+  }
+</style>
 
