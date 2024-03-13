@@ -43,7 +43,6 @@ class appointments extends DashboardPageController
         $appointment->setFirstname($post->get('appointmentName'));
         $appointment->setLastname($post->get('appointmentLastname'));
         $appointment->setEmail($post->get('appointmentEmail'));
-        $appointment->setDate($post->get('appointmentDate'));
         $appointment->setPhonenumber($post->get('appointmentPhone'));
         $appointment->setComment($post->get('appointmentComment'));
         $appointment->save();

@@ -35,11 +35,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      * @ORM\Column(type="string", length=150)
      */
     protected $appointmentEmail;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentDate;
   
     /**
      * @ORM\Column(type="string", length=25)
@@ -123,16 +118,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     public function setEmail($appointmentEmail)
     {
         $this->appointmentEmail = $appointmentEmail;
-    }
-
-    public function getDate()
-    {
-        return $this->appointmentDate;
-    }
-
-    public function setDate($appointmentDate)
-    {
-        $this->appointmentDate = $appointmentDate;
     }
 
     public function getPhonenumber()

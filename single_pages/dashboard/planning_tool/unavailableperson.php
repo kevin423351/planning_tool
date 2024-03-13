@@ -15,7 +15,7 @@
                     <label for="unavailableDate">Date:</label>
                     <input class="form-control hasDatepicker" type="date" id="unavailableDate" name="unavailableDate" required>
                 </div>
-                <div class="help-block">"Select the date that someone is not available."</div>
+                <div class="help-block">"Select the date that someone is unavailable."</div>
             </div>
             <div class="col-12 col-md-4">
                 <div class="form-group">

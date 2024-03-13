@@ -83,7 +83,7 @@ class Setappointments extends DashboardPageController
         return $buttons;
     }
 
-    public function appointment($personID, $expertiseID=0, $date='', $start='', $end='')
+    public function appointment($personID, $date='', $start='', $end='', $expertiseID=0)
     {
         $start = str_replace('-', ':', $start);
         $end = str_replace('-', ':', $end);
@@ -110,7 +110,6 @@ class Setappointments extends DashboardPageController
         $appointment->setFirstname($post->get('appointmentName'));
         $appointment->setLastname($post->get('appointmentLastname'));
         $appointment->setEmail($post->get('appointmentEmail'));
-        $appointment->setDate($post->get('appointmentDate'));
         $appointment->setPhonenumber($post->get('appointmentPhone'));
         $appointment->setComment($post->get('appointmentComment'));
 
@@ -164,7 +163,7 @@ class Setappointments extends DashboardPageController
                                 'endTime' => $blockEndTime->format('H:i'),
                                 'personID' => $personID, // Updated here
                             ];
-                            $this->set('personID', $personID);
+                            
                         }
                     }
                     $startTime = $blockEndTime;
