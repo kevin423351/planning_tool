@@ -2,6 +2,7 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Database;
 
