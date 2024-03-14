@@ -17,13 +17,30 @@ class Unavailableperson extends DashboardPageController
     public function save()
     {       
         $post = $this->request->request;
-        $unavailable = new Unavailable();
-
-        $unavailable->setDate($post->get('unavailableDate'));
-        $unavailable->setPerson($post->get('personID'));
-        $unavailable->setStartTime($post->get('unavailableStarttime'));
-        $unavailable->setEndTime($post->get('unavailableEndtime'));
-
-        $unavailable->save();
+       
+        $selectedPersonID = $post->get('personID');
+        if ($selectedPersonID == 'all') {
+            $persons = Person::getAll(); 
+            foreach ($persons as $person) {
+                $unavailable = new Unavailable(); // Maak een nieuw Unavailable-object voor elke persoon
+    
+                $unavailable->setDate($post->get('unavailableDate'));
+                $unavailable->setPerson($person->getItemID()); // Stel de persoonID in op de huidige persoon in de lus
+                $unavailable->setStartTime($post->get('unavailableStarttime'));
+                $unavailable->setEndTime($post->get('unavailableEndtime'));
+    
+                $unavailable->save();
+            }
+        } else {
+            $unavailable = new Unavailable(); // Maak een nieuw Unavailable-object voor een specifieke persoon
+    
+            $unavailable->setDate($post->get('unavailableDate'));
+            $unavailable->setPerson($selectedPersonID); // Gebruik het geselecteerde personID
+            $unavailable->setStartTime($post->get('unavailableStarttime'));
+            $unavailable->setEndTime($post->get('unavailableEndtime'));
+    
+            $unavailable->save();
+        }
     }
+    
 } 

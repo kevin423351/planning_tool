@@ -3,6 +3,7 @@
         <div class="form-group">
             <label for="personID">Select Person:</label>
             <select class="form-select" name="personID" required>
+                <option value="all">Select all persons</option>
                 <?php foreach ($persons as $person) { ?>
                     <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
                 <?php } ?>
