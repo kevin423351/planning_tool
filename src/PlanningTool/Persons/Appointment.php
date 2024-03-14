@@ -35,11 +35,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      * @ORM\Column(type="string", length=150)
      */
     protected $appointmentEmail;
-
-    /**
-     * @ORM\Column(type="string", length=150)
-     */
-    protected $appointmentDate;
   
     /**
      * @ORM\Column(type="string", length=25)
@@ -65,7 +60,10 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      * @ORM\Column(type="string", length=150)
      */
     protected $appointmentEndTime;
-
+    /**
+     * @ORM\Column(type="integer", length=11)
+     */
+    protected $expertiseID;
     /**
      * @ORM\Column(type="integer", length=11)
      */
@@ -122,16 +120,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $this->appointmentEmail = $appointmentEmail;
     }
 
-    public function getDate()
-    {
-        return $this->appointmentDate;
-    }
-
-    public function setDate($appointmentDate)
-    {
-        $this->appointmentDate = $appointmentDate;
-    }
-
     public function getPhonenumber()
     {
         return $this->appointmentPhone;
@@ -177,6 +165,22 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     {
         // Store only the personID
         $this->personID = $personID;
+    }
+    
+    public function getExpertise()
+    {
+        return $this->expertiseID;
+    }
+
+
+    public function setExpertise($expertiseID)
+    {
+        $this->expertiseID = $expertiseID;
+    }
+
+    public function getExpertiseObject()
+    {
+        return Expertise::getByID($this->expertiseID);
     }
 
     public function getAppointmentDatetime()

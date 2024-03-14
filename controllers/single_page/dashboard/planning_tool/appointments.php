@@ -1,6 +1,7 @@
 <?php
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Database;
@@ -17,6 +18,11 @@ class appointments extends DashboardPageController
     {
         $appointment = Appointment::getByID($id);
         $this->set('appointment', $appointment);
+
+        $expertiseID = $appointment->getExpertise();
+        
+        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+        $this->set('persons', $persons);
     }
     
     public function saveAppointment($id = null) 
@@ -31,13 +37,13 @@ class appointments extends DashboardPageController
         }
     
         $appointment->setPerson($post->get('personID'));
+        $appointment->setExpertise($post->get('expertiseID'));
         $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
         $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
         $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
         $appointment->setFirstname($post->get('appointmentName'));
         $appointment->setLastname($post->get('appointmentLastname'));
         $appointment->setEmail($post->get('appointmentEmail'));
-        $appointment->setDate($post->get('appointmentDate'));
         $appointment->setPhonenumber($post->get('appointmentPhone'));
         $appointment->setComment($post->get('appointmentComment'));
         $appointment->save();
@@ -45,7 +51,6 @@ class appointments extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
-
     public function delete($id){
         $appointment = Appointment::getByID($id);
         $appointment->setDeleted(1);

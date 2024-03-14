@@ -83,11 +83,12 @@ class Setappointments extends DashboardPageController
         return $buttons;
     }
 
-    public function appointment($personID, $date, $start, $end)
+    public function appointment($personID, $date='', $start='', $end='', $expertiseID=0)
     {
         $start = str_replace('-', ':', $start);
         $end = str_replace('-', ':', $end);
 
+        $this->set('expertiseID', $expertiseID);
         $this->set('personID', $personID);
         $this->set('date', $date);
         $this->set('start', $start); 
@@ -102,13 +103,13 @@ class Setappointments extends DashboardPageController
         $appointment->setDeleted(0); 
     
         $appointment->setPerson($post->get('personID'));
+        $appointment->setExpertise($post->get('expertiseID'));
         $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
         $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
         $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
         $appointment->setFirstname($post->get('appointmentName'));
         $appointment->setLastname($post->get('appointmentLastname'));
         $appointment->setEmail($post->get('appointmentEmail'));
-        $appointment->setDate($post->get('appointmentDate'));
         $appointment->setPhonenumber($post->get('appointmentPhone'));
         $appointment->setComment($post->get('appointmentComment'));
 
@@ -120,8 +121,8 @@ class Setappointments extends DashboardPageController
     public function expertiseview($expertiseID = 1)
     {
         $buttons = $this->getAvailableTimeSlotss($expertiseID);
-    
         $this->set('buttons', $buttons);
+        $this->set('expertiseID', $expertiseID);
     }
 
     public function getAvailableTimeSlotss($expertiseID)
@@ -132,7 +133,6 @@ class Setappointments extends DashboardPageController
         // Loop through all persons with the expertise
         foreach ($persons as $person) {
             $personID = $person->getItemID();
-            $this->set('personID', $personID);
             $timeslots = $person->getTimeslots();
 
             // Loop through all time slots of the person
@@ -151,17 +151,19 @@ class Setappointments extends DashboardPageController
                 while ($startTime < $endTime) {
                     $blockEndTime = clone $startTime;
                     $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
-
+                    // code review over dit 
                     $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                     $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
 
                     if (!$isUnavailable && !$isChosen) {
                         if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
+                            // Update $personID based on the current person being processed
                             $buttons[$date][$startTime->format('H:i')] = [
                                 'startTime' => $startTime->format('H:i'),
                                 'endTime' => $blockEndTime->format('H:i'),
-                                'personID' => $personID,
+                                'personID' => $personID, // Updated here
                             ];
+                            
                         }
                     }
                     $startTime = $blockEndTime;
@@ -179,7 +181,3 @@ class Setappointments extends DashboardPageController
         return $buttons;
     }
 } 
-
-
-
-
