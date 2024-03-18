@@ -12,6 +12,11 @@ class appointments extends DashboardPageController
         $appointment = Appointment::getAll();
         $this->set('appointments', $appointment);
     }
+    
+    public function agenda()
+    {
+
+    }
 
     public function edit($id) 
     {

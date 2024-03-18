@@ -1,5 +1,6 @@
 <?php if ($this->controller->getAction() == 'view') { ?>
    <div class="ccm-dashboard-header-buttons">
+      <a href="<?= URL::to('/dashboard/planning_tool/appointments/agenda')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
    </div>
    <div class="table-responsive">
@@ -171,5 +172,64 @@
          </div>
       </div>
    </form>
-<?php } ?>
+<?php  } else if ($this->controller->getAction() == 'agenda') { ?>
+    <style>
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
+    .calendar td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      height: 100px;
+    }
+
+    .time-slot {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Calendar</h2>
+  <div class="row">
+    <div class="col-md-8 mx-auto">
+      <table class="table table-bordered calendar">
+        <thead>
+          <tr>
+            <th scope="col">Time</th>
+            <th scope="col">Monday</th>
+            <th scope="col">Tuesday</th>
+            <th scope="col">Wednesday</th>
+            <th scope="col">Thursday</th>
+            <th scope="col">Friday</th>
+            <th scope="col">Saturday</th>
+            <th scope="col">Sunday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php
+          $timeSlots = array(
+            "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM",
+            "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM",
+            "05:00 PM", "06:00 PM", "07:00 PM", "08:00 PM"
+          );
+
+          foreach ($timeSlots as $timeSlot) {
+            echo "<tr>";
+            echo "<td class='time-slot'>$timeSlot</td>";
+            for ($i = 0; $i < 7; $i++) {
+              echo "<td></td>";
+            }
+            echo "</tr>";
+          }
+          ?>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<?php  } ?>

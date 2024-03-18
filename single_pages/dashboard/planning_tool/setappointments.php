@@ -39,6 +39,12 @@
             </div>
         <?php } ?>
     </div>
+    <div class="text-center mt-3">
+    <?php
+    $nextWeekOffset = $weekOffset + 1;
+    ?>
+        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">Bekijk tijdslots voor volgende week</a>
+    </div>
 </div>
 
 <?php } else if ($this->controller->getAction() == 'appointment') { ?> 

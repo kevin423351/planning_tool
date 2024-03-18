@@ -33,21 +33,24 @@ class Setappointments extends DashboardPageController
      
     }
 
-    public function personview($personID = 1)
+    public function personview($personID = 1, $weekOffset = 0)
     {
         if ((int)$personID != 0) {
+            $currentDate = new DateTime();
+            $currentDate->modify("+$weekOffset week");
+    
             $person = Person::getByID($personID);
             $timeslots = $person->getTimeslots();
-
-            $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
-
+    
+            $buttons = $this->generateTimeSlotButtons($personID, $timeslots, $currentDate);
+    
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
-            $this->set('timeslots', $timeslots); 
+            $this->set('currentDate', $currentDate);
         }
     }
-
-    public function generateTimeSlotButtons($personID, $timeslots)
+    
+    public function generateTimeSlotButtons($personID, $timeslots, $currentDate)
     {
         $buttons = [];
     
@@ -56,9 +59,9 @@ class Setappointments extends DashboardPageController
             $endTime = new DateTime($timeslot->getEndTime());
             $appointmentTime = $timeslot->getAppointmentTime();
             $interval = 'PT' . $appointmentTime . 'M';
-            $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
-            
-            // if unavaileble it returns a empty day
+            $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
+    
+            // if unavailable it returns an empty day
             if (!isset($buttons[$date])) {
                 $buttons[$date] = array();
             }
@@ -69,9 +72,9 @@ class Setappointments extends DashboardPageController
     
                 $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                 $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
-
+    
                 if (!$isUnavailable && !$isChosen) {
-                    // Voeg tijdslot toe aan beschikbare tijdslots
+                    // Add time slot to available time slots
                     $buttons[$date][] = [
                         'startTime' => $startTime->format('H:i'),
                         'endTime' => $blockEndTime->format('H:i'),
@@ -82,6 +85,7 @@ class Setappointments extends DashboardPageController
         }
         return $buttons;
     }
+    
 
     public function appointment($personID, $date='', $start='', $end='', $expertiseID=0)
     {
