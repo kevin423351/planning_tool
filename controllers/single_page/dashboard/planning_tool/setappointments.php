@@ -41,12 +41,12 @@ class Setappointments extends DashboardPageController
     
             $person = Person::getByID($personID);
             $timeslots = $person->getTimeslots();
-    
+
             $buttons = $this->generateTimeSlotButtons($personID, $timeslots, $currentDate);
     
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
-            $this->set('currentDate', $currentDate);
+            $this->set('weekOffset', $weekOffset);
         }
     }
     
@@ -61,9 +61,13 @@ class Setappointments extends DashboardPageController
             $interval = 'PT' . $appointmentTime . 'M';
             $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
     
+            if (date('Y-m-d') > $date) {
+                $buttons[$date] = [];
+                continue; 
+            }
             // if unavailable it returns an empty day
             if (!isset($buttons[$date])) {
-                $buttons[$date] = array();
+                $buttons[$date] = [];
             }
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
@@ -122,14 +126,18 @@ class Setappointments extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
-    public function expertiseview($expertiseID = 1)
+    public function expertiseview($expertiseID = 1, $weekOffset=0)
     {
-        $buttons = $this->getAvailableTimeSlotss($expertiseID);
+        $currentDate = new DateTime();
+        $currentDate->modify("+$weekOffset week");
+
+        $buttons = $this->getAvailableTimeSlotss($expertiseID, $currentDate);
         $this->set('buttons', $buttons);
         $this->set('expertiseID', $expertiseID);
+        $this->set('weekOffset', $weekOffset);
     }
 
-    public function getAvailableTimeSlotss($expertiseID)
+    public function getAvailableTimeSlotss($expertiseID, $currentDate)
     {
         $persons = Expertise::getPersonsByExpertiseID($expertiseID);
         $buttons = [];
@@ -144,7 +152,7 @@ class Setappointments extends DashboardPageController
                 $startTime = new DateTime($timeslot->getStartTime());
                 $endTime = new DateTime($timeslot->getEndTime());
                 $appointmentTime = $timeslot->getAppointmentTime();
-                $date = date('Y-m-d', strtotime((string) $timeslot->getday() . ' this week'));
+                $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
 
                 // if unavailable it returns an empty day
                 if (!isset($buttons[$date])) {
@@ -165,7 +173,7 @@ class Setappointments extends DashboardPageController
                             $buttons[$date][$startTime->format('H:i')] = [
                                 'startTime' => $startTime->format('H:i'),
                                 'endTime' => $blockEndTime->format('H:i'),
-                                'personID' => $personID, // Updated here
+                                'personID' => $personID, 
                             ];
                             
                         }

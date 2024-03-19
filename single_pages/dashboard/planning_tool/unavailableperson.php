@@ -82,7 +82,7 @@
             const $dateRange = $('#dateRange');
             const $unavailableOption = $('#unavailableOption');
 
-            $specificDate.hide();
+            $specificDate.show();
             $wholeDay.hide();
             $dateRange.hide();
 

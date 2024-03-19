@@ -2,14 +2,29 @@
     <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview')?>" class="btn btn-primary btn-sm">personen</a>
     <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview')?>" class="btn btn-primary btn-sm">expertises</a>
 <?php } else if ($this->controller->getAction() == 'personview') { ?>
-
-<div class="form-group">
-    <label for="personID" class="form-label">With who?</label>
-    <select id="personID" name="personID" class="form-select">
-        <?php foreach ($persons as $person){ ?>
-            <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
-        <?php } ?>
-    </select>
+<div class="row">
+    <div class="col-12 col-md-3">
+        <div class="form-group">
+            <label for="personID" class="form-label">With who?</label>
+            <select id="personID" name="personID" class="form-select">
+                <?php foreach ($persons as $person){ ?>
+                    <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+    <div class="col text-end"> 
+        <div class="form-group">
+            <div class="mt-3 pt-3">
+                <?php
+                $lastWeekOffset = $weekOffset - 1;
+                $nextWeekOffset = $weekOffset + 1;
+                ?>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $lastWeekOffset) ?>" class="btn btn-primary"><- previous week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">next week -></a>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="container mt-4">
@@ -38,12 +53,6 @@
                 </div>
             </div>
         <?php } ?>
-    </div>
-    <div class="text-center mt-3">
-    <?php
-    $nextWeekOffset = $weekOffset + 1;
-    ?>
-        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">Bekijk tijdslots voor volgende week</a>
     </div>
 </div>
 
@@ -88,15 +97,31 @@
         </div>
     </form>
 <?php } else if ($this->controller->getAction() == 'expertiseview') { ?> 
-<div class="form-group">
-    <label for="expertiseID" class="form-label">With who?</label>
-    <select id="expertiseID" name="expertiseID" class="form-select">
-        <?php foreach ($expertises as $expertise){ ?>
-            <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
-        <?php } ?>
-    </select>
-</div>
 
+<div class="row">
+    <div class="col-12 col-md-3">
+        <div class="form-group">
+            <label for="expertiseID" class="form-label">With who?</label>
+            <select id="expertiseID" name="expertiseID" class="form-select">
+                <?php foreach ($expertises as $expertise){ ?>
+                    <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
+                <?php } ?>
+            </select>
+        </div>
+    </div>
+    <div class="col text-end"> 
+        <div class="form-group">
+            <div class="mt-3 pt-3">
+                <?php
+                $lastWeekOffset = $weekOffset - 1;
+                $nextWeekOffset = $weekOffset + 1;
+                ?>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $lastWeekOffset) ?>" class="btn btn-primary">View time slots for previous week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">View time slots for next week</a>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container mt-4">
     <div class="d-flex align-items-start justify-content-between">
         <?php foreach ($buttons as $date => $timeslot) { ?>
@@ -165,6 +190,9 @@
     color: #4a90e2;
     background-color: transparent;
     border-color: #4a90e2;
+  }
+  .text-end {
+    text-align: end;
   }
 </style>
 
