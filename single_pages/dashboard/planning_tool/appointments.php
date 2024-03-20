@@ -173,29 +173,11 @@
       </div>
    </form>
 <?php  } else if ($this->controller->getAction() == 'agenda') { ?>
-    <style>
-    .calendar {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .calendar td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      height: 100px;
-    }
-
-    .time-slot {
-      font-size: 14px;
-    }
-  </style>
-</head>
 <body>
-<body>
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Calendar</h2>
+    <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
+        <h2 class="mb-4">overview appointments</h2>
         <div class="row">
-            <div class="">
+            <div class="col"> <!-- Gebruik een kolom om de container binnen de rij te plaatsen -->
                 <label for="month">Selecteer een maand:</label>
                 <select name="month" id="month" class="form-select">
                     <?php
@@ -208,7 +190,7 @@
                     }
                     ?>
                 </select>
-                <div class="calendar-container">
+                <div class="calendar-container pt-4">
                     <table class="table table-bordered calendar">
                         <thead>
                             <tr>
@@ -222,37 +204,50 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
+                        <?php
                             // Get the selected month from the URL query parameter or default to the current month
                             $selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
                             // Get the number of days in the selected month
                             $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, date('Y'));
-
+                            // Get the first day of the month
+                            $firstDayOfMonth = date("N", mktime(0, 0, 0, $selectedMonth, 1, date('Y')));
                             // Calculate the number of weeks needed to display all days
-                            $weeks = ceil($daysInMonth / 7);
-
+                            $weeks = ceil(($daysInMonth + $firstDayOfMonth - 1) / 7);
                             // Initialize the day counter
                             $dayCount = 1;
-
                             // Loop through the weeks
                             for ($week = 0; $week < $weeks; $week++) {
-                                echo "<tr>";
+                        ?>
+                                <tr style="height: 160px">
+                                    <?php
+                                    // Loop through the days of the week
+                                    for ($dayOfWeek = 1; $dayOfWeek <= 7; $dayOfWeek++) {
+                                    ?>
+                                        <td class='day-cell col-1 h-100'>
+                                            <?php
+                                             // Check if the current cell is before the first day of the month or after the last day of the month
+                                            if (($week == 0 && $dayOfWeek < $firstDayOfMonth) || $dayCount > $daysInMonth) {
+                                                // Display an empty cell
+                                                echo "&nbsp;";
+                                            } else {
+                                                // Display the day number
+                                                echo $dayCount;
 
-                                // Loop through the days of the week
-                                for ($dayOfWeek = 0; $dayOfWeek < 7; $dayOfWeek++) {
-                                    echo "<td class='day-cell col-1'>";
-
-                                    // Check if the day count exceeds the number of days in the month
-                                    if ($dayCount <= $daysInMonth) {
-                                        // Display the day number
-                                        echo $dayCount;
-                                        $dayCount++;
+                                                // Display button only if the day count is less than or equal to the number of days in the month
+                                                if ($dayCount <= $daysInMonth) {
+                                                ?>
+                                                    <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0px;"><i class="fas fa-calendar-check" style="margin-right: 15px;"></i>appointments</a>
+                                                <?php
+                                                }
+                                                $dayCount++;
+                                            }
+                                            ?>
+                                        </td>
+                                    <?php
                                     }
-
-                                    echo "</td>";
-                                }
-
-                                echo "</tr>";
+                                    ?>
+                                </tr>
+                            <?php
                             }
                             ?>
                         </tbody>
@@ -261,18 +256,34 @@
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#month').change(function() {
-                var selectedMonth = $(this).val();
-                var currentYear = (new Date()).getFullYear(); // Get the current year
-
-                // Navigate to the page with the selected month
-                window.location.href = '<?= $_SERVER['PHP_SELF']; ?>?month=' + selectedMonth + '&year=' + currentYear;
-            });
-        });
-    </script>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#month').change(function() {
+            var selectedMonth = $(this).val();
+            var currentYear = (new Date()).getFullYear(); // Get the current year
+
+            // Navigate to the page with the selected month
+            window.location.href = '<?= $_SERVER['PHP_SELF']; ?>?month=' + selectedMonth + '&year=' + currentYear;
+        });
+    });
+</script>
+<style>
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 100px;
+}
+
+.time-slot {
+    font-size: 14px;
+}
+</style>
+
 
 <?php  } ?>

@@ -116,8 +116,8 @@
                 $lastWeekOffset = $weekOffset - 1;
                 $nextWeekOffset = $weekOffset + 1;
                 ?>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $lastWeekOffset) ?>" class="btn btn-primary">View time slots for previous week</a>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">View time slots for next week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $lastWeekOffset) ?>" class="btn btn-primary"><- previous week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">next week -></a>
             </div>
         </div>
     </div>

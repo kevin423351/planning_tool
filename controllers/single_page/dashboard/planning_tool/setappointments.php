@@ -154,6 +154,11 @@ class Setappointments extends DashboardPageController
                 $appointmentTime = $timeslot->getAppointmentTime();
                 $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
 
+                if (date('Y-m-d') > $date) {
+                    $buttons[$date] = [];
+                    continue; 
+                }
+                
                 // if unavailable it returns an empty day
                 if (!isset($buttons[$date])) {
                     $buttons[$date] = [];
