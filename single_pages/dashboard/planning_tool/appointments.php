@@ -1,5 +1,6 @@
 <?php if ($this->controller->getAction() == 'view') { ?>
    <div class="ccm-dashboard-header-buttons">
+      <a href="<?= URL::to('/dashboard/planning_tool/appointments/agenda')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
    </div>
    <div class="table-responsive">
@@ -171,5 +172,107 @@
          </div>
       </div>
    </form>
-<?php } ?>
+<?php  } else if ($this->controller->getAction() == 'agenda') { ?>
+    <style>
+    .calendar {
+      width: 100%;
+      border-collapse: collapse;
+    }
 
+    .calendar td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      height: 100px;
+    }
+
+    .time-slot {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+<body>
+    <div class="container mt-4">
+        <h2 class="text-center mb-4">Calendar</h2>
+        <div class="row">
+            <div class="">
+                <label for="month">Selecteer een maand:</label>
+                <select name="month" id="month" class="form-select">
+                    <?php
+                    // Loop through each month of the year
+                    for ($month = 1; $month <= 12; $month++) {
+                        // Get the month name based on the month number
+                        $monthName = date("F", mktime(0, 0, 0, $month, 1));
+                        // Display the month as an option in the dropdown
+                        echo "<option value='$month'>$monthName</option>";
+                    }
+                    ?>
+                </select>
+                <div class="calendar-container">
+                    <table class="table table-bordered calendar">
+                        <thead>
+                            <tr>
+                                <th scope="col">Monday</th>
+                                <th scope="col">Tuesday</th>
+                                <th scope="col">Wednesday</th>
+                                <th scope="col">Thursday</th>
+                                <th scope="col">Friday</th>
+                                <th scope="col">Saturday</th>
+                                <th scope="col">Sunday</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            // Get the selected month from the URL query parameter or default to the current month
+                            $selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
+                            // Get the number of days in the selected month
+                            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, date('Y'));
+
+                            // Calculate the number of weeks needed to display all days
+                            $weeks = ceil($daysInMonth / 7);
+
+                            // Initialize the day counter
+                            $dayCount = 1;
+
+                            // Loop through the weeks
+                            for ($week = 0; $week < $weeks; $week++) {
+                                echo "<tr>";
+
+                                // Loop through the days of the week
+                                for ($dayOfWeek = 0; $dayOfWeek < 7; $dayOfWeek++) {
+                                    echo "<td class='day-cell col-1'>";
+
+                                    // Check if the day count exceeds the number of days in the month
+                                    if ($dayCount <= $daysInMonth) {
+                                        // Display the day number
+                                        echo $dayCount;
+                                        $dayCount++;
+                                    }
+
+                                    echo "</td>";
+                                }
+
+                                echo "</tr>";
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#month').change(function() {
+                var selectedMonth = $(this).val();
+                var currentYear = (new Date()).getFullYear(); // Get the current year
+
+                // Navigate to the page with the selected month
+                window.location.href = '<?= $_SERVER['PHP_SELF']; ?>?month=' + selectedMonth + '&year=' + currentYear;
+            });
+        });
+    </script>
+</body>
+
+<?php  } ?>

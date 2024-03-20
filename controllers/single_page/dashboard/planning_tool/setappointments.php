@@ -33,21 +33,24 @@ class Setappointments extends DashboardPageController
      
     }
 
-    public function personview($personID = 1)
+    public function personview($personID = 1, $weekOffset = 0)
     {
         if ((int)$personID != 0) {
+            $currentDate = new DateTime();
+            $currentDate->modify("+$weekOffset week");
+    
             $person = Person::getByID($personID);
             $timeslots = $person->getTimeslots();
 
-            $buttons = $this->generateTimeSlotButtons($personID, $timeslots);
-
+            $buttons = $this->generateTimeSlotButtons($personID, $timeslots, $currentDate);
+    
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
-            $this->set('timeslots', $timeslots); 
+            $this->set('weekOffset', $weekOffset);
         }
     }
-
-    public function generateTimeSlotButtons($personID, $timeslots)
+    
+    public function generateTimeSlotButtons($personID, $timeslots, $currentDate)
     {
         $buttons = [];
     
@@ -56,11 +59,15 @@ class Setappointments extends DashboardPageController
             $endTime = new DateTime($timeslot->getEndTime());
             $appointmentTime = $timeslot->getAppointmentTime();
             $interval = 'PT' . $appointmentTime . 'M';
-            $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week'));
-            
-            // if unavaileble it returns a empty day
+            $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
+    
+            if (date('Y-m-d') > $date) {
+                $buttons[$date] = [];
+                continue; 
+            }
+            // if unavailable it returns an empty day
             if (!isset($buttons[$date])) {
-                $buttons[$date] = array();
+                $buttons[$date] = [];
             }
             // Loop through the blocks of 30 minutes
             while ($startTime < $endTime) {
@@ -69,9 +76,9 @@ class Setappointments extends DashboardPageController
     
                 $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                 $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
-
+    
                 if (!$isUnavailable && !$isChosen) {
-                    // Voeg tijdslot toe aan beschikbare tijdslots
+                    // Add time slot to available time slots
                     $buttons[$date][] = [
                         'startTime' => $startTime->format('H:i'),
                         'endTime' => $blockEndTime->format('H:i'),
@@ -82,6 +89,7 @@ class Setappointments extends DashboardPageController
         }
         return $buttons;
     }
+    
 
     public function appointment($personID, $date='', $start='', $end='', $expertiseID=0)
     {
@@ -118,14 +126,18 @@ class Setappointments extends DashboardPageController
         $this->buildRedirect('/dashboard/planning_tool/appointments/')->send();
     }
     
-    public function expertiseview($expertiseID = 1)
+    public function expertiseview($expertiseID = 1, $weekOffset=0)
     {
-        $buttons = $this->getAvailableTimeSlotss($expertiseID);
+        $currentDate = new DateTime();
+        $currentDate->modify("+$weekOffset week");
+
+        $buttons = $this->getAvailableTimeSlotss($expertiseID, $currentDate);
         $this->set('buttons', $buttons);
         $this->set('expertiseID', $expertiseID);
+        $this->set('weekOffset', $weekOffset);
     }
 
-    public function getAvailableTimeSlotss($expertiseID)
+    public function getAvailableTimeSlotss($expertiseID, $currentDate)
     {
         $persons = Expertise::getPersonsByExpertiseID($expertiseID);
         $buttons = [];
@@ -140,7 +152,7 @@ class Setappointments extends DashboardPageController
                 $startTime = new DateTime($timeslot->getStartTime());
                 $endTime = new DateTime($timeslot->getEndTime());
                 $appointmentTime = $timeslot->getAppointmentTime();
-                $date = date('Y-m-d', strtotime((string) $timeslot->getday() . ' this week'));
+                $date = date('Y-m-d', strtotime((string)$timeslot->getday().' this week', $currentDate->getTimestamp()));
 
                 // if unavailable it returns an empty day
                 if (!isset($buttons[$date])) {
@@ -161,7 +173,7 @@ class Setappointments extends DashboardPageController
                             $buttons[$date][$startTime->format('H:i')] = [
                                 'startTime' => $startTime->format('H:i'),
                                 'endTime' => $blockEndTime->format('H:i'),
-                                'personID' => $personID, // Updated here
+                                'personID' => $personID, 
                             ];
                             
                         }

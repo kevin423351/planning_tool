@@ -28,10 +28,14 @@
                     <label for="unavailableDate">Date:</label>
                     <input class="form-control hasDatepicker" type="date" id="unavailableDate" name="unavailableDate">
                 </div>
+            </div>
+            <div class="col-12 col-md-4">   
                 <div class="form-group">
                     <label for="unavailableStartTime">Start Time:</label>
                     <input class="form-control ccm-input-time" type="time" id="unavailableStartTime" name="unavailableStartTime">
                 </div>
+            </div>
+            <div class="col-12 col-md-4">
                 <div class="form-group">
                     <label for="unavailableEndTime">End Time:</label>
                     <input class="form-control ccm-input-time" type="time" id="unavailableEndTime" name="unavailableEndTime">
@@ -49,11 +53,13 @@
         </div>
 
         <div class="row" id="dateRange">
-            <div class="col-12 col-md-4">
+            <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="startDate">Start Date:</label>
                     <input class="form-control hasDatepicker" type="date" id="startDate" name="startDate">
                 </div>
+            </div>
+            <div class="col-12 col-md-6">
                 <div class="form-group">
                     <label for="endDate">End Date:</label>
                     <input class="form-control hasDatepicker" type="date" id="endDate" name="endDate">
@@ -76,7 +82,7 @@
             const $dateRange = $('#dateRange');
             const $unavailableOption = $('#unavailableOption');
 
-            $specificDate.hide();
+            $specificDate.show();
             $wholeDay.hide();
             $dateRange.hide();
 
