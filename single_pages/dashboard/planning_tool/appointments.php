@@ -205,51 +205,26 @@
                         </thead>
                         <tbody>
                         <?php
-                            // Get the selected month from the URL query parameter or default to the current month
-                            $selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
-                            // Get the number of days in the selected month
-                            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, date('Y'));
-                            // Get the first day of the month
-                            $firstDayOfMonth = date("N", mktime(0, 0, 0, $selectedMonth, 1, date('Y')));
-                            // Calculate the number of weeks needed to display all days
-                            $weeks = ceil(($daysInMonth + $firstDayOfMonth - 1) / 7);
-                            // Initialize the day counter
-                            $dayCount = 1;
-                            // Loop through the weeks
-                            for ($week = 0; $week < $weeks; $week++) {
-                        ?>
-                                <tr style="height: 160px">
-                                    <?php
-                                    // Loop through the days of the week
-                                    for ($dayOfWeek = 1; $dayOfWeek <= 7; $dayOfWeek++) {
-                                    ?>
-                                        <td class='day-cell col-1 h-100'>
-                                            <?php
-                                             // Check if the current cell is before the first day of the month or after the last day of the month
-                                            if (($week == 0 && $dayOfWeek < $firstDayOfMonth) || $dayCount > $daysInMonth) {
-                                                // Display an empty cell
-                                                echo "&nbsp;";
-                                            } else {
-                                                // Display the day number
-                                                echo $dayCount;
-
-                                                // Display button only if the day count is less than or equal to the number of days in the month
-                                                if ($dayCount <= $daysInMonth) {
-                                                ?>
-                                                    <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0px;"><i class="fas fa-calendar-check" style="margin-right: 15px;"></i>appointments</a>
-                                                <?php
-                                                }
-                                                $dayCount++;
-                                            }
-                                            ?>
-                                        </td>
-                                    <?php
+                            foreach ($calendar as $row => $rowContent) {
+                                echo "<tr style='height: 160px'>";
+                                foreach ($rowContent as $day => $dayContent) {
+                                    echo "<td class='day-cell col-1 h-100'>";
+                                    if ($dayContent['empty']) {
+                                        echo "&nbsp;";
+                                    } else {
+                                        echo $dayContent['daynumber'];
+                                        if ($dayContent['count'] >= 1) {
+                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/' . $dayContent['date']).'" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
+                                                    <i class="fas fa-calendar-check" style="margin-right: 5px;"></i>Appointments ('.$dayContent['count'].')
+                                                  </a>';
+                                        }
                                     }
-                                    ?>
-                                </tr>
-                            <?php
+                                    echo "</td>";
+                                }
+                                echo "</tr>";
                             }
                             ?>
+
                         </tbody>
                     </table>
                 </div>
@@ -264,7 +239,8 @@
             var currentYear = (new Date()).getFullYear(); // Get the current year
 
             // Navigate to the page with the selected month
-            window.location.href = '<?= $_SERVER['PHP_SELF']; ?>?month=' + selectedMonth + '&year=' + currentYear;
+            window.location.href = '<?= URL::to('/dashboard/planning_tool/appointments/agenda/'); ?>'+currentYear+'/'+selectedMonth+'/';
+            
         });
     });
 </script>
@@ -284,6 +260,4 @@
     font-size: 14px;
 }
 </style>
-
-
 <?php  } ?>

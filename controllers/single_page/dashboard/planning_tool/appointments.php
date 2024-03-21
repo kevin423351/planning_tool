@@ -4,18 +4,67 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Database;
+use DateTime;
 
 class appointments extends DashboardPageController
 {
-    public function view()
-    {
-        $appointment = Appointment::getAll();
-        $this->set('appointments', $appointment);
+    public function view($dateString='')
+    {    
+        $date = new DateTime($dateString);
+        
+        $formattedDate = $date->format('Y-m-d');
+        
+        // $appointmentCount = Appointment::countAppointmentsByDate($formattedDate);
+
+        // wtfs($appointmentCount);
+
+        $appointments = Appointment::getAllByDate($formattedDate);
+        
+        $this->set('appointments', $appointments);
     }
     
-    public function agenda()
+    public function agenda($year='', $month='')
     {
+        if ($year == '') { $year = date('Y'); }
+        if ($month == '') { $month = date('m'); }
+        
+        $return = array();
 
+        // Get the number of days in the selected month
+        $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        // Get the first day of the month
+        $firstDayOfMonth = date("N", mktime(0, 0, 0, $month, 1, $year));
+        // Calculate the number of weeks needed to display all days
+        $weeks = ceil(($daysInMonth + $firstDayOfMonth - 1) / 7);
+        // Initialize the day counter
+        $dayCount = 1;
+        // Loop through the weeks
+
+        $row = 0;
+        for ($week = 0; $week < $weeks; $week++) {
+            for ($dayOfWeek = 1; $dayOfWeek <= 7; $dayOfWeek++) {
+                $dayNumber = $dayCount - $firstDayOfMonth + 1;
+              
+                if ($dayNumber < 1 || $dayNumber > $daysInMonth) {
+                    $return[$row][$dayOfWeek] = array(
+                        'empty' => true,
+                    );
+                } else {
+                    $dateString = date('Y-m-d', mktime(0, 0, 0, $month, $dayNumber, $year));
+                    
+                    $return[$row][$dayOfWeek] = array(
+                        'empty' => false,
+                        'date' => $dateString,
+                        'daynumber' => $dayNumber,
+                        'count' => Appointment::countAppointmentsByDate($dateString),
+                    );
+                }
+                $dayCount++;
+            }
+            $row++;
+        }
+
+        $this->set('calendar', $return);
     }
 
     public function edit($id) 
