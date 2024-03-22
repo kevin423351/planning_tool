@@ -2,6 +2,7 @@
 namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\PlanningTool;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Database;
 use DateTime;
@@ -13,10 +14,6 @@ class appointments extends DashboardPageController
         $date = new DateTime($dateString);
         
         $formattedDate = $date->format('Y-m-d');
-        
-        // $appointmentCount = Appointment::countAppointmentsByDate($formattedDate);
-
-        // wtfs($appointmentCount);
 
         $appointments = Appointment::getAllByDate($formattedDate);
         
@@ -71,15 +68,21 @@ class appointments extends DashboardPageController
     {
         $appointment = Appointment::getByID($id);
         $this->set('appointment', $appointment);
-
+    
         $expertiseID = $appointment->getExpertise();
+
+        if ($expertiseID == 0) {
+            $getPersons = Person::getAll(); 
+        } else {
+            $getPersons = Expertise::getPersonsByExpertiseID($expertiseID);
+        }
         
-        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
-        $this->set('persons', $persons);
+        $this->set('persons', $getPersons);
     }
     
     public function saveAppointment($id = null) 
     {
+
         $post = $this->request->request;
 
         if ($id !== null) {

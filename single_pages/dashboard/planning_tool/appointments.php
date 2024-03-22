@@ -7,16 +7,16 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
-                <th class="">Name</th>
-                <th class="">Lastname</th>
-                <th class="">Email</th>
-                <th class="">Phone number</th>
-                <th class="">Comment</th>
                 <th class="">Person</th>
                 <th class="">Date</th>
                 <th class="">Start time</th>
                 <th class="">End time</th>
                 <th class="">Expertise</th>
+                <th class="">Name</th>
+                <th class="">Lastname</th>
+                <th class="">Email</th>
+                <th class="">Phone number</th>
+                <th class="">Comment</th>
             </tr>
         </thead>
         <tbody>
@@ -24,11 +24,6 @@
             if (!empty($appointments)) {
                 foreach ($appointments as $appointment) { ?>
                     <tr data-launch-search-menu="" class="">
-                        <td><?php echo $appointment->getFirstname(); ?></td>
-                        <td><?php echo $appointment->getLastname(); ?></td>
-                        <td><?php echo $appointment->getEmail(); ?></td>
-                        <td><?php echo $appointment->getPhonenumber(); ?></td>
-                        <td><?php echo $appointment->getComment(); ?></td>
                         <td>
                             <?php
                             $personObject = $appointment->getPersonObject();
@@ -58,6 +53,11 @@
                             }
                             ?>
                         </td>
+                        <td><?php echo $appointment->getFirstname(); ?></td>
+                        <td><?php echo $appointment->getLastname(); ?></td>
+                        <td><?php echo $appointment->getEmail(); ?></td>
+                        <td><?php echo $appointment->getPhonenumber(); ?></td>
+                        <td><?php echo $appointment->getComment(); ?></td>
                         <td align="right">
                             <div class="btn-group" role="group">
                                 <a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-sm">
