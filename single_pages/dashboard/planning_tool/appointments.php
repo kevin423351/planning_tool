@@ -136,9 +136,10 @@
                 <div class="help-block">"Select the person you have a appointment with."</div>
             </div>
         </div>
+        <!-- dit stukje toegevoegd  -->
         <div class="col">
             <div class="form-group">
-                <label for="expertiseID" class="form-label">Expertise</label>
+                <label for="expertiseID" class="form-label">Expertise </label>
                 <select id="expertiseID" name="expertiseID" class="form-select">
                     <?php foreach ($expertises as $expertise) { ?>
                         <option value="<?= $expertise->getItemID(); ?>" <?php if ($appointment->getExpertise() == $expertise->getItemID()) echo 'selected'; ?>>
@@ -149,6 +150,7 @@
                 <div class="help-block">"Select the expertise that the appointment is about."</div>
             </div>
         </div>
+        
     </div>
 
     <div class="row">
