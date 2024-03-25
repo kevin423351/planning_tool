@@ -1,22 +1,22 @@
-<?php if ($this->controller->getAction() == 'view') { ?>
+<?php if ($this->controller->getAction() == 'agenda') { ?>
    <div class="ccm-dashboard-header-buttons">
-      <a href="<?= URL::to('/dashboard/planning_tool/appointments/agenda')?>" class="btn btn-primary btn-sm">Agenda</a>
+      <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
    </div>
    <div class="table-responsive">
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
-                <th class="">Name</th>
-                <th class="">Lastname</th>
-                <th class="">Email</th>
-                <th class="">Phone number</th>
-                <th class="">Comment</th>
                 <th class="">Person</th>
                 <th class="">Date</th>
                 <th class="">Start time</th>
                 <th class="">End time</th>
                 <th class="">Expertise</th>
+                <th class="">Name</th>
+                <th class="">Lastname</th>
+                <th class="">Email</th>
+                <th class="">Phone number</th>
+                <th class="">Comment</th>
             </tr>
         </thead>
         <tbody>
@@ -24,11 +24,6 @@
             if (!empty($appointments)) {
                 foreach ($appointments as $appointment) { ?>
                     <tr data-launch-search-menu="" class="">
-                        <td><?php echo $appointment->getFirstname(); ?></td>
-                        <td><?php echo $appointment->getLastname(); ?></td>
-                        <td><?php echo $appointment->getEmail(); ?></td>
-                        <td><?php echo $appointment->getPhonenumber(); ?></td>
-                        <td><?php echo $appointment->getComment(); ?></td>
                         <td>
                             <?php
                             $personObject = $appointment->getPersonObject();
@@ -58,6 +53,11 @@
                             }
                             ?>
                         </td>
+                        <td><?php echo $appointment->getFirstname(); ?></td>
+                        <td><?php echo $appointment->getLastname(); ?></td>
+                        <td><?php echo $appointment->getEmail(); ?></td>
+                        <td><?php echo $appointment->getPhonenumber(); ?></td>
+                        <td><?php echo $appointment->getComment(); ?></td>
                         <td align="right">
                             <div class="btn-group" role="group">
                                 <a href="<?= URL::to('/dashboard/planning_tool/appointments/edit', $appointment->getItemID()); ?>" class="btn btn-sm">
@@ -138,10 +138,16 @@
         </div>
         <div class="col">
             <div class="form-group">
-                <label for="comment" class="form-label">Expertise</label>
-                <input type="text" id="expertiseID" name="expertiseID" class="form-control" value="<?php echo $appointment->getExpertise(); ?>">
+                <label for="expertiseID" class="form-label">Expertise</label>
+                <select id="expertiseID" name="expertiseID" class="form-select">
+                    <?php foreach ($expertises as $expertise) { ?>
+                        <option value="<?= $expertise->getItemID(); ?>" <?php if ($appointment->getExpertise() == $expertise->getItemID()) echo 'selected'; ?>>
+                            <?= $expertise->getFirstname(); ?>
+                        </option>
+                    <?php } ?>
+                </select>
                 <div class="help-block">"Select the expertise that the appointment is about."</div>
-            </div>    
+            </div>
         </div>
     </div>
 
@@ -172,30 +178,12 @@
          </div>
       </div>
    </form>
-<?php  } else if ($this->controller->getAction() == 'agenda') { ?>
-    <style>
-    .calendar {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .calendar td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      height: 100px;
-    }
-
-    .time-slot {
-      font-size: 14px;
-    }
-  </style>
-</head>
+<?php  } else if ($this->controller->getAction() == 'view') { ?>
 <body>
-<body>
-    <div class="container mt-4">
-        <h2 class="text-center mb-4">Calendar</h2>
+    <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
+        <h2 class="mb-4">overview appointments</h2>
         <div class="row">
-            <div class="">
+            <div class="col"> <!-- Gebruik een kolom om de container binnen de rij te plaatsen -->
                 <label for="month">Selecteer een maand:</label>
                 <select name="month" id="month" class="form-select">
                     <?php
@@ -208,7 +196,7 @@
                     }
                     ?>
                 </select>
-                <div class="calendar-container">
+                <div class="calendar-container pt-4">
                     <table class="table table-bordered calendar">
                         <thead>
                             <tr>
@@ -222,57 +210,60 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            // Get the selected month from the URL query parameter or default to the current month
-                            $selectedMonth = isset($_GET['month']) ? intval($_GET['month']) : date('n');
-                            // Get the number of days in the selected month
-                            $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $selectedMonth, date('Y'));
-
-                            // Calculate the number of weeks needed to display all days
-                            $weeks = ceil($daysInMonth / 7);
-
-                            // Initialize the day counter
-                            $dayCount = 1;
-
-                            // Loop through the weeks
-                            for ($week = 0; $week < $weeks; $week++) {
-                                echo "<tr>";
-
-                                // Loop through the days of the week
-                                for ($dayOfWeek = 0; $dayOfWeek < 7; $dayOfWeek++) {
-                                    echo "<td class='day-cell col-1'>";
-
-                                    // Check if the day count exceeds the number of days in the month
-                                    if ($dayCount <= $daysInMonth) {
-                                        // Display the day number
-                                        echo $dayCount;
-                                        $dayCount++;
+                        <?php
+                            foreach ($calendar as $row => $rowContent) {
+                                echo "<tr style='height: 160px'>";
+                                foreach ($rowContent as $day => $dayContent) {
+                                    echo "<td class='day-cell col-1 h-100'>";
+                                    if ($dayContent['empty']) {
+                                        echo "&nbsp;";
+                                    } else {
+                                        echo $dayContent['daynumber'];
+                                        if ($dayContent['count'] >= 1) {
+                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agenda//' . $dayContent['date']).'" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
+                                                    <i class="fas fa-calendar-check" style="margin-right: 5px;"></i>Appointments ('.$dayContent['count'].')
+                                                  </a>';
+                                        }
                                     }
-
                                     echo "</td>";
                                 }
-
                                 echo "</tr>";
                             }
                             ?>
+
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $('#month').change(function() {
-                var selectedMonth = $(this).val();
-                var currentYear = (new Date()).getFullYear(); // Get the current year
-
-                // Navigate to the page with the selected month
-                window.location.href = '<?= $_SERVER['PHP_SELF']; ?>?month=' + selectedMonth + '&year=' + currentYear;
-            });
-        });
-    </script>
 </body>
+<script>
+    $(document).ready(function() {
+        $('#month').change(function() {
+            var selectedMonth = $(this).val();
+            var currentYear = (new Date()).getFullYear(); // Get the current year
 
+            // Navigate to the page with the selected month
+            window.location.href = '<?= URL::to('/dashboard/planning_tool/appointments/'); ?>'+currentYear+'/'+selectedMonth+'/';
+            
+        });
+    });
+</script>
+<style>
+.calendar {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    height: 100px;
+}
+
+.time-slot {
+    font-size: 14px;
+}
+</style>
 <?php  } ?>
