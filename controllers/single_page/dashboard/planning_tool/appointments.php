@@ -9,7 +9,7 @@ use DateTime;
 
 class appointments extends DashboardPageController
 {
-    public function view($dateString='')
+    public function agenda($dateString='')
     {    
         $date = new DateTime($dateString);
         
@@ -20,7 +20,7 @@ class appointments extends DashboardPageController
         $this->set('appointments', $appointments);
     }
     
-    public function agenda($year='', $month='')
+    public function view($year='', $month='')
     {
         if ($year == '') { $year = date('Y'); }
         if ($month == '') { $month = date('m'); }
@@ -70,13 +70,14 @@ class appointments extends DashboardPageController
         $this->set('appointment', $appointment);
     
         $expertiseID = $appointment->getExpertise();
-
+        $expertises = Expertise::getAll();
+        
         if ($expertiseID == 0) {
             $getPersons = Person::getAll(); 
         } else {
             $getPersons = Expertise::getPersonsByExpertiseID($expertiseID);
         }
-        
+        $this->set('expertises', $expertises);
         $this->set('persons', $getPersons);
     }
     
