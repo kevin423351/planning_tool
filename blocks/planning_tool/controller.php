@@ -14,10 +14,18 @@ class Controller extends BlockController {
     {
         return t('planning tool');
     }
-
     public function getBlockTypeDescription()
     {
         return t('Add a planning tool to your website!');
     }
+    public function firstStep()
+    {
+
+    }
+    public function secondStep()
+    {
+
+    }
+
 }
 ?>

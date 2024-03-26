@@ -60,7 +60,6 @@ class appointments extends DashboardPageController
             }
             $row++;
         }
-
         $this->set('calendar', $return);
     }
 
