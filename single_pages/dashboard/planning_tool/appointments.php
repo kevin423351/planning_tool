@@ -141,6 +141,7 @@
             <div class="form-group">
                 <label for="expertiseID" class="form-label">Expertise </label>
                 <select id="expertiseID" name="expertiseID" class="form-select">
+                <option value="0">no expertise</option>
                     <?php foreach ($expertises as $expertise) { ?>
                         <option value="<?= $expertise->getItemID(); ?>" <?php if ($appointment->getExpertise() == $expertise->getItemID()) echo 'selected'; ?>>
                             <?= $expertise->getFirstname(); ?>
