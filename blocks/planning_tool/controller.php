@@ -18,14 +18,9 @@ class Controller extends BlockController {
     {
         return t('Add a planning tool to your website!');
     }
-    public function firstStep()
+    public function action_submit()
     {
 
     }
-    public function secondStep()
-    {
-
-    }
-
 }
 ?>
