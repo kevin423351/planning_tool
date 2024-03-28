@@ -24,8 +24,6 @@ class Setappointments extends DashboardPageController
 
         $expertise = Expertise::getAll();
         $this->set('expertises', $expertise);
-
-
     }
     
     public function view()
