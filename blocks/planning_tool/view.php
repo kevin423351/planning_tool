@@ -2,61 +2,61 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
-<div class="ccm-block-type-custom-block-field"><?= $content ?></div>
+<div class="ccm-block-wrapper">
+    <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
 
-
-<a href="#" id="getAllPersonsButton" class="btn btn-primary">Get All Persons</a>
-
-<div class="form-group">
-    <?php echo $form->label('persons', 'Choose Person(s)')?>
-    <div>
-        <?php echo $form->hidden('persons'); ?>
-    </div>
+<?php   if ($choice == '') { ?>
+    <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
+    &nbsp;&nbsp;&nbsp;
+    <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
+<?php   } else { 
+            if ($choice == 'person') { ?>
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label for="personID" class="form-label">With who?</label>
+                            <select id="personID" name="personID" class="form-select">
+                                <?php foreach ($persons as $person){ ?>
+                                    <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+<?php       } elseif ($choice == 'expertise') { ?>
+                <div class="row">
+                    <div class="col-12 col-md-3">
+                        <div class="form-group">
+                            <label for="expertiseID" class="form-label">With who?</label>
+                            <select id="expertiseID" name="expertiseID" class="form-select">
+                                <?php foreach ($expertises as $expertise){ ?>
+                                    <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+<?php       }
+        } ?>
 </div>
 
+
 <script>
-$(document).ready(function() {
-    $('#getAllPersonsButton').click(function(event) {
-        event.preventDefault(); 
-        
+$(function() {
+    $('a[data-action=set-choice]').on('click', function() {
         $.ajax({
-            url: "<?php echo $view->action('xhr');?>", // URL naar de controlleractie
-            dataType: 'json',
-            success: function(data) {
-                console.log(data); // Log de ontvangen gegevens in de console
-            },
-            error: function(xhr, status, error) {
-                console.error(error);
+            type: 'POST',
+		    cache: false,
+            data: { choice: $(this).data('value') },
+            url: $(this).attr('href'),
+            dataType: 'html',
+            success: function(response) {
+                $('div.ccm-block-wrapper').replaceWith(response);
             }
         });
+        return false;
     });
 });
-// $(document).ready(function() {
-//     $('#getAllPersonsButton').click(function(event) {
-//         event.preventDefault(); // Voorkom standaardgedrag van de link
-        
-//         $.ajax({
-//             url: "", // Vervang met de juiste URL naar je controller methode
-//             dataType: 'json',
-//             success: function(data) {
-//                 // Roep Select2-functie aan nadat de personen zijn opgehaald
-//                 $('input[name=persons]').select2({
-//                     placeholder: "",
-//                     minimumInputLength: 1,
-//                     width: '100%',
-//                     multiple: true,
-//                     data: data.map(function(person) {
-//                         return { id: person.id, text: person.name };
-//                     })
-//                 });
-//             },
-//             error: function(xhr, status, error) {
-//                 console.error(error);
-//             }
-//         });
-//     });
-// });
-
 </script>
 
     
