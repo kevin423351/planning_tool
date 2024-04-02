@@ -37,7 +37,7 @@ class Setappointments extends DashboardPageController
             $currentDate = new DateTime();
             $currentDate->modify("+$weekOffset week");
 
-            $buttons = $this->getAvailableTimeSlots($personID, null, $currentDate);
+            $buttons = Timeslot::getAvailableTimeSlots($personID, null, $currentDate);
 
             $this->set('buttons', $buttons);
             $this->set('personID', $personID);
@@ -50,76 +50,12 @@ class Setappointments extends DashboardPageController
         $currentDate = new DateTime();
         $currentDate->modify("+$weekOffset week");
 
-        $buttons = $this->getAvailableTimeSlots(null, $expertiseID, $currentDate);
+        $buttons = Timeslot::getAvailableTimeSlots(null, $expertiseID, $currentDate);
 
         $this->set('buttons', $buttons);
         $this->set('expertiseID', $expertiseID);
         $this->set('weekOffset', $weekOffset);
     }
-
-    public function getAvailableTimeSlots($personID = null, $expertiseID = null, $currentDate)
-    {
-        $persons = [];
-
-        if ($personID !== null) {
-            $persons[] = Person::getByID($personID);
-        } elseif ($expertiseID !== null) {
-            $persons = Expertise::getPersonsByExpertiseID($expertiseID);
-        }
-
-        $buttons = [];
-
-        foreach ($persons as $person) {
-            $personID = $person->getItemID();
-            $timeslots = $person->getTimeslots();
-
-            foreach ($timeslots as $timeslot) {
-                $startTime = new DateTime($timeslot->getStartTime());
-                $endTime = new DateTime($timeslot->getEndTime());
-                $appointmentTime = $timeslot->getAppointmentTime();
-                $date = date('Y-m-d', strtotime((string)$timeslot->getday() . ' this week', $currentDate->getTimestamp()));
-
-                if (date('Y-m-d') > $date) {
-                    $buttons[$date] = [];
-                    continue;
-                }
-
-                if (!isset($buttons[$date])) {
-                    $buttons[$date] = [];
-                }
-
-                while ($startTime < $endTime) {
-                    $blockEndTime = clone $startTime;
-                    $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
-
-                    $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
-                    $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
-
-                    if (!$isUnavailable && !$isChosen) {
-                        if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
-                            $buttons[$date][$startTime->format('H:i')] = [
-                                'startTime' => $startTime->format('H:i'),
-                                'endTime' => $blockEndTime->format('H:i'),
-                                'personID' => $personID,
-                            ];
-                        }
-                    }
-                    $startTime = $blockEndTime;
-                }
-            }
-        }
-
-        ksort($buttons);
-
-        foreach ($buttons as $key => $data) {
-            ksort($data);
-            $buttons[$key] = $data;
-        }
-
-        return $buttons;
-    }
-
-  
 
     public function appointment($personID, $expertiseID, $date='', $start='', $end='')
     {

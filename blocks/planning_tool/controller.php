@@ -23,20 +23,35 @@ class Controller extends BlockController {
 	// protected $btInterfaceHeight = 550;
 	// protected $btTable = 'planning_tool';
     protected $choice = '';
-
+    protected $PersonTS = 0;
+    protected $weekOffset = 0;
+    
     public function getBlockTypeName()
     {
         return t('planning tool');
-    }
+    } 
 
     public function getBlockTypeDescription()
     {
         return t('Add a planning tool to your website!');
     }
 
-    public function view() {
+    public function view() 
+    {
+        if ((int)$this->PersonTS != 0) {
+            $currentDate = new DateTime();
+            $currentDate->modify("+$this->weekOffset week");
+    
+            $buttons = Timeslot::getAvailableTimeSlots($this->PersonTS, null, $currentDate);
+    
+            $this->set('buttons', $buttons);
+            $this->set('personID', $personID);
+            $this->set('weekOffset', $weekOffset);
+        }
+
         $this->set('choice', $this->choice);
-        
+        $this->set('PersonTS', $this->PersonTS);
+
         if ($this->choice == 'person') {
             $this->set('persons', Person::getAll());
         }
@@ -44,8 +59,10 @@ class Controller extends BlockController {
             $this->set('expertises', Expertise::getAll());
         }
     }
+    
 
-    public function action_choice($token = false, $bID = false) {
+    public function action_choice($token = false, $bID = false) 
+    {
         if ($this->bID != $bID) {
             return false;
         }
@@ -63,6 +80,25 @@ class Controller extends BlockController {
         }
         exit;
     }
-  
+    public function action_PersonTS($token = false, $bID = false) 
+    {
+        if ($this->bID != $bID) {
+            return false;
+        }
+        if (\Core::make('token')->validate('PersonTS', $token)) {
+            $page = Page::getCurrentPage();
+            $u = new User();
+            $this->choice = $_POST['choice'];
+            $this->PersonTS = $_POST['PersonTS'];
+            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+                $b = $this->getBlockObject();
+                $bv = new BlockView($b);
+                $bv->render('view');
+            } else {
+                Redirect::page($page)->send();
+            }
+        }
+        exit;
+    }
 }
 ?>
