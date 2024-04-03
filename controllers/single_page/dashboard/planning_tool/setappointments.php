@@ -40,7 +40,6 @@ class Setappointments extends DashboardPageController
             $buttons = Timeslot::getAvailableTimeSlots($personID, null, $currentDate);
 
             $this->set('buttons', $buttons);
-            $this->set('personID', $personID);
             $this->set('weekOffset', $weekOffset);
         }
     }
