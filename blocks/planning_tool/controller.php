@@ -61,19 +61,60 @@ class Controller extends BlockController {
             $currentDate->modify("+$this->weekOffset week");
     
             $buttons = Timeslot::getAvailableTimeSlots(null, $this->expertiseTS, $currentDate);
-        }
-    
+        }   
+
         $this->set('buttons', $buttons);
         $this->set('expertiseID', $this->expertiseID); 
         $this->set('weekOffset', $this->weekOffset);
-    
+
         $this->set('choice', $this->choice);
         $this->set('personTS', $this->personTS);
+        $this->set('personID', $this->personID);
         $this->set('expertiseTS', $this->expertiseTS);
   
         $this->set('date', $this->date);
         $this->set('startTime', $this->startTime); 
         $this->set('endTime', $this->endTime); 
+    }
+    
+    public function action_saveAppointment($token = false, $bID = false) 
+    {
+        if ($this->bID != $bID) {
+            return false;
+        }
+        if (\Core::make('token')->validate('saveAppointment', $token)) {
+            $page = Page::getCurrentPage();
+            $u = new User();
+    
+            $post = $this->request->request;
+
+            $choice = $post->get('choice');
+          
+            $appointment = new Appointment();
+            $appointment->setDeleted(0); 
+         
+            $appointment->setPerson($post->get('personID'));
+            $appointment->setExpertise($post->get('expertiseID'));
+            $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
+            $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
+            $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
+            $appointment->setFirstname($post->get('appointmentName'));
+            $appointment->setLastname($post->get('appointmentLastname'));
+            $appointment->setEmail($post->get('appointmentEmail'));
+            $appointment->setPhonenumber($post->get('appointmentPhone'));
+            $appointment->setComment($post->get('appointmentComment'));
+    
+            $appointment->save();
+    
+            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+                $b = $this->getBlockObject();
+                $bv = new BlockView($b);
+                $bv->render('view');
+            } else {
+                Redirect::page($page)->send();
+            }
+        }
+        exit;
     }
     
     public function action_choice($token = false, $bID = false) 
@@ -136,6 +177,7 @@ class Controller extends BlockController {
             $page = Page::getCurrentPage();
             $u = new User();
 
+            $this->choice = $_POST['choice'];
             $this->personID = $_POST['personID'];
             $this->expertiseID = $_POST['expertiseID'];
             $this->date = $_POST['date'];
@@ -152,6 +194,5 @@ class Controller extends BlockController {
         }
         exit;
     }    
-
 }
 ?>

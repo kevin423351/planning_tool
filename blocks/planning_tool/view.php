@@ -10,7 +10,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
     &nbsp;&nbsp;&nbsp;
     <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
 <?php   } else { 
-            if ($choice == 'person' && !isset($buttons)) { ?>
+            if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -26,7 +26,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                 </div> 
 <?php       }
-            if ($choice == 'expertise' && !isset($buttons)) { ?>
+            if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -71,12 +71,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                     <a href="javascript:;" 
                                                         class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
                                                         data-personid="<?= $button['personID']; ?>" 
-                                                        data-expertiseid="<?= isset($expertiseID) ? $expertiseID : 0; ?>"
+                                                        data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
                                                         data-date="<?= $date; ?>"
-                                                        data-start="<?= str_replace(':', '-', $button['startTime']); ?>" 
-                                                        data-end="<?= str_replace(':', '-', $button['endTime']); ?>">
+                                                        data-starttime="<?= $button['startTime']; ?>" 
+                                                        data-endtime="<?= $button['endTime']; ?>">
                                                         <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                                        <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                                        <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                                         <input type="hidden" name="choice" value="person">
                                                     </a>
                                                 </div>
@@ -91,51 +91,50 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                 </div>
 <?php       }    
-                if (isset($choice) && isset($buttons)) { ?>
-                <?php wtfs($button['startTime']); ?>
-                    <form method="post" action="">
-                        <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
-                        <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
-                        <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
-                        <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $start ?>">
-                        <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $end ?>">
-                        <div class="row">
-                            <div class="col">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
-                            </div>
-                            <div class="col">
-                                <label for="lastname" class="form-label">lastname</label>
-                                <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" required><br>
-                            </div>
+            if (isset($choice) && isset($startTime)) { ?>   
+                <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
+                    <input type="hidden" name="choice" value="person">
+                    <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
+                    <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
+                    <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
+                    <input type="hidden" id="appointmentStartTime" name="appointmentStartTime" value="<?= $startTime ?>">
+                    <input type="hidden" id="appointmentEndTime" name="appointmentEndTime" value="<?= $endTime ?>">
+                    <div class="row">
+                        <div class="col">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <label for="email" class="form-label">Email</label>
-                                <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
-                            </div>
-                            <div class="col">
-                                <label for="number" class="form-label">Phone number</label>
-                                <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
-                            </div>
+                        <div class="col">
+                            <label for="lastname" class="form-label">lastname</label>
+                            <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" required><br>
                         </div>
-                        <div class="row">
-                            <div class="col">
-                                <label for="comment" class="form-label">comment</label>
-                                <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
-                            </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
                         </div>
-                        <div class="ccm-dashboard-form-actions-wrapper">
-                            <div class="ccm-dashboard-form-actions ">
-                                <a href="#" class="btn btn-secondary float-start">Cancel</a>
-                                <button class="float-end btn btn-primary" type="submit">Save</button>
-                            </div>
+                        <div class="col">
+                            <label for="number" class="form-label">Phone number</label>
+                            <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
                         </div>
-                    </form>
-                <?php } ?>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <label for="comment" class="form-label">comment</label>
+                            <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
+                        </div>
+                    </div>
+                    <div class="ccm-dashboard-form-actions-wrapper">
+                        <div class="ccm-dashboard-form-actions ">
+                            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+                            <button class="float-end btn btn-primary" type="submit">Save</button>
+                        </div>
+                    </div>
+                </form>
+            <?php } ?>
     <?php } ?>
 </div>
-
 
 <script>
 $(function() {
@@ -168,26 +167,41 @@ $(function() {
                 $('div.ccm-block-wrapper').replaceWith(response);
             }
         });
-    });
+    }); 
     
     $(document).ready(function() {
-        $('.set-appointment').click(function(e) {
+        $('.set-appointment').off().on('click', function(e) {
             e.preventDefault(); 
 
             var personID = $(this).data('personid');
             var expertiseID = $(this).data('expertiseid');
             var date = $(this).data('date');
-            var startTime = $(this).data('start');
-            var endTime = $(this).data('end');
+            var startTime = $(this).data('starttime');
+            var endTime = $(this).data('endtime');
+            var choice = $('input[name="choice"]').val();
 
             $.ajax({
                 type: 'POST', 
                 url: '<?php echo $view->action('appointment', Core::make('token')->generate('appointment')); ?>',
-                data: { personID: personID, expertiseID: expertiseID, date: date, startTime: startTime, endTime: endTime },
+                data: { personID: personID, expertiseID: expertiseID, date: date, startTime: startTime, endTime: endTime, choice: choice },
                 dataType: 'html',
                 success: function(response) {
                     $('div.ccm-block-wrapper').replaceWith(response);
                 },
+            });
+        });
+    });
+    $(document).ready(function() {
+        $('form').submit(function(event) {
+            event.preventDefault();
+            var formData = $(this).serialize();
+            $.ajax({
+                type: 'POST',
+                url: '<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment')) ?>',
+                data: formData ,
+                success: function(response) {
+                    $('div.ccm-block-wrapper').html(response);
+                }
             });
         });
     });
