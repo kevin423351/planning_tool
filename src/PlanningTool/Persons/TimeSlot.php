@@ -186,7 +186,7 @@ use DateInterval;
                     $buttons[$date] = [];
                     continue;
                 }
-
+            
                 if (!isset($buttons[$date])) {
                     $buttons[$date] = [];
                 }

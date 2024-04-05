@@ -4,11 +4,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 <div class="ccm-block-wrapper">
     <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
-
-<?php   if ($choice == '') { ?>
-    <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
-    &nbsp;&nbsp;&nbsp;
-    <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
+<?php    if ($choice == '' && !isset($buttons) && !isset($date)){ ?>
+    <button id="showButtons" class="btn btn-primary">make an appointment</button>
+<?php  } if ($choice == '') { ?>
+    <div id="hiddenButtons" style="display: none;">
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
+        &nbsp;&nbsp;&nbsp;
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
+    </div>
 <?php   } else { 
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
@@ -127,8 +130,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
                         <div class="ccm-dashboard-form-actions ">
-                            <a href="#" class="btn btn-secondary float-start">Cancel</a>
-                            <button class="float-end btn btn-primary" type="submit">Save</button>
+                            <button class="btn btn-primary" type="submit">Save</button>
                         </div>
                     </div>
                 </form>
@@ -137,6 +139,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
 </div>
 
 <script>
+$(document).ready(function() {
+    $("#showButtons").click(function() {
+        $("#hiddenButtons").show();
+        $("#showButtons").hide();
+    });
+});
+
 $(function() {
     $('a[data-action=set-choice]').on('click', function() {
         $.ajax({
