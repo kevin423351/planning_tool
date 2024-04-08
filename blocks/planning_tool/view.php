@@ -49,12 +49,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3">
-                            <?php
-                            $lastWeekOffset = $weekOffset - 1;
-                            $nextWeekOffset = $weekOffset + 1;
-                            ?>
-                            <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $lastWeekOffset) ?>" class="btn btn-primary"><- previous week</a>
-                            <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">next week -></a>
+                            <a id="previousWeekBtn" href="#" class="btn btn-primary"><- previous week</a>
+                            <a id="nextWeekBtn" href="#" class="btn btn-primary">next week -></a>
                         </div>
                     </div>
                 </div>
@@ -129,8 +125,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
                         </div>
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
-                        <div class="ccm-dashboard-form-actions ">
-                            <button class="btn btn-primary" type="submit">Save</button>
+                        <div class="ccm-dashboard-form-actions">
+                            <button class="btn btn-primary" type="submit">submit</button>
                         </div>
                     </div>
                 </form>
@@ -177,29 +173,40 @@ $(function() {
             }
         });
     }); 
-    
     $(document).ready(function() {
-        $('.set-appointment').off().on('click', function(e) {
-            e.preventDefault(); 
+    var weekOffset = <?= $weekOffset ?>;
+    var personID = <?= isset($personTS) ? $personTS : 'null' ?>;
 
-            var personID = $(this).data('personid');
-            var expertiseID = $(this).data('expertiseid');
-            var date = $(this).data('date');
-            var startTime = $(this).data('starttime');
-            var endTime = $(this).data('endtime');
-            var choice = $('input[name="choice"]').val();
+    console.log('personID:', personID); 
 
-            $.ajax({
-                type: 'POST', 
-                url: '<?php echo $view->action('appointment', Core::make('token')->generate('appointment')); ?>',
-                data: { personID: personID, expertiseID: expertiseID, date: date, startTime: startTime, endTime: endTime, choice: choice },
-                dataType: 'html',
-                success: function(response) {
-                    $('div.ccm-block-wrapper').replaceWith(response);
-                },
-            });
+        $("#previousWeekBtn").click(function(event) {
+            event.preventDefault();
+            weekOffset--;
+            updateWeekOffset();
         });
+
+        $("#nextWeekBtn").click(function(event) {
+            event.preventDefault();
+            weekOffset++;
+            updateWeekOffset();
+        });
+
+        function updateWeekOffset() {
+            $.ajax({
+                url: '<?php echo $view->action('weeks', Core::make('token')->generate('weeks')) ?>',
+                type: 'POST',
+                data: { personID: personID, weekOffset: weekOffset },
+                success: function(response) {
+                    console.log('Weekoffset bijgewerkt naar ' + weekOffset);
+                    console.log('Response:', response);
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', error);
+                }
+            });
+        }
     });
+
     $(document).ready(function() {
         $('form').submit(function(event) {
             event.preventDefault();

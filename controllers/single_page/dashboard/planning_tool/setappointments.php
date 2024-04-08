@@ -33,15 +33,15 @@ class Setappointments extends DashboardPageController
 
     public function personview($personID = 1, $weekOffset = 0)
     {
-        if ((int)$personID != 0) {
-            $currentDate = new DateTime();
-            $currentDate->modify("+$weekOffset week");
+        $currentDate = new DateTime();
+        $currentDate->modify("+$weekOffset week");
 
-            $buttons = Timeslot::getAvailableTimeSlots($personID, null, $currentDate);
-
-            $this->set('buttons', $buttons);
-            $this->set('weekOffset', $weekOffset);
-        }
+        $buttons = Timeslot::getAvailableTimeSlots($personID, null, $currentDate);
+        
+        $this->set('personID', $personID);
+        $this->set('buttons', $buttons);
+        $this->set('weekOffset', $weekOffset);
+        
     }
     
     public function expertiseview($expertiseID = 1, $weekOffset = 0)

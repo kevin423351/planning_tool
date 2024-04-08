@@ -64,6 +64,7 @@ class Controller extends BlockController {
         }   
 
         $this->set('buttons', $buttons);
+        $this->set('personID', $personID);
         $this->set('expertiseID', $this->expertiseID); 
         $this->set('weekOffset', $this->weekOffset);
 
@@ -139,6 +140,31 @@ class Controller extends BlockController {
         exit;
     }
 
+    public function action_weeks($token = false, $bID = false) 
+    {
+        if ($this->bID != $bID) {
+            return false;
+        }
+        if (\Core::make('token')->validate('weeks', $token)) {
+            $page = Page::getCurrentPage();
+            $u = new User();
+
+            $this->personID = $_POST['personID'];
+            $this->weekOffset = $_POST['weekOffset'];
+
+
+            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+                $b = $this->getBlockObject();
+                $bv = new BlockView($b);
+                $bv->render('view');
+            } else {
+                Redirect::page($page)->send();
+            }
+        }
+        exit;
+    }    
+
+
     public function action_personTS($token = false, $bID = false) 
     {
         if ($this->bID != $bID) {
@@ -161,7 +187,7 @@ class Controller extends BlockController {
                 $b = $this->getBlockObject();
                 $bv = new BlockView($b);
                 $bv->render('view');
-            } else {
+            } else { 
                 Redirect::page($page)->send();
             }
         }
