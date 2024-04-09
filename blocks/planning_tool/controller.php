@@ -49,25 +49,26 @@ class Controller extends BlockController {
         if ($this->choice == 'expertise') {
             $this->set('expertises', Expertise::getAll());
         }
-        
+
         if ((int)$this->personTS != 0) {
             $currentDate = new DateTime();
-            $currentDate->modify("+$this->weekOffset week");
+            $currentDate->modify("+".$this->weekOffset." week");
     
             $buttons = Timeslot::getAvailableTimeSlots($this->personTS, null, $currentDate);
         }
         if ((int)$this->expertiseTS != 0) {
             $currentDate = new DateTime();
-            $currentDate->modify("+$this->weekOffset week");
+            $currentDate->modify("+".$this->weekOffset." week");
     
             $buttons = Timeslot::getAvailableTimeSlots(null, $this->expertiseTS, $currentDate);
         }   
+
 
         $this->set('buttons', $buttons);
         $this->set('personID', $personID);
         $this->set('expertiseID', $this->expertiseID); 
         $this->set('weekOffset', $this->weekOffset);
-
+        
         $this->set('choice', $this->choice);
         $this->set('personTS', $this->personTS);
         $this->set('personID', $this->personID);
@@ -149,7 +150,7 @@ class Controller extends BlockController {
             $page = Page::getCurrentPage();
             $u = new User();
 
-            $this->personID = $_POST['personID'];
+            $this->personTS = $_POST['personTS'];
             $this->weekOffset = $_POST['weekOffset'];
 
 

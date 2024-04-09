@@ -49,8 +49,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3">
-                            <a id="previousWeekBtn" href="#" class="btn btn-primary"><- previous week</a>
-                            <a id="nextWeekBtn" href="#" class="btn btn-primary">next week -></a>
+                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-primary"><- previous week</a>
+                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-primary">next week -></a>
                         </div>
                     </div>
                 </div>
@@ -173,12 +173,33 @@ $(function() {
             }
         });
     }); 
+    
+    $(document).ready(function() {
+        $('.set-appointment').off().on('click', function(e) {
+            e.preventDefault(); 
+
+            var personID = $(this).data('personid');
+            var expertiseID = $(this).data('expertiseid');
+            var date = $(this).data('date');
+            var startTime = $(this).data('starttime');
+            var endTime = $(this).data('endtime');
+            var choice = $('input[name="choice"]').val();
+            
+            $.ajax({
+                type: 'POST', 
+                url: '<?php echo $view->action('appointment', Core::make('token')->generate('appointment')); ?>',
+                data: { personID: personID, expertiseID: expertiseID, date: date, startTime: startTime, endTime: endTime, choice: choice },
+                dataType: 'html',
+                success: function(response) {
+                    $('div.ccm-block-wrapper').replaceWith(response);
+                },
+            });
+        });
+    });
+
     $(document).ready(function() {
     var weekOffset = <?= $weekOffset ?>;
-    var personID = <?= isset($personTS) ? $personTS : 'null' ?>;
-
-    console.log('personID:', personID); 
-
+    var personTS = <?= isset($personTS) ? $personTS : 'null' ?>;
         $("#previousWeekBtn").click(function(event) {
             event.preventDefault();
             weekOffset--;
@@ -195,14 +216,10 @@ $(function() {
             $.ajax({
                 url: '<?php echo $view->action('weeks', Core::make('token')->generate('weeks')) ?>',
                 type: 'POST',
-                data: { personID: personID, weekOffset: weekOffset },
+                data: { personTS: personTS, weekOffset: weekOffset },
                 success: function(response) {
-                    console.log('Weekoffset bijgewerkt naar ' + weekOffset);
-                    console.log('Response:', response);
+                    $('div.ccm-block-wrapper').replaceWith(response);
                 },
-                error: function(xhr, status, error) {
-                    console.error('AJAX error:', error);
-                }
             });
         }
     });
