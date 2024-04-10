@@ -99,7 +99,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
         return $qb->getQuery()->getSingleScalarResult();
     }
-
+  
     public static function getByID($appointmentID)
     {
         $em = dbORM::entityManager();

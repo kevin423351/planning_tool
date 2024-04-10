@@ -6,6 +6,9 @@ defined('C5_EXECUTE') or die('Access Denied.');
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Unavailable;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
+use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
+
 use DateTime;
 use DateInterval;
 /**
@@ -156,16 +159,66 @@ use DateInterval;
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
     }
-}
 
-// public function getDateAdded($display = false, $format = 'Y-m-d H:i:s')
-// {
-//     if (!$display) {
-//         return $this->rowAdded;
-//     }
-//     return app()->make('helper/date')->formatDateTime(strtotime($this->rowAdded->format($format)));
-// }
-// public function setDateAdded($rowAdded)
-// {
-//     $this->rowAdded = $rowAdded;
-// }
+    public function getAvailableTimeSlots($personID = null, $expertiseID = null, $currentDate)
+    {
+        $persons = [];
+
+        if ($personID !== null) {
+            $persons[] = Person::getByID($personID);
+        } elseif ($expertiseID !== null) {
+            $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+        }
+
+        $buttons = [];
+
+        foreach ($persons as $person) {
+            $personID = $person->getItemID();
+            $timeslots = $person->getTimeslots();
+
+            foreach ($timeslots as $timeslot) {
+                $startTime = new DateTime($timeslot->getStartTime());
+                $endTime = new DateTime($timeslot->getEndTime());
+                $appointmentTime = $timeslot->getAppointmentTime();
+                $date = date('Y-m-d', strtotime((string)$timeslot->getday() . ' this week', $currentDate->getTimestamp()));
+
+                if (date('Y-m-d') > $date) {
+                    $buttons[$date] = [];
+                    continue;
+                }
+            
+                if (!isset($buttons[$date])) {
+                    $buttons[$date] = [];
+                }
+
+                while ($startTime < $endTime) {
+                    $blockEndTime = clone $startTime;
+                    $blockEndTime->add(new DateInterval('PT' . $appointmentTime . 'M'));
+
+                    $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
+                    $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
+
+                    if (!$isUnavailable && !$isChosen) {
+                        if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
+                            $buttons[$date][$startTime->format('H:i')] = [
+                                'startTime' => $startTime->format('H:i'),
+                                'endTime' => $blockEndTime->format('H:i'),
+                                'personID' => $personID,
+                            ];
+                        }
+                    }
+                    $startTime = $blockEndTime;
+                }
+            }
+        }
+
+        ksort($buttons);
+
+        foreach ($buttons as $key => $data) {
+            ksort($data);
+            $buttons[$key] = $data;
+        }
+
+        return $buttons;
+    }
+}
