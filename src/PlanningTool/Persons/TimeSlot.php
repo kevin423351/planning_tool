@@ -186,7 +186,7 @@ use DateInterval;
                     $buttons[$date] = [];
                     continue;
                 }
-            
+
                 if (!isset($buttons[$date])) {
                     $buttons[$date] = [];
                 }
@@ -197,7 +197,7 @@ use DateInterval;
 
                     $isUnavailable = Unavailable::unavailableExist($personID, $date, $startTime->format('H:i'));
                     $isChosen = Appointment::appointmentExist($personID, $date, $startTime->format('H:i'));
-
+                    
                     if (!$isUnavailable && !$isChosen) {
                         if (!array_key_exists($startTime->format('H:i'), $buttons[$date])) {
                             $buttons[$date][$startTime->format('H:i')] = [
