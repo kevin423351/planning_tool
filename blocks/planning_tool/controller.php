@@ -54,17 +54,17 @@ class Controller extends BlockController {
             $currentDate = new DateTime();
             $currentDate->modify("+".$this->weekOffset." week");
     
-            $buttons = Timeslot::getAvailableTimeSlots($this->personTS, null, $currentDate);
+            $this->set('buttons', Timeslot::getAvailableTimeSlots($this->personTS, null, $currentDate));
         }
         if ((int)$this->expertiseTS != 0) {
             $currentDate = new DateTime();
             $currentDate->modify("+".$this->weekOffset." week");
     
-            $buttons = Timeslot::getAvailableTimeSlots(null, $this->expertiseTS, $currentDate);
+            $this->set('buttons', Timeslot::getAvailableTimeSlots(null, $this->expertiseTS, $currentDate));
         }   
 
 
-        $this->set('buttons', $buttons);
+        // $this->set('buttons', $buttons);
         $this->set('personID', $personID);
         $this->set('expertiseID', $this->expertiseID); 
         $this->set('weekOffset', $this->weekOffset);
@@ -127,11 +127,11 @@ class Controller extends BlockController {
         if (\Core::make('token')->validate('choice', $token)) {
             $page = Page::getCurrentPage();
             $u = new User();
-
+                                                                                                                                                                                                                                                                                                                              
             $this->choice = $_POST['choice'];
 
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-                $b = $this->getBlockObject();
+                $b = $this->getBlockObject();                                                                 
                 $bv = new BlockView($b);
                 $bv->render('view');
             } else {
@@ -150,9 +150,17 @@ class Controller extends BlockController {
             $page = Page::getCurrentPage();
             $u = new User();
 
-            $this->personTS = $_POST['personTS'];
-            $this->weekOffset = $_POST['weekOffset'];
+            $this->choice = $_POST['choice'];
 
+            if ($this->choice == 'person') {
+                $this->personTS = $_POST['personTS'];
+                $this->weekOffset = $_POST['weekOffset'];
+                $this->expertiseTS = null;
+            } elseif ($this->choice == 'expertise') {
+                $this->personTS = null;
+                $this->expertiseTS = $_POST['expertiseTS'];
+                $this->weekOffset = $_POST['weekOffset'];
+            }
 
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();

@@ -2,17 +2,20 @@
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
 
+
 <div class="ccm-block-wrapper">
     <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
-<?php    if ($choice == '' && !isset($buttons) && !isset($date)){ ?>
+<?php   if ($choice == '' && !isset($buttons) && !isset($date)){ ?>
     <button id="showButtons" class="btn btn-primary">make an appointment</button>
-<?php  } if ($choice == '') { ?>
+<?php   } 
+        if ($choice == '') { ?>
     <div id="hiddenButtons" style="display: none;">
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
         &nbsp;&nbsp;&nbsp;
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
     </div>
 <?php   } else { 
+            
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
                     <div class="col-12 col-md-3">
@@ -76,7 +79,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                         data-endtime="<?= $button['endTime']; ?>">
                                                         <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
                                                         <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
-                                                        <input type="hidden" name="choice" value="person">
+                                                        <?php if ($choice == 'person'){ ?>
+                                                            <input type="hidden" name="choice" value="person">
+                                                        <?php } ?>
+                                                         <?php if ($choice == 'expertise'){ ?>
+                                                            <input type="hidden" name="choice" value="expertise">
+                                                        <?php } ?>
                                                     </a>
                                                 </div>
                                             <?php } ?>
@@ -93,6 +101,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
             if (isset($choice) && isset($startTime)) { ?>   
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
+                    <input type="hidden" name="choice" value="expertise">
                     <input type="hidden" id="personID" name="personID" value="<?= $personID ?>">
                     <input type="hidden" id="expertiseID" name="expertiseID" value="<?= $expertiseID ?>">
                     <input type="hidden" id="appointmentDatetime" name="appointmentDatetime" value="<?= $date ?>">
@@ -200,6 +209,7 @@ $(function() {
     $(document).ready(function() {
     var weekOffset = <?= $weekOffset ?>;
     var personTS = <?= isset($personTS) ? $personTS : 'null' ?>;
+    var expertiseTS = <?= isset($expertiseTS) ? $expertiseTS : 'null' ?>;
         $("#previousWeekBtn").click(function(event) {
             event.preventDefault();
             weekOffset--;
@@ -216,7 +226,7 @@ $(function() {
             $.ajax({
                 url: '<?php echo $view->action('weeks', Core::make('token')->generate('weeks')) ?>',
                 type: 'POST',
-                data: { personTS: personTS, weekOffset: weekOffset },
+                data: { personTS: personTS, expertiseTS: expertiseTS, weekOffset: weekOffset, choice: $('input[name="choice"]').val() },
                 success: function(response) {
                     $('div.ccm-block-wrapper').replaceWith(response);
                 },
