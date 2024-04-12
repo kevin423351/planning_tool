@@ -65,7 +65,17 @@ class Persons extends DashboardPageController
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
-        // Save the person object
+       
+        // if ($file = $this->request->files->get('profilePicture')) {
+        //     $fileUploader = $this->app->make('helper/file');
+        //     $fileStorageLocation = '/path/to/your/storage/directory'; // Specify the directory where you want to store the uploaded files
+        //     $fileUploaded = $fileUploader->upload($file, 'profile_picture', $fileStorageLocation);
+            
+        //     if ($fileUploaded) {
+        //         $person->setProfilePicture($fileUploaded->getFileURL());
+        //     }
+        // }
+
         $person->save();
 
         // Process and save time slots associated with the person
