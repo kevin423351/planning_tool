@@ -42,7 +42,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     protected $appointmentPhone;
 
     /**
-     * @ORM\Column(type="text", length=150)
+     * @ORM\Column(type="text")
      */
     protected $appointmentComment;
 

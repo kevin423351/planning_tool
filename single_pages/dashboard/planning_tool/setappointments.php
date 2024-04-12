@@ -85,8 +85,8 @@
         </div>
         <div class="row">
             <div class="col">
-                <label for="comment" class="form-label">comment</label>
-                <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
+                <label for="comment" class="form-label">Comment</label>
+                <textarea id="appointmentComment" name="appointmentComment" class="form-control ccm-input-textarea"></textarea><br>
             </div>
         </div>
         <div class="ccm-dashboard-form-actions-wrapper">
