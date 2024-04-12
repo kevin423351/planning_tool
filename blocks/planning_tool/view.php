@@ -15,7 +15,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
     </div>
 <?php   } else { 
-            
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
                     <div class="col-12 col-md-3">
@@ -129,8 +128,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                     <div class="row">
                         <div class="col">
-                            <label for="comment" class="form-label">comment</label>
-                            <input type="text" id="appointmentComment" name="appointmentComment" class="form-control ccm-input-text" value=""><br>
+                            <label for="comment" class="form-label">Comment</label>
+                            <textarea id="appointmentComment" name="appointmentComment" class="form-control ccm-input-textarea"></textarea><br>
                         </div>
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
