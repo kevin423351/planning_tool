@@ -107,9 +107,9 @@
                     <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
                 <?php } ?>
             </select>
-        </div>
+        </div> 
     </div>
-    <div class="col text-end"> 
+    <div class="col text-end">
         <div class="form-group">
             <div class="mt-3 pt-3">
                 <?php

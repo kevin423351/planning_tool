@@ -248,6 +248,36 @@ $(function() {
         });
     });
 });
+
+$(document).ready(function() {
+    $('form').submit(function(event) {
+        event.preventDefault(); 
+
+        var formData = $(this).serialize();
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function(response) {
+                
+                var appointmentName = $('#appointmentName').val();
+                var appointmentLastname = $('#appointmentLastname').val();
+                var appointmentDatetime = $('#appointmentDatetime').val();
+                var appointmentStartTime = $('#appointmentStartTime').val();
+                var appointmentEndTime = $('#appointmentEndTime').val();
+
+                var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
+                alert(message);
+
+                $('form')[0].reset();
+            },
+            error: function(xhr, status, error) {
+                alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
+            }
+        });
+    });
+});
 </script>
 
     
