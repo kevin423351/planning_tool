@@ -19,6 +19,11 @@
             if (!empty($persons)) {
                 foreach ($persons as $person) { ?>
                     <tr data-launch-search-menu="" class="">
+                    <td>
+                        <?php if ($person->getProfilePicture()) { ?>
+                              <img src="<?= $person->getProfilePicture(); ?>" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">
+                        <?php } ?>
+                     </td>
                         <td><?=$person->getFirstname(); ?></td>
                         <td><?=$person->getLastname(); ?></td>
                         <td><?=$person->getEmail(); ?></td>
@@ -45,7 +50,7 @@
 
 <?php } else if ($this->controller->getAction() == 'add') { ?>
 <h2>Add person</h2>
-<form method="post" action="<?=$this->action('save')?>">
+<form method="post" action="<?=$this->action('save')?>" enctype="multipart/form-data">
    <div class="row">
       <div class="col-12">
          <div class="form-group">
@@ -106,7 +111,6 @@
                   $timeslots = ['-1' => []];
                }
                foreach ($timeslots as $key => $timeslot) {
-                  
                ?>
             <div class="timeslot">
                <div class="col-auto">

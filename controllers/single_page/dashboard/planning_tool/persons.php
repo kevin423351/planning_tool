@@ -3,6 +3,8 @@ namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\Planning
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
+use \Concrete\Core\File\StorageLocation\StorageLocation as StorageLocation;
+use Concrete\Core\File\Service\File as FileService;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class Persons extends DashboardPageController
@@ -34,7 +36,6 @@ class Persons extends DashboardPageController
 
         $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
         $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
-        
     }
 
     public function add() 
@@ -57,25 +58,25 @@ class Persons extends DashboardPageController
         $person->setFirstname($post->get('formName'));
         $person->setLastname($post->get('formLastname'));
         $person->setEmail($post->get('formEmail'));
-        $person->setDate($post->get('formDate'));
-
+        $person->setDate($post->get('formDate')); 
+        
         // Process and set expertises associated with the person
         $expertises = [];
-        foreach ((array)$post->get('expertise') as $expertiseID) {
+        foreach ((array)$post->get('expertise') as $expertiseID) { 
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
-       
-        // if ($file = $this->request->files->get('profilePicture')) {
-        //     $fileUploader = $this->app->make('helper/file');
-        //     $fileStorageLocation = '/path/to/your/storage/directory'; // Specify the directory where you want to store the uploaded files
-        //     $fileUploaded = $fileUploader->upload($file, 'profile_picture', $fileStorageLocation);
-            
-        //     if ($fileUploaded) {
-        //         $person->setProfilePicture($fileUploaded->getFileURL());
-        //     }
-        // }
 
+        if ($file = $this->request->files->get('profilePicture')) {
+            if ($file->getError() === UPLOAD_ERR_OK) {
+                $fileStorageLocation = DIR_APPLICATION . '/files/uploads/profile_pictures';
+                $fileName = uniqid('profile_picture_') . '.' . $file->getClientOriginalExtension();
+                if ($file->move($fileStorageLocation, $fileName)) {
+                    $person->setProfilePicture($fileName);
+                }
+            } 
+        }
+        
         $person->save();
 
         // Process and save time slots associated with the person
