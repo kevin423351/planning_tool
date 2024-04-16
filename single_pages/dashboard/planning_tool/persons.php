@@ -9,6 +9,7 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
+                <th class=""></th>
                 <th class="">Name</th>
                 <th class="">Lastname</th>
                 <th class="">Email</th>
@@ -18,11 +19,13 @@
             <?php
             if (!empty($persons)) {
                 foreach ($persons as $person) { ?>
-                    <tr data-launch-search-menu="" class="">
-                    <td>
-                        <?php if ($person->getProfilePicture()) { ?>
-                              <img src="<?= $person->getProfilePicture(); ?>" alt="Profile Picture" style="width: 50px; height: 50px; border-radius: 50%;">
-                        <?php } ?>
+                     <tr data-launch-search-menu="" class="">
+                     <td>
+                     <?php
+                     if (is_object($images)) {
+                        echo '<img src="'.$images->getURL().'" class="img-fluid" style="width: 31px;">';
+                     }
+                     ?>
                      </td>
                         <td><?=$person->getFirstname(); ?></td>
                         <td><?=$person->getLastname(); ?></td>

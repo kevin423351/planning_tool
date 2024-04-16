@@ -3,8 +3,13 @@ namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\Planning
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
-use \Concrete\Core\File\StorageLocation\StorageLocation as StorageLocation;
-use Concrete\Core\File\Service\File as FileService;
+use Concrete\Core\File\File;
+use Concrete\Core\File\Image\Thumbnail\Type\Type;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
+use Imagine\Image\Palette\RGB;
+use Imagine\Gd\Imagine;
+use Concrete\Core\File\Import\ImportException;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class Persons extends DashboardPageController
@@ -25,9 +30,28 @@ class Persons extends DashboardPageController
 
     public function view()
     {
-        $person = Person::getAll(); // Get all expertises using the Person::getAll() method
-        $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
+        $persons = Person::getAll(); // Get all persons from the database
+        $this->set('persons', $persons);
+
+        $profilePictureUrls = []; // Initialize an empty array to hold profile picture URLs
+        
+        foreach ($persons as $person) {
+            $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+            
+            // Check if the profile picture exists and if it matches the file ID
+            if ($profilePicture) {
+                $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+                if ($file && $file->getFileID() == $profilePicture) { 
+                    $version = $file->getApprovedVersion();
+                    $resource = $version->getFileResource();
+                    $imageData = $resource->read();
+                    $this->set('images', $file);
+                }
+            }
+        }
     }
+    
+    
 
     public function edit($id) 
     {
@@ -67,15 +91,11 @@ class Persons extends DashboardPageController
         }
         $person->setExpertises($expertises);
 
-        if ($file = $this->request->files->get('profilePicture')) {
-            if ($file->getError() === UPLOAD_ERR_OK) {
-                $fileStorageLocation = DIR_APPLICATION . '/files/uploads/profile_pictures';
-                $fileName = uniqid('profile_picture_') . '.' . $file->getClientOriginalExtension();
-                if ($file->move($fileStorageLocation, $fileName)) {
-                    $person->setProfilePicture($fileName);
-                }
-            } 
-        }
+        $file = $this->request->files->get('profilePicture');
+        $filename = $file->getClientOriginalName();
+        $importer = $this->app->make('\Concrete\Core\File\Import\FileImporter');
+        $result = $importer->importUploadedFile($file, $filename);
+        $person->setProfilePicture($result->getFileID());
         
         $person->save();
 
