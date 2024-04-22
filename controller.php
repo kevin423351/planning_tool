@@ -37,13 +37,14 @@ class Controller extends Package {
     {
         // Run install
         $pkg = parent::install();
-
+    
         // Do some install stuff of package
         $this->createPages($pkg);
         $installer = new Installer();
         $installer->install();
-
     }
+    
+    
 
     public function upgrade()
     {

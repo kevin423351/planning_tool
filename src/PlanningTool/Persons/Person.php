@@ -21,7 +21,11 @@ use Doctrine\Common\Collections\ArrayCollection;
       * @ORM\GeneratedValue
       */
     protected $personID;
-
+    
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $profilePicture;
     /**
      * @ORM\Column(type="string", length=150)
      */
@@ -82,8 +86,17 @@ use Doctrine\Common\Collections\ArrayCollection;
     public function setItemID($personID)
     {
         $this->personID = $personID;
+    } 
+
+    public function getProfilePicture()
+    {
+        return $this->profilePicture;
     }
 
+    public function setProfilePicture($profilePicture)
+    {
+        $this->profilePicture = $profilePicture;
+    }
     public function getFirstname()
     {
         return $this->formName;

@@ -3,6 +3,13 @@ namespace Concrete\Package\PlanningTool\Controller\SinglePage\Dashboard\Planning
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
+use Concrete\Core\File\File;
+use Concrete\Core\File\Image\Thumbnail\Type\Type;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
+use Imagine\Image\Palette\RGB;
+use Imagine\Gd\Imagine;
+use Concrete\Core\File\Import\ImportException;
 use Concrete\Core\Page\Controller\DashboardPageController;
 
 class Persons extends DashboardPageController
@@ -21,11 +28,13 @@ class Persons extends DashboardPageController
         $this->set('expertises', $expertises); // Set the 'expertises' variable in the current instance to hold the retrieved expertises
     }
 
+
     public function view()
     {
-        $person = Person::getAll(); // Get all expertises using the Person::getAll() method
-        $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
-    }
+        $persons = Person::getAll(); // Get all persons from the database
+        $this->set('persons', $persons);
+    }   
+
 
     public function edit($id) 
     {
@@ -34,7 +43,6 @@ class Persons extends DashboardPageController
 
         $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
         $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
-        
     }
 
     public function add() 
@@ -57,15 +65,21 @@ class Persons extends DashboardPageController
         $person->setFirstname($post->get('formName'));
         $person->setLastname($post->get('formLastname'));
         $person->setEmail($post->get('formEmail'));
-        $person->setDate($post->get('formDate'));
-
+        $person->setDate($post->get('formDate')); 
+        
         // Process and set expertises associated with the person
         $expertises = [];
-        foreach ((array)$post->get('expertise') as $expertiseID) {
+        foreach ((array)$post->get('expertise') as $expertiseID) { 
             $expertises[] = Expertise::getByID($expertiseID);
         }
         $person->setExpertises($expertises);
-        // Save the person object
+
+        $file = $this->request->files->get('profilePicture');
+        $filename = $file->getClientOriginalName();
+        $importer = $this->app->make('\Concrete\Core\File\Import\FileImporter');
+        $result = $importer->importUploadedFile($file, $filename);
+        $person->setProfilePicture($result->getFileID());
+        
         $person->save();
 
         // Process and save time slots associated with the person

@@ -9,6 +9,7 @@
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
         <thead>
             <tr>
+                <th class=""></th>
                 <th class="">Name</th>
                 <th class="">Lastname</th>
                 <th class="">Email</th>
@@ -18,7 +19,20 @@
             <?php
             if (!empty($persons)) {
                 foreach ($persons as $person) { ?>
-                    <tr data-launch-search-menu="" class="">
+                     <tr data-launch-search-menu="" class="">
+                     <td>
+                        <?php
+                        $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+                        
+                        if ($profilePicture) {
+                           $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+                           
+                           if ($file) {
+                                 echo '<img src="'.$file->getURL().'" class="img-fluid" style="width: 31px;">';
+                           }
+                        }
+                        ?>
+                     </td>
                         <td><?=$person->getFirstname(); ?></td>
                         <td><?=$person->getLastname(); ?></td>
                         <td><?=$person->getEmail(); ?></td>
@@ -45,7 +59,15 @@
 
 <?php } else if ($this->controller->getAction() == 'add') { ?>
 <h2>Add person</h2>
-<form method="post" action="<?=$this->action('save')?>">
+<form method="post" action="<?=$this->action('save')?>" enctype="multipart/form-data">
+   <div class="row">
+      <div class="col-12">
+         <div class="form-group">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input type="file" id="profilePicture" name="profilePicture" class="form-control-file">
+         </div>
+      </div>
+   </div>
    <div class="row">
       <div class="col-12 col-md-6">
          <div class="form-group">
@@ -98,7 +120,6 @@
                   $timeslots = ['-1' => []];
                }
                foreach ($timeslots as $key => $timeslot) {
-                  
                ?>
             <div class="timeslot">
                <div class="col-auto">
