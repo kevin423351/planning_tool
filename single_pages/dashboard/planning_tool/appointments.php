@@ -188,17 +188,21 @@
         <div class="row">
             <div class="col"> <!-- Gebruik een kolom om de container binnen de rij te plaatsen -->
                 <label for="month">Selecteer een maand:</label>
-                <select name="month" id="month" class="form-select">
-                    <?php
-                    // Loop through each month of the year
-                    for ($month = 1; $month <= 12; $month++) {
-                        // Get the month name based on the month number
-                        $monthName = date("F", mktime(0, 0, 0, $month, 1));
-                        // Display the month as an option in the dropdown
-                        echo "<option value='$month'>$monthName</option>";
-                    }
-                    ?>
-                </select>
+                <?php
+               // Stel de geselecteerde maand in op basis van de ontvangen gebruikersinvoer, als die bestaat
+                $selectedMonth = isset($month) ? $month : null;
+                // Output van het dropdown-menu
+                echo '<select name="month" id="month" class="form-select">';
+                for ($month = 1; $month <= 12; $month++) {
+                    // Haal de maandnaam op basis van het maandnummer
+                    $monthName = date("F", mktime(0, 0, 0, $month, 1));
+                    // Controleer of de huidige maand overeenkomt met de geselecteerde maand
+                    $selected = ($month == $selectedMonth) ? 'selected' : '';
+                    // Display de maand als een option in het dropdown-menu
+                    echo "<option value='$month' $selected>$monthName</option>";
+                }
+                echo '</select>';
+                ?>
                 <div class="calendar-container pt-4">
                     <table class="table table-bordered calendar">
                         <thead>

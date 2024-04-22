@@ -36,7 +36,7 @@ class appointments extends DashboardPageController
         // Initialize the day counter
         $dayCount = 1;
         // Loop through the weeks
-
+        $this->set('month', $month);
         $row = 0;
         for ($week = 0; $week < $weeks; $week++) {
             for ($dayOfWeek = 1; $dayOfWeek <= 7; $dayOfWeek++) {
