@@ -16,7 +16,6 @@ class Persons extends DashboardPageController
 {   
     public function on_start()
     {      
-
         parent::on_start(); // Call the parent class's on_start method
         
         $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -95,7 +94,7 @@ class Persons extends DashboardPageController
                 // If $id is not provided, create a new Timeslot object
                 $ts = new Timeslot();
                 $ts->setPerson($person);
-            }
+            } 
 
             // Set time slot attributes based on form data
 	        $timeslotsDays = $post->get('timeslotsDays');
