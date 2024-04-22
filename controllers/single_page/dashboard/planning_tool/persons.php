@@ -28,30 +28,13 @@ class Persons extends DashboardPageController
         $this->set('expertises', $expertises); // Set the 'expertises' variable in the current instance to hold the retrieved expertises
     }
 
+
     public function view()
     {
         $persons = Person::getAll(); // Get all persons from the database
         $this->set('persons', $persons);
+    }   
 
-        $profilePictureUrls = []; // Initialize an empty array to hold profile picture URLs
-        
-        foreach ($persons as $person) {
-            $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
-            
-            // Check if the profile picture exists and if it matches the file ID
-            if ($profilePicture) {
-                $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
-                if ($file && $file->getFileID() == $profilePicture) { 
-                    $version = $file->getApprovedVersion();
-                    $resource = $version->getFileResource();
-                    $imageData = $resource->read();
-                    $this->set('images', $file);
-                }
-            }
-        }
-    }
-    
-    
 
     public function edit($id) 
     {

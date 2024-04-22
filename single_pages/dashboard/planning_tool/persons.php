@@ -21,11 +21,17 @@
                 foreach ($persons as $person) { ?>
                      <tr data-launch-search-menu="" class="">
                      <td>
-                     <?php
-                     if (is_object($images)) {
-                        echo '<img src="'.$images->getURL().'" class="img-fluid" style="width: 31px;">';
-                     }
-                     ?>
+                        <?php
+                        $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+                        
+                        if ($profilePicture) {
+                           $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+                           
+                           if ($file) {
+                                 echo '<img src="'.$file->getURL().'" class="img-fluid" style="width: 31px;">';
+                           }
+                        }
+                        ?>
                      </td>
                         <td><?=$person->getFirstname(); ?></td>
                         <td><?=$person->getLastname(); ?></td>
