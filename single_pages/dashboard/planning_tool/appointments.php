@@ -125,23 +125,9 @@
     <div class="row">
         <div class="col">
             <div class="form-group">
-                <label for="personID" class="form-label">With who?</label>
-                <select id="personID" name="personID" class="form-select">
-                    <?php foreach ($persons as $person) { ?>
-                        <option value="<?= $person->getItemID(); ?>" <?php if ($appointment->getPerson() == $person->getItemID()) echo 'selected'; ?>>
-                            <?= $person->getFirstname(); ?>
-                        </option>
-                    <?php } ?>
-                </select>
-                <div class="help-block">"Select the person you have a appointment with."</div>
-            </div>
-        </div>
-        <!-- dit stukje toegevoegd  -->
-        <div class="col">
-            <div class="form-group">
                 <label for="expertiseID" class="form-label">Expertise </label>
                 <select id="expertiseID" name="expertiseID" class="form-select">
-                <option value="0">no expertise</option>
+                    <option value="0">no expertise</option>
                     <?php foreach ($expertises as $expertise) { ?>
                         <option value="<?= $expertise->getItemID(); ?>" <?php if ($appointment->getExpertise() == $expertise->getItemID()) echo 'selected'; ?>>
                             <?= $expertise->getFirstname(); ?>
@@ -151,8 +137,21 @@
                 <div class="help-block">"Select the expertise that the appointment is about."</div>
             </div>
         </div>
-        
+        <div class="col">
+            <div class="form-group">
+                <label for="personID" class="form-label">With who?</label>
+                <select id="personID" name="personID" class="form-select">
+                    <?php foreach ($persons as $person) { ?>
+                        <option value="<?= $person->getItemID(); ?>" <?php if ($appointment->getPerson() == $person->getItemID()) echo 'selected'; ?>>
+                            <?= $person->getFirstname(); ?>
+                        </option>
+                    <?php } ?>
+                </select>
+                <div class="help-block">"Select the person you have an appointment with."</div>
+            </div>
+        </div>
     </div>
+
 
     <div class="row">
         <div class="col-md-6">
@@ -254,6 +253,27 @@
             // Navigate to the page with the selected month
             window.location.href = '<?= URL::to('/dashboard/planning_tool/appointments/'); ?>'+currentYear+'/'+selectedMonth+'/';
             
+        });
+    });
+    $(document).ready(function(){
+        $('#expertiseID').change(function(){
+            var expertiseID = $(this).val();
+            
+            $.ajax({
+                url: '<?php echo $view->action('changepersons', Core::make('token')->generate('changepersons')) ?>',
+                type: 'POST',
+                data: { expertiseID: expertiseID },
+                dataType: 'json',
+                success: function(data) {
+                    $('#personID').empty();
+                    $.each(data.persons, function(key, value){
+                        $('#personID').append('<option value="' + key + '">' + value + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                }
+            });
         });
     });
 </script>
