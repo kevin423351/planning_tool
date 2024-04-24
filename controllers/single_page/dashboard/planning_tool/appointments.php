@@ -70,8 +70,7 @@ class appointments extends DashboardPageController
         $appointment = Appointment::getByID($id);
         $this->set('appointment', $appointment);
     
-        // $expertiseID = $appointment->getExpertise();
-        $expertiseID = $this->expertiseID;
+        $expertiseID = $appointment->getExpertise();
         $expertises = Expertise::getAll();
     
         if ($expertiseID == 0) {
@@ -84,28 +83,25 @@ class appointments extends DashboardPageController
         $this->set('persons', $getPersons);
     }
 
-      public function action_changepersons($token = false, $bID = false) 
-    {
-        if ($this->bID != $bID) {
-            return false;
-        }
-        if (\Core::make('token')->validate('changepersons', $token)) {
-            $page = Page::getCurrentPage();
-            $u = new User();
+    public function changepersons() 
+{
+    $expertiseID = isset($_POST['expertiseID']) ? $_POST['expertiseID'] : null;
     
-            $this->expertiseID = $_POST['expertiseID'];
+    if ($expertiseID == 0) {
+        $persons = Person::getAll();
+    } else { 
+        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+    }
 
-            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-                $b = $this->getBlockObject();
-                $bv = new BlockView($b);
-                $bv->render('view');
-            } else {
-                Redirect::page($page)->send();
-            }
-        }
-        exit;
+    // Converteer de $persons-array naar een array met sleutel-waardeparen
+    $personOptions = [];
+    foreach ($persons as $person) {
+        $personOptions[$person->getItemID()] = $person->getFirstname(); 
     }
     
+    // Zorg ervoor dat de JSON-reactie correct is geformatteerd
+    return response()->json(['persons' => $personOptions]);
+}
     
     public function saveAppointment($id = null) 
     {

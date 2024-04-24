@@ -151,8 +151,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
@@ -181,7 +179,6 @@
       </div>
    </form>
 <?php  } else if ($this->controller->getAction() == 'view') { ?>
-<body>
     <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
         <h2 class="mb-4">overview appointments</h2>
         <div class="row">
@@ -243,7 +240,8 @@
             </div>
         </div>
     </div>
-</body>
+
+<?php  } ?>
 <script>
     $(document).ready(function() {
         $('#month').change(function() {
@@ -260,7 +258,7 @@
             var expertiseID = $(this).val();
             
             $.ajax({
-                url: '<?php echo $view->action('changepersons', Core::make('token')->generate('changepersons')) ?>',
+                url: '<? echo $this->action('changepersons'); ?>',
                 type: 'POST',
                 data: { expertiseID: expertiseID },
                 dataType: 'json',
@@ -293,4 +291,3 @@
     font-size: 14px;
 }
 </style>
-<?php  } ?>
