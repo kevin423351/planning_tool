@@ -9,6 +9,8 @@ use DateTime;
 
 class appointments extends DashboardPageController
 {
+    protected $expertiseID;
+
     public function agenda($dateString='')
     {    
         $date = new DateTime($dateString);
@@ -70,15 +72,35 @@ class appointments extends DashboardPageController
     
         $expertiseID = $appointment->getExpertise();
         $expertises = Expertise::getAll();
-        
+    
         if ($expertiseID == 0) {
             $getPersons = Person::getAll(); 
         } else {
             $getPersons = Expertise::getPersonsByExpertiseID($expertiseID);
         }
+    
         $this->set('expertises', $expertises);
         $this->set('persons', $getPersons);
     }
+
+    public function changepersons() 
+{
+    $expertiseID = isset($_POST['expertiseID']) ? $_POST['expertiseID'] : null;
+    
+    if ($expertiseID == 0) {
+        $persons = Person::getAll();
+    } else { 
+        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+    }
+
+    $personOptions = [];
+    foreach ($persons as $person) {
+        $personOptions[$person->getItemID()] = $person->getFirstname(); 
+    }
+    
+    echo json_encode($personOptions);
+    exit;
+}
     
     public function saveAppointment($id = null) 
     {
