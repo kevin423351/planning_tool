@@ -2,12 +2,12 @@
     <form method="post" action="<?= $this->action('save') ?>">
         <div class="form-group">
             <label for="personID">Select Person:</label>
-            <select class="form-select" name="personID" required>
-                <option value="all">Select all persons</option>
-                <?php foreach ($persons as $person) { ?>
-                    <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
-                <?php } ?>
-            </select>
+                <select class="form-select" name="personID[]" multiple required>
+                    <option value="all">Select all persons</option>
+                    <?php foreach ($persons as $person) { ?>
+                        <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
+                    <?php } ?>
+                </select>
             <div class="help-block">"Select the person that is unavailable."</div>
         </div><br>
 

@@ -19,28 +19,34 @@ class Unavailableperson extends DashboardPageController
     {       
         $post = $this->request->request;
 
-        $selectedPersonID = $post->get('personID');
+        $selectedPersonIDs = $post->get('personID');
         $unavailableOption = $post->get('unavailableOption');
 
-        if ($selectedPersonID === 'all') {
+        if (empty($selectedPersonIDs)) {
+            return;
+        }
+
+        if (in_array('all', $selectedPersonIDs)) {
             $this->saveForAllPersons($post, $unavailableOption);
         } else {
-            switch ($unavailableOption) {
-                case 'specific_date':
-                    $this->saveSpecificDate($post, $selectedPersonID);
-                    break;
-                case 'whole_day':
-                    $this->saveWholeDay($post, $selectedPersonID);
-                    break;
-                case 'date_range':
-                    $this->saveDateRange($post, $selectedPersonID);
-                    break;
-                default:
-                    // Handle default case or show error message
-                    break;
+            foreach ($selectedPersonIDs as $selectedPersonID) {
+                switch ($unavailableOption) {
+                    case 'specific_date':
+                        $this->saveSpecificDate($post, $selectedPersonID);
+                        break;
+                    case 'whole_day':
+                        $this->saveWholeDay($post, $selectedPersonID);
+                        break;
+                    case 'date_range':
+                        $this->saveDateRange($post, $selectedPersonID);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
     }
+
 
     private function saveForAllPersons($post, $unavailableOption)
     {
