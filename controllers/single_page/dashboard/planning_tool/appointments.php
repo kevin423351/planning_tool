@@ -93,14 +93,13 @@ class appointments extends DashboardPageController
         $persons = Expertise::getPersonsByExpertiseID($expertiseID);
     }
 
-    // Converteer de $persons-array naar een array met sleutel-waardeparen
     $personOptions = [];
     foreach ($persons as $person) {
         $personOptions[$person->getItemID()] = $person->getFirstname(); 
     }
     
-    // Zorg ervoor dat de JSON-reactie correct is geformatteerd
-    return response()->json(['persons' => $personOptions]);
+    echo json_encode($personOptions);
+    exit;
 }
     
     public function saveAppointment($id = null) 

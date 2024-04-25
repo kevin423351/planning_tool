@@ -264,7 +264,7 @@
                 dataType: 'json',
                 success: function(data) {
                     $('#personID').empty();
-                    $.each(data.persons, function(key, value){
+                    $.each(data, function(key, value){
                         $('#personID').append('<option value="' + key + '">' + value + '</option>');
                     });
                 },
