@@ -183,7 +183,6 @@ use DateInterval;
                 $date = date('Y-m-d', strtotime((string)$timeslot->getday() . ' this week', $currentDate->getTimestamp()));
 
                 if (date('Y-m-d') > $date) {
-                    $buttons[$date] = [];
                     continue;
                 }
 

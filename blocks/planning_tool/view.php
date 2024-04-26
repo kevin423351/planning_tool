@@ -109,21 +109,21 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     <div class="row">
                         <div class="col">
                             <label for="name" class="form-label">Name</label>
-                            <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" required><br>
+                            <input type="text" id="appointmentName" name="appointmentName" class="form-control ccm-input-text" value="" ><br>
                         </div>
                         <div class="col">
                             <label for="lastname" class="form-label">lastname</label>
-                            <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" required><br>
+                            <input type="text" id="appointmentLastname" name="appointmentLastname" class="form-control ccm-input-text" value="" ><br>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
                             <label for="email" class="form-label">Email</label>
-                            <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" required><br>
+                            <input type="email" id="appointmentEmail" name="appointmentEmail" class="form-control ccm-input-text" value="" ><br>
                         </div>
                         <div class="col">
                             <label for="number" class="form-label">Phone number</label>
-                            <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" required><br>
+                            <input type="text" id="appointmentPhone" name="appointmentPhone" class="form-control ccm-input-text" value="" ><br>
                         </div>
                     </div>
                     <div class="row">
@@ -249,9 +249,43 @@ $(function() {
     });
 });
 
+// $(document).ready(function() {
+//     $('form').submit(function(event) {
+//         event.preventDefault(); 
+
+//         var formData = $(this).serialize();
+
+//         $.ajax({
+//             type: 'POST',
+//             url: $(this).attr('action'),
+//             data: formData,
+//             success: function(response) {
+                
+//                 var appointmentName = $('#appointmentName').val();
+//                 var appointmentLastname = $('#appointmentLastname').val();
+//                 var appointmentDatetime = $('#appointmentDatetime').val();
+//                 var appointmentStartTime = $('#appointmentStartTime').val();
+//                 var appointmentEndTime = $('#appointmentEndTime').val();
+
+//                 var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
+//                 alert(message);
+
+//                 $('form')[0].reset();
+//             },
+//             error: function(xhr, status, error) {
+//                 alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
+//             }
+//         });
+//     });
+// });
 $(document).ready(function() {
     $('form').submit(function(event) {
-        event.preventDefault(); 
+        event.preventDefault();
+
+        // Voer formuliervalidatie uit
+        if (!validateForm()) {
+            return;
+        }
 
         var formData = $(this).serialize();
 
@@ -260,7 +294,6 @@ $(document).ready(function() {
             url: $(this).attr('action'),
             data: formData,
             success: function(response) {
-                
                 var appointmentName = $('#appointmentName').val();
                 var appointmentLastname = $('#appointmentLastname').val();
                 var appointmentDatetime = $('#appointmentDatetime').val();
@@ -276,8 +309,37 @@ $(document).ready(function() {
                 alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
             }
         });
-    });
+
+    function validateForm() {
+        var appointmentName = $('#appointmentName').val().trim();
+        var appointmentLastname = $('#appointmentLastname').val().trim();
+        var appointmentEmail = $('#appointmentEmail').val().trim();
+        var appointmentPhone = $('#appointmentPhone').val().trim();
+
+        if (appointmentName === '') {
+            alert('Please enter your name.');
+            return false;
+        }
+
+        if (appointmentLastname === '') {
+            alert('Please enter your last name.');
+            return false;
+        }
+
+        if (appointmentEmail === '') {
+            alert('Please enter your email.');
+            return false;
+        }
+
+        if (appointmentPhone === '') {
+            alert('Please enter your phone number.');
+            return false;
+        }
+
+        return true;
+    }
 });
+
 </script>
 
     
