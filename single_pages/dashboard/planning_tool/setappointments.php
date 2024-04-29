@@ -27,10 +27,10 @@
     </div>
 </div> 
 
-<div class="container mt-4">
+<div class="container mt-4 custom-timeslot">
     <div class="d-flex align-items-start justify-content-between">
         <?php foreach ($buttons as $date => $timeslot) { ?>
-            <div class="w-100 px-2 mb-3">
+            <div class="w-100 px-2 mb-3 custom-timeslot">
                 <div class="card border-dark rounded-top">
                     <div class="ps-3 pt-2 text-primary font-weight-bold">
                         <?= date('l', strtotime($date)); ?><br/>
@@ -167,9 +167,9 @@
 </script>
 <style>
     @media (max-width: 576px) {
-        .custom-button {
-            display: block;
-            width: 100%;
+        .custom-timeslot {
+            /* display: block; */
+            width: 100px;
         }
     }
   .custom-button {

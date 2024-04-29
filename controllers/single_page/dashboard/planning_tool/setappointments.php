@@ -13,7 +13,6 @@ class Setappointments extends DashboardPageController
 {   
     public function on_start()
     {      
-
         parent::on_start(); // Call the parent class's on_start method
 
         $person = Person::getAll(); // Get all expertises using the Person::getAll() method
