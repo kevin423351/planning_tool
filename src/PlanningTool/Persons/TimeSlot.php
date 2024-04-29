@@ -163,7 +163,7 @@ use DateInterval;
     public function getAvailableTimeSlots($personID = null, $expertiseID = null, $currentDate)
     {
         $persons = [];
-
+        
         if ($personID !== null) {
             $persons[] = Person::getByID($personID);
         } elseif ($expertiseID !== null) {
@@ -183,6 +183,7 @@ use DateInterval;
                 $date = date('Y-m-d', strtotime((string)$timeslot->getday() . ' this week', $currentDate->getTimestamp()));
 
                 if (date('Y-m-d') > $date) {
+                    $buttons[$date] = [];
                     continue;
                 }
 
