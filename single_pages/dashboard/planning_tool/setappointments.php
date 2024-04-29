@@ -166,6 +166,12 @@
     });
 </script>
 <style>
+    @media (max-width: 576px) {
+        .custom-button {
+            display: block;
+            width: 100%;
+        }
+    }
   .custom-button {
     color: #4a90e2;
     background-color: #fff;
