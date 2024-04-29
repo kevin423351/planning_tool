@@ -41,7 +41,6 @@ class Setappointments extends DashboardPageController
         $this->set('personID', $personID);
         $this->set('buttons', $buttons);
         $this->set('weekOffset', $weekOffset);
-        
     }
     
     public function expertiseview($expertiseID = 1, $weekOffset = 0)

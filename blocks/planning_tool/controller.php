@@ -13,6 +13,8 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Timeslot;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Unavailable;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Core\Page\Controller\DashboardPageController;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
 use DateTime;
 use DateInterval;
 
@@ -228,6 +230,55 @@ class Controller extends BlockController {
             }
         }
         exit;
-    }    
+    }   
+
+
+    // function validateAppointmentForm($name, $lastname, $email, $phone) {
+    //     $validator = Validation::createValidator();
+    
+    //     $errors = array();
+    
+    //     // Valideer de naam
+    //     $constraint = new Assert\NotBlank();
+    //     $violations = $validator->validate($name, $constraint);
+    //     if (count($violations) > 0) {
+    //         foreach ($violations as $violation) {
+    //             $errors[] = $violation->getMessage();
+    //         }
+    //     }
+    
+    //     // Valideer de achternaam
+    //     $violations = $validator->validate($lastname, $constraint);
+    //     if (count($violations) > 0) {
+    //         foreach ($violations as $violation) {
+    //             $errors[] = $violation->getMessage();
+    //         }
+    //     }
+    
+    //     // Valideer het e-mailadres
+    //     $constraint = new Assert\Email();
+    //     $violations = $validator->validate($email, $constraint);
+    //     if (count($violations) > 0) {
+    //         foreach ($violations as $violation) {
+    //             $errors[] = $violation->getMessage();
+    //         }
+    //     }
+    
+    //     // Valideer het telefoonnummer
+    //     $constraint = new Assert\Regex([
+    //         'pattern' => '/^[0-9]{10}$/',
+    //         'message' => 'Invalid phone number format.',
+    //     ]);
+    //     $violations = $validator->validate($phone, $constraint);
+    //     if (count($violations) > 0) {
+    //         foreach ($violations as $violation) {
+    //             $errors[] = $violation->getMessage();
+    //         }
+    //     }
+    
+    //     return $errors;
+    // }
+    
+ 
 }
 ?>

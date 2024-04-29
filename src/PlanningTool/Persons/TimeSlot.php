@@ -163,7 +163,7 @@ use DateInterval;
     public function getAvailableTimeSlots($personID = null, $expertiseID = null, $currentDate)
     {
         $persons = [];
-
+        
         if ($personID !== null) {
             $persons[] = Person::getByID($personID);
         } elseif ($expertiseID !== null) {
