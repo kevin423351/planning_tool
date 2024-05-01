@@ -59,7 +59,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 <div class="container mt-4 custom-timeslot">
                     <div class="d-flex align-items-start justify-content-between custom-flex">
                         <?php foreach ($buttons as $date => $timeslot) { ?>
-                            <div class="w-100 px-2 mb-3 custom-slot">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="w-100 px-2 mb-3 custom-slot">
+                                </div>
+                            </div>
                                 <div class="card rounded-top">
                                     <div class="ps-3 pt-2 text-primary font-weight-bold">
                                         <?= date('l', strtotime($date)); ?><br/>

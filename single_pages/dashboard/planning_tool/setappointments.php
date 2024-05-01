@@ -179,7 +179,8 @@
             align-items: center;
         }
     }
-    @media (max-width: 1150px) {
+    
+    @media (max-width: 1390px) {
         .custom-timeslot {
             width: 100%; 
         }  
