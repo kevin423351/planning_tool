@@ -292,7 +292,7 @@ $(function() {
 
             var formData = $(this).serialize();
 
-            $.ajax({
+            $.ajax({ 
                 type: 'POST',
                 url: $(this).attr('action'),
                 data: formData,
@@ -345,9 +345,6 @@ $(function() {
                     alert('Please enter a valid 10-digit phone number.');
                     return false;
                 }
-
-                // Validatie van datum en tijd
-                // Voeg hier je eigen logica toe, afhankelijk van het vereiste formaat en de geldigheidscontrole.
 
                 if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
                     alert('Please enter appointment date and time.');

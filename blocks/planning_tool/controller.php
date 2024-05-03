@@ -89,14 +89,14 @@ class Controller extends BlockController {
         if (\Core::make('token')->validate('saveAppointment', $token)) {
             $page = Page::getCurrentPage();
             $u = new User();
-    
+
             $post = $this->request->request;
 
             $choice = $post->get('choice');
-          
+        
             $appointment = new Appointment();
             $appointment->setDeleted(0); 
-         
+        
             $appointment->setPerson($post->get('personID'));
             $appointment->setExpertise($post->get('expertiseID'));
             $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
@@ -107,9 +107,27 @@ class Controller extends BlockController {
             $appointment->setEmail($post->get('appointmentEmail'));
             $appointment->setPhonenumber($post->get('appointmentPhone'));
             $appointment->setComment($post->get('appointmentComment'));
-    
+
             $appointment->save();
-    
+
+            
+            $mailService = Core::make('mail');
+            $mailService->load('mail_template');
+            
+            $mailContent = '<p>Dear ' . $post->get('appointmentName') . ',</p>';
+            $mailContent .= '<p>Your CMS is by far the best I\'ve ever seen.</p>';
+            $mailContent .= '<p>Thank you very much for your great efforts.</p>';
+            $mailContent .= '<p>Best regards,</p>';
+            $mailService->addParameter('mailContent', $mailContent);
+
+            $mailService->setSubject('A great CMS');
+
+            $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
+
+            $mailService->from('kevinplanken@gmail.com', 'kevin');
+
+            $mailService->sendMail();
+
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();
                 $bv = new BlockView($b);
@@ -120,6 +138,7 @@ class Controller extends BlockController {
         }
         exit;
     }
+
     
     public function action_choice($token = false, $bID = false) 
     {
