@@ -50,48 +50,52 @@ defined('C5_EXECUTE') or die("Access Denied.");
             if (isset($choice) && isset($buttons)) { ?>
                 <div class="col text-end"> 
                     <div class="form-group">
-                        <div class="mt-3 pt-3">
+                        <div class="mt-3 pt-3 justify-content-between d-flex">
                             <a id="previousWeekBtn" href="javascript:;" class="btn btn-primary"><- previous week</a>
                             <a id="nextWeekBtn" href="javascript:;" class="btn btn-primary">next week -></a>
                         </div>
                     </div>
                 </div>
-                <div class="container mt-4">
-                    <div class="d-flex align-items-start justify-content-between">
+                <div class="container mt-4 custom-timeslot">
+                    <div class="d-flex justify-content-center custom-flex">
                         <?php foreach ($buttons as $date => $timeslot) { ?>
-                            <div class="w-100 px-2 mb-3">
-                                <div class="card rounded-top">
-                                    <div class="ps-3 pt-2 text-primary font-weight-bold">
-                                        <?= date('l', strtotime($date)); ?><br/>
-                                        <?= $date; ?>
-                                    </div>
-                                    <div class="card-body">
-                                        <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
-                                            <?php foreach ($timeslot as $button) { ?>
-                                                <div class="mb-1 d-flex align-items-center">
-                                                    <a href="javascript:;" 
-                                                        class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
-                                                        data-personid="<?= $button['personID']; ?>" 
-                                                        data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
-                                                        data-date="<?= $date; ?>"
-                                                        data-starttime="<?= $button['startTime']; ?>" 
-                                                        data-endtime="<?= $button['endTime']; ?>">
-                                                        <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                                        <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
-                                                        <?php if ($choice == 'person'){ ?>
-                                                            <input type="hidden" name="choice" value="person">
-                                                        <?php } ?>
-                                                         <?php if ($choice == 'expertise'){ ?>
-                                                            <input type="hidden" name="choice" value="expertise">
-                                                        <?php } ?>
-                                                    </a>
-                                                </div>
+                            <div class="row">
+                                <div class="col me-4">
+                                    <div class="w-200 px-2 custom-slot" style="width: 225px;">
+                                </div>
+                                    <div class="card rounded-top">
+                                        <div class="ps-3 pt-2 text-primary font-weight-bold">
+                                            <?= date('l', strtotime($date)); ?><br/>
+                                            <?= $date; ?>
+                                        </div>
+                                        <div class="card-body">
+                                            <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
+                                                <?php foreach ($timeslot as $button) { ?>
+                                                    <div class="mb-1 d-flex align-items-center">
+                                                        <a href="javascript:;" 
+                                                            class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
+                                                            data-personid="<?= $button['personID']; ?>" 
+                                                            data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
+                                                            data-date="<?= $date; ?>"
+                                                            data-starttime="<?= $button['startTime']; ?>" 
+                                                            data-endtime="<?= $button['endTime']; ?>">
+                                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
+                                                            <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                                            <?php if ($choice == 'person'){ ?>
+                                                                <input type="hidden" name="choice" value="person">
+                                                            <?php } ?>
+                                                            <?php if ($choice == 'expertise'){ ?>
+                                                                <input type="hidden" name="choice" value="expertise">
+                                                            <?php } ?>
+                                                        </a>
+                                                    </div>
+                                                <?php } ?>
+                                            <?php } else { ?>
+                                                <p class="text-muted text-center">No time slots available for this day.</p>
                                             <?php } ?>
-                                        <?php } else { ?>
-                                            <p class="text-muted text-center">No time slots available for this day.</p>
-                                        <?php } ?>
-                                    </div>
-                                </div> 
+                                        </div>
+                                    </div> 
+                                </div>
                             </div>
                         <?php } ?>
                     </div>
@@ -282,7 +286,6 @@ $(function() {
         $('form').submit(function(event) {
             event.preventDefault();
 
-            // Voer formuliervalidatie uit
             if (!validateForm()) {
                 return;
             }
@@ -357,6 +360,67 @@ $(function() {
     });
 
 </script>
+<style>
+   @media (max-width: 576px) {
+        .custom-flex {
+            flex-wrap: wrap;
+            flex-direction: column;
+        }
+        .custom-slot {
+            width: 100%;
+        }
+        .custom-button {
+            justify-content: center; 
+            align-items: center;
+        }
+    }
+    @media (max-width: 1150px) {
+        .custom-timeslot {
+            width: 100%; 
+        }  
+        .custom-flex {
+            flex-wrap: wrap; 
+            flex-direction: row; 
+        }
+        .custom-slot {
+            width: calc(50% - 16px); 
+            margin-right: 16px; 
+            margin-bottom: 16px; 
+        }
+        .custom-button {
+            justify-content: center; 
+            align-items: center;
+        }
+    }
+  .custom-button {
+    color: #4a90e2;
+    background-color: #fff;
+  }
+
+  .custom-button:hover {
+    background-color: #d0e6ff;
+    color: #fff;
+  }
+
+  .custom-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.5);
+  }
+
+  .custom-button:active {
+    background-color: #4a90e2;
+    color: #fff;
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  }
+
+  .custom-button:disabled {
+    color: #4a90e2;
+    background-color: transparent;
+    border-color: #4a90e2;
+  }
+  .text-end {
+    text-align: end;
+  }
+</style>
 
     
 
