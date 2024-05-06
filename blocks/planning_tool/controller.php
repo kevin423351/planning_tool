@@ -105,28 +105,30 @@ class Controller extends BlockController {
             $appointment->setFirstname($post->get('appointmentName'));
             $appointment->setLastname($post->get('appointmentLastname'));
             $appointment->setEmail($post->get('appointmentEmail'));
-            $appointment->setPhonenumber($post->get('appointmentPhone'));
+            $appointment->setPhonenumber($post->get('appointmentPhone'));    
             $appointment->setComment($post->get('appointmentComment'));
 
             $appointment->save();
-
             
-            $mailService = Core::make('mail');
-            $mailService->load('mail_template');
             
-            $mailContent = '<p>Dear ' . $post->get('appointmentName') . ',</p>';
-            $mailContent .= '<p>Your CMS is by far the best I\'ve ever seen.</p>';
-            $mailContent .= '<p>Thank you very much for your great efforts.</p>';
-            $mailContent .= '<p>Best regards,</p>';
-            $mailService->addParameter('mailContent', $mailContent);
+            $mh = \Core::make('mail');
+            $mh->from('no-reply@Planning-tool', 'Planning-tool');
+  
+            // $sentEmail = $appointment->setEmail($post->get('appointmentEmail'));
+            $mh->to('plankenkevin@gmail.com', 'Name of the recipient (kevin)');
+ 
+            $mailContent = '<p>Dear Concrete team<br>';
+            $mailContent .= 'Your CMS is by far the best I\'ve ever seen.</p>';
+            $mailContent .= '<p>Thank you very much for your great efforts</p>';
+            $mailContent .= '<p>Best regards</p>';
+            
+            $mh->addParameter('mailContent', $mailContent);
 
-            $mailService->setSubject('A great CMS');
+            $mh->load('appointment_mail');
 
-            $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
-
-            $mailService->from('kevinplanken@gmail.com', 'kevin');
-
-            $mailService->sendMail();
+            $mh->sendMail();
+            
+            // $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
 
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();
