@@ -112,11 +112,13 @@ class Controller extends BlockController {
             
             
             $mh = \Core::make('mail');
-            $mh->from('no-reply@Planning-tool', 'Planning-tool');
-  
+            $mh->from('planlkenkevin@gmail.com');
+            $mh->replyto('planlkenkevin@gmail.com');
+
             // $sentEmail = $appointment->setEmail($post->get('appointmentEmail'));
-            $mh->to('plankenkevin@gmail.com', 'Name of the recipient (kevin)');
- 
+            $mh->to('plankenkevin@gmail.com');
+            
+
             $mailContent = '<p>Dear Concrete team<br>';
             $mailContent .= 'Your CMS is by far the best I\'ve ever seen.</p>';
             $mailContent .= '<p>Thank you very much for your great efforts</p>';
@@ -124,8 +126,8 @@ class Controller extends BlockController {
             
             $mh->addParameter('mailContent', $mailContent);
 
-            $mh->load('appointment_mail');
-
+            $mh->load('appointment_mail', 'planning_tool');
+         
             $mh->sendMail();
             
             // $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));

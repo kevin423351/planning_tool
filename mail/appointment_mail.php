@@ -1,4 +1,5 @@
 <?php
+$subject = 'A great CMS';
 $bodyHTML .= '<!DOCTYPE html>';
 $bodyHTML .= '<html lang="de">';
 $bodyHTML .= '  <head>';
