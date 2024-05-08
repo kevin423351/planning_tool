@@ -111,24 +111,19 @@ class Controller extends BlockController {
             $appointment->save();
             
             
-            $mh = \Core::make('mail');
-            $mh->from('planlkenkevin@gmail.com');
-            $mh->replyto('planlkenkevin@gmail.com');
-
+            $mailService  = \Core::make('mail');
+            $mailService ->from('no-reply@planning-tool.com');
+            $mailService ->replyto('no-reply@planning-tool.com');
             // $sentEmail = $appointment->setEmail($post->get('appointmentEmail'));
-            $mh->to('plankenkevin@gmail.com');
+            $mailService ->to('kevin@dewebmakers.nl');
             
+            $mailContent = '<p>test mail<br>';
 
-            $mailContent = '<p>Dear Concrete team<br>';
-            $mailContent .= 'Your CMS is by far the best I\'ve ever seen.</p>';
-            $mailContent .= '<p>Thank you very much for your great efforts</p>';
-            $mailContent .= '<p>Best regards</p>';
-            
-            $mh->addParameter('mailContent', $mailContent);
+            $mailService ->addParameter('mailContent', $mailContent);
 
-            $mh->load('appointment_mail', 'planning_tool');
+            $mailService ->load('appointment_mail', 'planning_tool');
          
-            $mh->sendMail();
+            $mailService ->sendMail();
             
             // $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
 

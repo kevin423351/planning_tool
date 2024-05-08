@@ -15,6 +15,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
     </div>
 <?php   } else { 
+
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
                 <div class="row">
                     <div class="col-12 col-md-3">
