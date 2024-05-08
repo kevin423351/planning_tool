@@ -152,6 +152,15 @@ $(document).ready(function() {
     $("#showButtons").click(function() {
         $("#hiddenButtons").show();
         $("#showButtons").hide();
+        $("#step1").hide();
+        $("#step2").hide();
+        
+    });
+    $("#showButtons").click(function() {
+        $("#hiddenButtons").show();
+        $("#showButtons").hide();
+        $("#step1").hide();
+        $("#step2").hide();
     });
 });
 
