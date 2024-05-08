@@ -154,13 +154,14 @@ $(document).ready(function() {
         $("#showButtons").hide();
         $("#step1").hide();
         $("#step2").hide();
-        
+        $("#step3").hide();
     });
     $("#showButtons").click(function() {
-        $("#hiddenButtons").show();
+        $("#hiddenButtons").hide();
         $("#showButtons").hide();
-        $("#step1").hide();
+        $("#step1").show();
         $("#step2").hide();
+        $("#step3").hide();
     });
 });
 
