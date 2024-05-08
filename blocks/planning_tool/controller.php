@@ -89,14 +89,14 @@ class Controller extends BlockController {
         if (\Core::make('token')->validate('saveAppointment', $token)) {
             $page = Page::getCurrentPage();
             $u = new User();
-    
+
             $post = $this->request->request;
 
             $choice = $post->get('choice');
-          
+        
             $appointment = new Appointment();
             $appointment->setDeleted(0); 
-         
+        
             $appointment->setPerson($post->get('personID'));
             $appointment->setExpertise($post->get('expertiseID'));
             $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
@@ -105,11 +105,28 @@ class Controller extends BlockController {
             $appointment->setFirstname($post->get('appointmentName'));
             $appointment->setLastname($post->get('appointmentLastname'));
             $appointment->setEmail($post->get('appointmentEmail'));
-            $appointment->setPhonenumber($post->get('appointmentPhone'));
+            $appointment->setPhonenumber($post->get('appointmentPhone'));    
             $appointment->setComment($post->get('appointmentComment'));
-    
+
             $appointment->save();
-    
+            
+            
+            $mailService  = \Core::make('mail');
+            $mailService ->from('no-reply@planning-tool.com');
+            $mailService ->replyto('no-reply@planning-tool.com');
+            // $sentEmail = $appointment->setEmail($post->get('appointmentEmail'));
+            $mailService ->to('kevin@dewebmakers.nl');
+            
+            $mailContent = '<p>test mail<br>';
+
+            $mailService ->addParameter('mailContent', $mailContent);
+
+            $mailService ->load('appointment_mail', 'planning_tool');
+         
+            $mailService ->sendMail();
+            
+            // $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
+
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();
                 $bv = new BlockView($b);
@@ -120,6 +137,7 @@ class Controller extends BlockController {
         }
         exit;
     }
+
     
     public function action_choice($token = false, $bID = false) 
     {

@@ -28,29 +28,33 @@
 </div> 
 
 <div class="container mt-4 custom-timeslot">
-    <div class="d-flex align-items-start justify-content-between custom-flex">
+    <div class="d-flex justify-content-center custom-flex">
         <?php foreach ($buttons as $date => $timeslot) { ?>
-            <div class="w-100 px-2 mb-3 custom-slot">
-                <div class="card border-dark rounded-top">
-                    <div class="ps-3 pt-2 text-primary font-weight-bold">
-                        <?= date('l', strtotime($date)); ?><br/>
-                        <?= $date; ?>
-                    </div>
-                    <div class="card-body">
-                        <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
-                            <?php foreach ($timeslot as $button) { ?>
-                                <div class="mb-1 d-flex align-items-center">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], isset($expertiseID) ? $expertiseID : 0, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
-                                        <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                        <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
-                                    </a>
-                                </div>
+            <div class="row">
+                <div class="col me-4">
+                    <div class="w-200 px-2 custom-slot" style="width: 250px;">
+                </div>
+                    <div class="card border-dark rounded-top">
+                        <div class="ps-3 pt-2 text-primary font-weight-bold">
+                            <?= date('l', strtotime($date)); ?><br/>
+                            <?= $date; ?>
+                        </div>
+                        <div class="card-body">
+                            <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
+                                <?php foreach ($timeslot as $button) { ?>
+                                    <div class="mb-1 d-flex align-items-center">
+                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], isset($expertiseID) ? $expertiseID : 0, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
+                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
+                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                        </a>
+                                    </div>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <p class="text-muted text-center">No time slots available for this day.</p>
                             <?php } ?>
-                        <?php } else { ?>
-                            <p class="text-muted text-center">No time slots available for this day.</p>
-                        <?php } ?>
-                    </div>
-                </div> 
+                        </div>
+                    </div> 
+                </div>
             </div>
         <?php } ?>
     </div>
@@ -123,27 +127,31 @@
     </div>
 </div>
 <div class="container mt-4 custom-timeslot">
-    <div class="d-flex align-items-start justify-content-between custom-flex">
+    <div class="d-flex justify-content-center custom-flex">
         <?php foreach ($buttons as $date => $timeslot) { ?>
-            <div class="w-100 px-2 mb-3">
-                <div class="card border-dark rounded-top">
-                    <div class="ps-3 pt-2 text-primary font-weight-bold">
-                        <?= date('l', strtotime($date)); ?><br/>
-                        <?= $date; ?>
-                    </div>
-                    <div class="card-body">
-                        <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
-                            <?php foreach ($timeslot as $button) { ?>
-                                <div class="mb-1 d-flex align-items-center">
-                                    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
-                                        <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF; "></div>
-                                        <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
-                                    </a>
-                                </div>
+            <div class="row">
+                <div class="col me-4">
+                    <div class="w-200 px-2 custom-slot" style="width: 260px;">
+                </div>
+                    <div class="card border-dark rounded-top">
+                        <div class="ps-3 pt-2 text-primary font-weight-bold">
+                            <?= date('l', strtotime($date)); ?><br/>
+                            <?= $date; ?>
+                        </div>
+                        <div class="card-body">
+                            <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
+                                <?php foreach ($timeslot as $button) { ?>
+                                    <div class="mb-1 d-flex align-items-center">
+                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
+                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF; "></div>
+                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                        </a>
+                                    </div>
+                                <?php } ?>
+                            <?php } else { ?>
+                                <p class="text-muted text-center">No time slots available for this day.</p>
                             <?php } ?>
-                        <?php } else { ?>
-                            <p class="text-muted text-center">No time slots available for this day.</p>
-                        <?php } ?>
+                        </div>
                     </div>
                 </div>
             </div>
