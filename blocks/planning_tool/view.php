@@ -15,8 +15,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
     </div>
 <?php   } else { 
-
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="go-back" data-value="null" class="btn btn-primary">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -33,6 +33,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div> 
 <?php       }
             if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="go-back" data-value="null" class="btn btn-primary">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -49,6 +50,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }
             if (isset($choice) && isset($buttons)) { ?>
+             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="back" class="btn btn-primary">go back</a>
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
@@ -152,16 +154,6 @@ $(document).ready(function() {
     $("#showButtons").click(function() {
         $("#hiddenButtons").show();
         $("#showButtons").hide();
-        $("#step1").hide();
-        $("#step2").hide();
-        $("#step3").hide();
-    });
-    $("#showButtons").click(function() {
-        $("#hiddenButtons").hide();
-        $("#showButtons").hide();
-        $("#step1").show();
-        $("#step2").hide();
-        $("#step3").hide();
     });
 });
 
@@ -180,6 +172,21 @@ $(function() {
         return false;
     });
 
+    $('button[data-action=go-back]').on('click', function() {
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            data: { choice: $(this).data('value') }, 
+            url: $(this).attr('href'),
+            dataType: 'html',
+            success: function(response) {
+                $('div.ccm-block-wrapper').replaceWith(response);
+            }
+        });
+        return false;
+    });
+
+
     $('select[name="personID"], select[name="expertiseID"]').on('change', function() {
         var personTS = $('select[name="personID"]').val(); 
         var expertiseTS = $('select[name="expertiseID"]').val(); 
@@ -196,6 +203,22 @@ $(function() {
             }
         });
     }); 
+
+    // $('button[data-action=back]').on('click', function() {
+    //     var choice = $('input[name="choice"]').val();
+
+    //     $.ajax({
+    //         type: 'POST',
+    //         cache: false,
+    //         data: { personTS: null, expertiseTS: null, choice: choice }, 
+    //         url: $(this).attr('href'),
+    //         dataType: 'html',
+    //         success: function(response) {
+    //             $('div.ccm-block-wrapper').replaceWith(response);
+    //         }
+    //     });
+    //     return false;
+    // });
     
     $(document).ready(function() {
         $('.set-appointment').off().on('click', function(e) {
@@ -343,14 +366,12 @@ $(function() {
                     return false;
                 }
                 
-                // Validatie van e-mailadres met een reguliere expressie
                 var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailPattern.test(appointmentEmail)) {
                     alert('Please enter a valid email address.');
                     return false;
                 }
 
-                // Validatie van telefoonnummer met een reguliere expressie
                 var phonePattern = /^\d{10}$/;
                 if (!phonePattern.test(appointmentPhone)) {
                     alert('Please enter a valid 10-digit phone number.');

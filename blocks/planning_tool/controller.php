@@ -15,6 +15,7 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
+use Concrete\Core\Routing\Redirect;
 use DateTime;
 use DateInterval;
 
@@ -45,6 +46,9 @@ class Controller extends BlockController {
 
     public function view() 
     {
+        if ($this->choice == 'null') {
+            $this->choice = '';
+        }
         if ($this->choice == 'person') {
             $this->set('persons', Person::getAll());
         }
