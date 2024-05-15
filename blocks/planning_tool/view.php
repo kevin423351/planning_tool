@@ -86,9 +86,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                             <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
+                                                                <input type="hidden" name="personID" id="personID">
                                                             <?php } ?>
                                                             <?php if ($choice == 'expertise'){ ?>
                                                                 <input type="hidden" name="choice" value="expertise">
+                                                                <input type="hidden" name="expertiseID" id="expertiseID">
                                                             <?php } ?>
                                                         </a>
                                                     </div>
@@ -105,7 +107,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }    
             if (isset($choice) && isset($startTime)) { ?>   
-             <a href="<?php echo $view->action('appointment', Core::make('token')->generate('appointment'))?>" data-action="stepThree" class="btn btn-primary">go back</a>
+             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-primary">go back</a>
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
                     <input type="hidden" name="choice" value="expertise">
@@ -155,6 +157,20 @@ $(document).ready(function() {
     $("#showButtons").click(function() {
         $("#hiddenButtons").show();
         $("#showButtons").hide();
+    });
+});
+
+$(document).ready(function() {
+    $('.set-appointment').off().on('click', function(e) {
+        e.preventDefault(); 
+
+        var personID = $(this).data('personid');
+        var expertiseID = $(this).data('expertiseid');
+
+
+        $('#personID').val(personID);
+        $('#expertiseID').val(expertiseID);
+
     });
 });
 
@@ -244,22 +260,19 @@ $(function() {
         }); 
     });
 
-    $('a[data-action=stepThree]').on('click', function() {
+    $('a[data-action=stepThree]').on('click', function(e) {
+        e.preventDefault();
+
         var choice = $('input[name="choice"]').val(); 
-        var personTS = $('select[name="personID"]').val(); 
-        var expertiseTS = $('select[name="expertiseID"]').val(); 
+        var personTS = $('input[name="personID"]').val(); 
+        var expertiseTS = $('input[name="expertiseID"]').val(); 
 
         $.ajax({
             type: 'POST', 
             url: $(this).attr('href'),
             data: { 
-                personTS: personTS, 
+                personTS: personTS,
                 expertiseTS: expertiseTS,
-                personID: null,
-                expertiseID: null,
-                date: null, 
-                startTime: null, 
-                endTime: null, 
                 choice: choice 
             },
             dataType: 'html',
@@ -270,10 +283,12 @@ $(function() {
     });
 
 
+
     $(document).ready(function() {
-    var weekOffset = <?= $weekOffset ?>;
-    var personTS = <?= isset($personTS) ? $personTS : 'null' ?>;
-    var expertiseTS = <?= isset($expertiseTS) ? $expertiseTS : 'null' ?>;
+        var weekOffset = <?= $weekOffset ?>;
+        var personTS = <?= ((isset($personTS) && $personTS!='')?$personTS:'0'); ?>;
+        var expertiseTS = <?= ((isset($expertiseTS) && $expertiseTS!='')?$expertiseTS:'0'); ?>;
+
         $("#previousWeekBtn").click(function(event) {
             event.preventDefault();
             weekOffset--;
