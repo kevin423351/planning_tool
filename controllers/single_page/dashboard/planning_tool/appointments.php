@@ -11,8 +11,6 @@ use DateTime;
 class appointments extends DashboardPageController
 {
     protected $expertiseID;
-    // protected $startDate = $_POST['startDate'];
-    // protected $endDate = $_POST['endDate'];
 
     public function agenda($dateString='')
     {    
@@ -70,7 +68,14 @@ class appointments extends DashboardPageController
     }
     
     function csvDate() {
-
+        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        //     // Haal de startdatum en einddatum op uit het formulier
+        //     $startDate = $_POST['startDate'];
+        //     $endDate = $_POST['endDate'];
+        
+        //     // Roep de csvDateToDate functie aan met de opgehaalde datums
+        //     csvDateToDate($startDate, $endDate);
+        // }
     }
 
     function csvDateToDate($startDate, $endDate) {
