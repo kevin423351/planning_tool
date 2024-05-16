@@ -2,6 +2,7 @@
    <div class="ccm-dashboard-header-buttons">
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
+      <a href="<?= URL::to('/dashboard/planning_tool/appointments/csv/', $date)?>" class="btn btn-success btn-sm">download CSV</a>
    </div>
    <div class="table-responsive">
     <table class="ccm-results-list ccm-search-results-table ccm-search-results-table-icon">
@@ -179,6 +180,7 @@
       </div>
    </form>
 <?php  } else if ($this->controller->getAction() == 'view') { ?>
+    <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-success btn-sm">CSV</a>
     <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
         <h2 class="mb-4">overview appointments</h2>
         <div class="row">
@@ -241,6 +243,23 @@
         </div>
     </div>
 
+<?php  }  else if ($this->controller->getAction() == 'csvDate') { ?>
+    <h2>Exporteer Afspraken naar CSV</h2>
+    <form method="post" action="<?=$this->action('csvDateToDate'); ?>" class="row g-3">
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label for="startDate">Start Date:</label>
+                <input class="form-control hasDatepicker" type="date" id="startDate" name="startDate">
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="form-group">
+                <label for="endDate">End Date:</label>
+                <input class="form-control hasDatepicker" type="date" id="endDate" name="endDate">
+            </div>
+        </div>
+        <button type="submit">Download CSV</button>
+    </form>
 <?php  } ?>
 <script>
     $(document).ready(function() {
