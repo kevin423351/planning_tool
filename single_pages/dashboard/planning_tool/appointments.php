@@ -173,14 +173,16 @@
         </div>
     </div>
       <div class="ccm-dashboard-form-actions-wrapper">
-         <div class="ccm-dashboard-form-actions ">
+         <div class="ccm-dashboard-form-actions">
             <a href="#" class="btn btn-secondary float-start">Cancel</a>
             <button class="float-end btn btn-primary" type="submit">Save</button>
          </div>
       </div>
    </form>
 <?php  } else if ($this->controller->getAction() == 'view') { ?>
-    <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-success btn-sm">CSV</a>
+    <div class="ccm-dashboard-header-buttons">
+        <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-success btn-sm float-end">download CSV</a>
+    </div>
     <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
         <h2 class="mb-4">overview appointments</h2>
         <div class="row">
@@ -245,7 +247,7 @@
 
 <?php  }  else if ($this->controller->getAction() == 'csvDate') { ?>
     <h2>Exporteer Afspraken naar CSV</h2>
-    <form method="post" action="<?=$this->action('csvDateToDate'); ?>" class="row g-3">
+    <form method="post" action="<?=$this->action('getdataformfield'); ?>" class="row g-3">
         <div class="col-12 col-md-6">
             <div class="form-group">
                 <label for="startDate">Start Date:</label>

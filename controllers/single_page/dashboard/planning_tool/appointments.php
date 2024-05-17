@@ -68,18 +68,18 @@ class appointments extends DashboardPageController
     }
     
     function csvDate() {
-        // if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        //     // Haal de startdatum en einddatum op uit het formulier
-        //     $startDate = $_POST['startDate'];
-        //     $endDate = $_POST['endDate'];
-        
-        //     // Roep de csvDateToDate functie aan met de opgehaalde datums
-        //     csvDateToDate($startDate, $endDate);
-        // }
+     
+    }
+
+    function getdataformfield()
+    {
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+    
+        $this->csvDateToDate($startDate, $endDate);
     }
 
     function csvDateToDate($startDate, $endDate) {
-        wtfd($startDate, $endDate);
         $appointments = Appointment::getAllBetweenDates($startDate, $endDate);
     
         header('Content-Type: text/csv');

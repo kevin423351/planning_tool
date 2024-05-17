@@ -74,6 +74,21 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      */
     protected $deleted;
 
+    public static function getAllBetweenDates($startDate, $endDate)
+    {
+        $em = dbORM::entityManager();
+        $qb = $em->createQueryBuilder();
+
+        $qb->select('a')
+           ->from('Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment', 'a')
+           ->where('a.appointmentDatetime BETWEEN :startDate AND :endDate')
+           ->setParameter('startDate', $startDate)
+           ->setParameter('endDate', $endDate)
+           ->andWhere('a.deleted = 0'); 
+
+        return $qb->getQuery()->getResult();
+    }
+
     public static function getAllByDate($date)
     {
         $em = dbORM::entityManager();
