@@ -66,6 +66,15 @@ class appointments extends DashboardPageController
         }
         $this->set('calendar', $return);
     }
+
+    public function downloadICS($appointments)
+    {
+        $icsContent = Appointment::generateICS($appointments);
+
+        header('Content-Type: text/calendar; charset=utf-8');
+        header('Content-Disposition: attachment; filename="appointments.ics"');
+        echo $icsContent;
+    }
     
     function csvDate() {
      
