@@ -15,14 +15,12 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Core\Page\Controller\DashboardPageController;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints as Assert;
+use Concrete\Core\Routing\Redirect;
 use DateTime;
 use DateInterval;
 
 class Controller extends BlockController {
 
-    // protected $btInterfaceWidth = 1050;
-	// protected $btInterfaceHeight = 550;
-	// protected $btTable = 'planning_tool';
     protected $choice = '';
     protected $personTS = 0;
     protected $expertiseTS = 0;
@@ -45,6 +43,9 @@ class Controller extends BlockController {
 
     public function view() 
     {
+        if ($this->choice == 'null') {
+            $this->choice = '';
+        }
         if ($this->choice == 'person') {
             $this->set('persons', Person::getAll());
         }
@@ -78,7 +79,22 @@ class Controller extends BlockController {
   
         $this->set('date', $this->date);
         $this->set('startTime', $this->startTime); 
-        $this->set('endTime', $this->endTime); 
+        $this->set('endTime', $this->endTime);
+
+        // wtfd(
+        //     'personID => '.$personID,
+        //     'expertiseID => '.$this->expertiseID, 
+        //     'weekOffset => '.$this->weekOffset,
+            
+        //     'choice => '.$this->choice,
+        //     'personTS => '.$this->personTS,
+        //     'personID => '.$this->personID,
+        //     'expertiseTS => '.$this->expertiseTS,
+      
+        //     'date => '.$this->date,
+        //     'startTime => '.$this->startTime, 
+        //     'endTime => '.$this->endTime
+        // );
     }
     
     public function action_saveAppointment($token = false, $bID = false) 
@@ -231,7 +247,9 @@ class Controller extends BlockController {
         if (\Core::make('token')->validate('appointment', $token)) {
             $page = Page::getCurrentPage();
             $u = new User();
-
+            
+            $this->personTS = $_POST['personTS'];
+            $this->expertiseTS = $_POST['expertiseTS'];
             $this->choice = $_POST['choice'];
             $this->personID = $_POST['personID'];
             $this->expertiseID = $_POST['expertiseID'];
@@ -239,6 +257,29 @@ class Controller extends BlockController {
             $this->startTime = $_POST['startTime'];
             $this->endTime = $_POST['endTime'];
 
+            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+                $b = $this->getBlockObject();
+                $bv = new BlockView($b);
+                $bv->render('view');
+            } else {
+                Redirect::page($page)->send();
+            }
+        }
+        exit;
+    }     
+    public function action_appointmentt($token = false, $bID = false) 
+    {
+        if ($this->bID != $bID) {
+            return false;
+        }
+        if (\Core::make('token')->validate('appointmentt', $token)) {
+            $page = Page::getCurrentPage();
+            $u = new User();
+            
+            $this->personTS = $_POST['personTS'];
+            $this->expertiseTS = $_POST['expertiseTS'];
+            $this->choice = $_POST['choice'];
+            
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();
                 $bv = new BlockView($b);

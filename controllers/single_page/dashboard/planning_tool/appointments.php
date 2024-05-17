@@ -4,6 +4,7 @@ use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Expertise;
 use Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Person;
 use Concrete\Core\Page\Controller\DashboardPageController;
+use Doctrine\ORM\EntityManagerInterface;
 use Database;
 use DateTime;
 
@@ -18,7 +19,8 @@ class appointments extends DashboardPageController
         $formattedDate = $date->format('Y-m-d');
 
         $appointments = Appointment::getAllByDate($formattedDate);
-        
+
+        $this->set('date', $formattedDate);
         $this->set('appointments', $appointments);
     }
     
@@ -64,7 +66,77 @@ class appointments extends DashboardPageController
         }
         $this->set('calendar', $return);
     }
+    
+    function csvDate() {
+     
+    }
 
+    function getdataformfield()
+    {
+        $startDate = $_POST['startDate'];
+        $endDate = $_POST['endDate'];
+    
+        $this->csvDateToDate($startDate, $endDate);
+    }
+
+    function csvDateToDate($startDate, $endDate) {
+        $appointments = Appointment::getAllBetweenDates($startDate, $endDate);
+    
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="appointments_' . $startDate . '_to_' . $endDate . '.csv"');
+    
+        $output = fopen('php://output', 'w');
+    
+        fputcsv($output, array('Naam', 'Datum', 'Starttijd', 'Eindtijd', 'Expertise', 'Voornaam', 'Achternaam', 'E-mail', 'Telefoonnummer', 'Opmerking'));
+    
+        foreach ($appointments as $appointment) {
+            fputcsv($output, array(
+                $appointment->getPersonObject() ? $appointment->getPersonObject()->getFirstname() : 'N/A',
+                $appointment->getAppointmentDatetime(),
+                $appointment->getAppointmentStartTime(),
+                $appointment->getAppointmentEndTime(),
+                $appointment->getExpertiseObject() ? $appointment->getExpertiseObject()->getFirstname() : 'N/A',
+                $appointment->getFirstname(),
+                $appointment->getLastname(),
+                $appointment->getEmail(),
+                $appointment->getPhonenumber(),
+                $appointment->getComment()
+            ));
+        }
+    
+        fclose($output);
+        exit;
+    }
+    
+    function csv($date) {
+        $appointments = Appointment::getAllByDate($date);
+    
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="appointments_' . $date . '.csv"');
+    
+        $output = fopen('php://output', 'w');
+
+        fputcsv($output, array('Naam', 'Datum', 'Starttijd', 'Eindtijd', 'Expertise', 'Voornaam', 'Achternaam', 'E-mail', 'Telefoonnummer', 'Opmerking'));
+
+        foreach ($appointments as $appointment) {
+            fputcsv($output, array(
+                $appointment->getPersonObject() ? $appointment->getPersonObject()->getFirstname() : 'N/A',
+                $appointment->getAppointmentDatetime(),
+                $appointment->getAppointmentStartTime(),
+                $appointment->getAppointmentEndTime(),
+                $appointment->getExpertiseObject() ? $appointment->getExpertiseObject()->getFirstname() : 'N/A',
+                $appointment->getFirstname(),
+                $appointment->getLastname(),
+                $appointment->getEmail(),
+                $appointment->getPhonenumber(),
+                $appointment->getComment()
+            ));
+        }
+
+        fclose($output);
+        exit;
+    }
+    
     public function edit($id) 
     {
         $appointment = Appointment::getByID($id);
@@ -84,23 +156,23 @@ class appointments extends DashboardPageController
     }
 
     public function changepersons() 
-{
-    $expertiseID = isset($_POST['expertiseID']) ? $_POST['expertiseID'] : null;
-    
-    if ($expertiseID == 0) {
-        $persons = Person::getAll();
-    } else { 
-        $persons = Expertise::getPersonsByExpertiseID($expertiseID);
-    }
+    {
+        $expertiseID = isset($_POST['expertiseID']) ? $_POST['expertiseID'] : null;
+        
+        if ($expertiseID == 0) {
+            $persons = Person::getAll();
+        } else { 
+            $persons = Expertise::getPersonsByExpertiseID($expertiseID);
+        }
 
-    $personOptions = [];
-    foreach ($persons as $person) {
-        $personOptions[$person->getItemID()] = $person->getFirstname(); 
+        $personOptions = [];
+        foreach ($persons as $person) {
+            $personOptions[$person->getItemID()] = $person->getFirstname(); 
+        }
+        
+        echo json_encode($personOptions);
+        exit;
     }
-    
-    echo json_encode($personOptions);
-    exit;
-}
     
     public function saveAppointment($id = null) 
     {

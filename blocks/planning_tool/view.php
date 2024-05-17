@@ -15,8 +15,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
         <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
     </div>
 <?php   } else { 
-
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -33,6 +33,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div> 
 <?php       }
             if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -49,6 +50,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }
             if (isset($choice) && isset($buttons)) { ?>
+             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-primary">go back</a>
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
@@ -84,9 +86,11 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                             <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
+                                                                <input type="hidden" name="personID" id="personID">
                                                             <?php } ?>
                                                             <?php if ($choice == 'expertise'){ ?>
                                                                 <input type="hidden" name="choice" value="expertise">
+                                                                <input type="hidden" name="expertiseID" id="expertiseID">
                                                             <?php } ?>
                                                         </a>
                                                     </div>
@@ -103,6 +107,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }    
             if (isset($choice) && isset($startTime)) { ?>   
+             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-primary">go back</a>
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
                     <input type="hidden" name="choice" value="expertise">
@@ -155,6 +160,20 @@ $(document).ready(function() {
     });
 });
 
+$(document).ready(function() {
+    $('.set-appointment').off().on('click', function(e) {
+        e.preventDefault(); 
+
+        var personID = $(this).data('personid');
+        var expertiseID = $(this).data('expertiseid');
+
+
+        $('#personID').val(personID);
+        $('#expertiseID').val(expertiseID);
+
+    });
+});
+
 $(function() {
     $('a[data-action=set-choice]').on('click', function() {
         $.ajax({
@@ -169,6 +188,21 @@ $(function() {
         });
         return false;
     });
+
+    $('a[data-action=stepOne]').on('click', function() {
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            data: { choice: $(this).data('value') }, 
+            url: $(this).attr('href'),
+            dataType: 'html',
+            success: function(response) {
+                $('div.ccm-block-wrapper').replaceWith(response);
+            }
+        });
+        return false;
+    });
+
 
     $('select[name="personID"], select[name="expertiseID"]').on('change', function() {
         var personTS = $('select[name="personID"]').val(); 
@@ -186,6 +220,22 @@ $(function() {
             }
         });
     }); 
+
+    $('a[data-action=stepTwo]').on('click', function() {
+        var choice = $('input[name="choice"]').val();
+
+        $.ajax({
+            type: 'POST',
+            cache: false,
+            data: { personTS: null, expertiseTS: null, choice: choice }, 
+            url: $(this).attr('href'),
+            dataType: 'html',
+            success: function(response) {
+                $('div.ccm-block-wrapper').replaceWith(response);
+            }
+        });
+        return false;
+    });
     
     $(document).ready(function() {
         $('.set-appointment').off().on('click', function(e) {
@@ -207,13 +257,38 @@ $(function() {
                     $('div.ccm-block-wrapper').replaceWith(response);
                 },
             });
+        }); 
+    });
+
+    $('a[data-action=stepThree]').on('click', function(e) {
+        e.preventDefault();
+
+        var choice = $('input[name="choice"]').val(); 
+        var personTS = $('input[name="personID"]').val(); 
+        var expertiseTS = $('input[name="expertiseID"]').val(); 
+
+        $.ajax({
+            type: 'POST', 
+            url: $(this).attr('href'),
+            data: { 
+                personTS: personTS,
+                expertiseTS: expertiseTS,
+                choice: choice 
+            },
+            dataType: 'html',
+            success: function(response) {
+                $('div.ccm-block-wrapper').replaceWith(response);
+            },
         });
     });
 
+
+
     $(document).ready(function() {
-    var weekOffset = <?= $weekOffset ?>;
-    var personTS = <?= isset($personTS) ? $personTS : 'null' ?>;
-    var expertiseTS = <?= isset($expertiseTS) ? $expertiseTS : 'null' ?>;
+        var weekOffset = <?= $weekOffset ?>;
+        var personTS = <?= ((isset($personTS) && $personTS!='')?$personTS:'0'); ?>;
+        var expertiseTS = <?= ((isset($expertiseTS) && $expertiseTS!='')?$expertiseTS:'0'); ?>;
+
         $("#previousWeekBtn").click(function(event) {
             event.preventDefault();
             weekOffset--;
@@ -333,14 +408,12 @@ $(function() {
                     return false;
                 }
                 
-                // Validatie van e-mailadres met een reguliere expressie
                 var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!emailPattern.test(appointmentEmail)) {
                     alert('Please enter a valid email address.');
                     return false;
                 }
 
-                // Validatie van telefoonnummer met een reguliere expressie
                 var phonePattern = /^\d{10}$/;
                 if (!phonePattern.test(appointmentPhone)) {
                     alert('Please enter a valid 10-digit phone number.');
