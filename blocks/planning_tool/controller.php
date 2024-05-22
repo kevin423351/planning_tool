@@ -66,8 +66,6 @@ class Controller extends BlockController {
             $this->set('buttons', Timeslot::getAvailableTimeSlots(null, $this->expertiseTS, $currentDate));
         }   
 
-
-        // $this->set('buttons', $buttons);
         $this->set('personID', $personID);
         $this->set('expertiseID', $this->expertiseID); 
         $this->set('weekOffset', $this->weekOffset);
@@ -81,20 +79,6 @@ class Controller extends BlockController {
         $this->set('startTime', $this->startTime); 
         $this->set('endTime', $this->endTime);
 
-        // wtfd(
-        //     'personID => '.$personID,
-        //     'expertiseID => '.$this->expertiseID, 
-        //     'weekOffset => '.$this->weekOffset,
-            
-        //     'choice => '.$this->choice,
-        //     'personTS => '.$this->personTS,
-        //     'personID => '.$this->personID,
-        //     'expertiseTS => '.$this->expertiseTS,
-      
-        //     'date => '.$this->date,
-        //     'startTime => '.$this->startTime, 
-        //     'endTime => '.$this->endTime
-        // );
     }
     
     public function action_saveAppointment($token = false, $bID = false) 
@@ -130,7 +114,6 @@ class Controller extends BlockController {
             $mailService  = \Core::make('mail');
             $mailService ->from('no-reply@planning-tool.com');
             $mailService ->replyto('no-reply@planning-tool.com');
-            // $sentEmail = $appointment->setEmail($post->get('appointmentEmail'));
             $mailService ->to('kevin@dewebmakers.nl');
             
             $mailContent = '<p>test mail<br>';
@@ -141,7 +124,6 @@ class Controller extends BlockController {
          
             $mailService ->sendMail();
             
-            // $mailService->to($post->get('appointmentEmail'), $post->get('appointmentName'));
 
             if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
                 $b = $this->getBlockObject();
@@ -290,54 +272,5 @@ class Controller extends BlockController {
         }
         exit;
     }   
-
-
-    // function validateAppointmentForm($name, $lastname, $email, $phone) {
-    //     $validator = Validation::createValidator();
-    
-    //     $errors = array();
-    
-    //     // Valideer de naam
-    //     $constraint = new Assert\NotBlank();
-    //     $violations = $validator->validate($name, $constraint);
-    //     if (count($violations) > 0) {
-    //         foreach ($violations as $violation) {
-    //             $errors[] = $violation->getMessage();
-    //         }
-    //     }
-    
-    //     // Valideer de achternaam
-    //     $violations = $validator->validate($lastname, $constraint);
-    //     if (count($violations) > 0) {
-    //         foreach ($violations as $violation) {
-    //             $errors[] = $violation->getMessage();
-    //         }
-    //     }
-    
-    //     // Valideer het e-mailadres
-    //     $constraint = new Assert\Email();
-    //     $violations = $validator->validate($email, $constraint);
-    //     if (count($violations) > 0) {
-    //         foreach ($violations as $violation) {
-    //             $errors[] = $violation->getMessage();
-    //         }
-    //     }
-    
-    //     // Valideer het telefoonnummer
-    //     $constraint = new Assert\Regex([
-    //         'pattern' => '/^[0-9]{10}$/',
-    //         'message' => 'Invalid phone number format.',
-    //     ]);
-    //     $violations = $validator->validate($phone, $constraint);
-    //     if (count($violations) > 0) {
-    //         foreach ($violations as $violation) {
-    //             $errors[] = $violation->getMessage();
-    //         }
-    //     }
-    
-    //     return $errors;
-    // }
-    
- 
 }
 ?>

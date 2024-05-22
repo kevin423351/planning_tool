@@ -74,23 +74,25 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
      */
     protected $deleted;
 
-    public static function generateICS($appointments)
+    public static function generateICS()
     {
         $icsContent = "BEGIN:VCALENDAR\r\n";
         $icsContent .= "VERSION:2.0\r\n";
         $icsContent .= "PRODID:-//dewebmakers//planning tool//EN\r\n";
 
-        foreach ($appointments as $appointment) {
-            $startDate = date('Ymd\THis', strtotime($appointment->appointmentDatetime->format('Y-m-d') . ' ' . $appointment->appointmentStartTime));
-            $endDate = date('Ymd\THis', strtotime($appointment->appointmentDatetime->format('Y-m-d') . ' ' . $appointment->appointmentEndTime));
+        $appointments = Appointment::getAll();
 
+        foreach ($appointments as $appointment) {
+            $startDate = date('Ymd\THis', strtotime($appointment->appointmentDatetime . ' ' . $appointment->appointmentStartTime));
+            $endDate = date('Ymd\THis', strtotime($appointment->appointmentDatetime . ' ' . $appointment->appointmentEndTime));
+            
             $icsContent .= "BEGIN:VEVENT\r\n";
             $icsContent .= "UID:" . uniqid() . "\r\n";
             $icsContent .= "DTSTAMP:" . gmdate('Ymd\THis\Z') . "\r\n";
             $icsContent .= "DTSTART:$startDate\r\n";
             $icsContent .= "DTEND:$endDate\r\n";
-            $icsContent .= "SUMMARY:" . addslashes($appointment->appointmentName . ' ' . $appointment->appointmentLastname) . "\r\n";
-            $icsContent .= "DESCRIPTION:" . addslashes($appointment->appointmentComment) . "\r\n";
+            $icsContent .= "SUMMARY:" . htmlspecialchars($appointment->appointmentName . ' ' . $appointment->appointmentLastname, ENT_QUOTES) . "\r\n";
+            $icsContent .= "DESCRIPTION:" . htmlspecialchars($appointment->appointmentComment, ENT_QUOTES) . "\r\n";
             $icsContent .= "END:VEVENT\r\n";
         }
 

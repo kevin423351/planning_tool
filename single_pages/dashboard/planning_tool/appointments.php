@@ -181,7 +181,8 @@
    </form>
 <?php  } else if ($this->controller->getAction() == 'view') { ?>
     <div class="ccm-dashboard-header-buttons">
-        <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-success btn-sm float-end">download CSV</a>
+        <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-success btn-sm">download CSV</a>
+        <a href="<?= URL::to('/dashboard/planning_tool/appointments/downloadICS/')?>" class="btn btn-success btn-sm">download ICS</a>
     </div>
     <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
         <h2 class="mb-4">overview appointments</h2>
