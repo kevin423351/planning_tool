@@ -214,6 +214,15 @@
 <h2>Edit persons</h2>
 <form method="post" action="<?=$this->action('save', $person->getItemID()); ?>">
    <div class="row">
+      <div class="col-12">
+         <div class="form-group">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input type="file" id="profilePicture" name="profilePicture" class="form-control-file">
+            <img src="<?= $profilePictureURL ?>" class="img-fluid" style="width: 31px;">   
+         </div>
+      </div>
+   </div>
+   <div class="row">
       <div class="col-12 col-md-6">
          <div class="form-group">
             <label for="name" class="form-label">Name</label><input type="text" id="formName" name="formName" class="form-control ccm-input-text" value="<?=$person->getFirstname(); ?>" required><br>                        
