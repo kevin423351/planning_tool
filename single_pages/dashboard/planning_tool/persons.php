@@ -212,7 +212,7 @@
 </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
 <h2>Edit persons</h2>
-<form method="post" action="<?=$this->action('save', $person->getItemID()); ?>">
+<form method="post" action="<?=$this->action('save', $person->getItemID()); ?>" enctype="multipart/form-data">
    <div class="row">
       <div class="col-12">
          <div class="form-group">
