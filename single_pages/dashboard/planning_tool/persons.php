@@ -212,7 +212,16 @@
 </form>
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
 <h2>Edit persons</h2>
-<form method="post" action="<?=$this->action('save', $person->getItemID()); ?>">
+<form method="post" action="<?=$this->action('save', $person->getItemID()); ?>" enctype="multipart/form-data">
+   <div class="row">
+      <div class="col-12">
+         <div class="form-group">
+            <label for="profilePicture" class="form-label">Profile Picture</label>
+            <input type="file" id="profilePicture" name="profilePicture" class="form-control-file">
+            <img src="<?= $profilePictureURL ?>" class="img-fluid" style="width: 31px;">   
+         </div>
+      </div>
+   </div>
    <div class="row">
       <div class="col-12 col-md-6">
          <div class="form-group">

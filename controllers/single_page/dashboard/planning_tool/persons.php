@@ -42,7 +42,20 @@ class Persons extends DashboardPageController
 
         $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
         $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
+
+        $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+        $profilePictureURL = '';
+        
+        if ($profilePicture) {
+            $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+            
+            if ($file) {
+                $profilePictureURL = $file->getURL(); // Get the URL of the profile picture
+            }
+        }
+        $this->set('profilePictureURL', $profilePictureURL);
     }
+    
 
     public function add() 
     {
