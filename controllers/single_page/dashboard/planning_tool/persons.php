@@ -94,17 +94,14 @@ class Persons extends DashboardPageController
         
         $person->save();
 
-        // Process and save time slots associated with the person
         foreach (array_keys($post->get('timeslotsDays')) as $key)
         {
-            // get the timeslot ID
             $ts = null;
             if ((int)$key > 0) {
                 $ts = TimeSlot::getByID($key);
             } 
 
             if (!is_object($ts)) {
-                // If $id is not provided, create a new Timeslot object
                 $ts = new Timeslot();
                 $ts->setPerson($person);
             } 

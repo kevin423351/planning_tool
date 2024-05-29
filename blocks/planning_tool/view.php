@@ -329,35 +329,6 @@ $(function() {
     });
 });
 
-// $(document).ready(function() {
-//     $('form').submit(function(event) {
-//         event.preventDefault(); 
-
-//         var formData = $(this).serialize();
-
-//         $.ajax({
-//             type: 'POST',
-//             url: $(this).attr('action'),
-//             data: formData,
-//             success: function(response) {
-                
-//                 var appointmentName = $('#appointmentName').val();
-//                 var appointmentLastname = $('#appointmentLastname').val();
-//                 var appointmentDatetime = $('#appointmentDatetime').val();
-//                 var appointmentStartTime = $('#appointmentStartTime').val();
-//                 var appointmentEndTime = $('#appointmentEndTime').val();
-
-//                 var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
-//                 alert(message);
-
-//                 $('form')[0].reset();
-//             },
-//             error: function(xhr, status, error) {
-//                 alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
-//             }
-//         });
-//     });
-// });
     $(document).ready(function() {
         $('form').submit(function(event) {
             event.preventDefault();
@@ -431,67 +402,7 @@ $(function() {
     });
 
 </script>
-<style>
-   @media (max-width: 576px) {
-        .custom-flex {
-            flex-wrap: wrap;
-            flex-direction: column;
-        }
-        .custom-slot {
-            width: 100%;
-        }
-        .custom-button {
-            justify-content: center; 
-            align-items: center;
-        }
-    }
-    @media (max-width: 1150px) {
-        .custom-timeslot {
-            width: 100%; 
-        }  
-        .custom-flex {
-            flex-wrap: wrap; 
-            flex-direction: row; 
-        }
-        .custom-slot {
-            width: calc(50% - 16px); 
-            margin-right: 16px; 
-            margin-bottom: 16px; 
-        }
-        .custom-button {
-            justify-content: center; 
-            align-items: center;
-        }
-    }
-  .custom-button {
-    color: #4a90e2;
-    background-color: #fff;
-  }
 
-  .custom-button:hover {
-    background-color: #d0e6ff;
-    color: #fff;
-  }
-
-  .custom-button:focus {
-    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.5);
-  }
-
-  .custom-button:active {
-    background-color: #4a90e2;
-    color: #fff;
-    box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-  }
-
-  .custom-button:disabled {
-    color: #4a90e2;
-    background-color: transparent;
-    border-color: #4a90e2;
-  }
-  .text-end {
-    text-align: end;
-  }
-</style>
 
     
 
