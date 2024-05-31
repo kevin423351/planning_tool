@@ -185,7 +185,6 @@ class appointments extends DashboardPageController
     
     public function saveAppointment($id = null) 
     {
-
         $post = $this->request->request;
 
         if ($id !== null) {

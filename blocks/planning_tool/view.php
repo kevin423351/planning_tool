@@ -282,17 +282,16 @@ $(function() {
         });
     });
 
-
-
     $(document).ready(function() {
         var weekOffset = <?= $weekOffset ?>;
         var personTS = <?= ((isset($personTS) && $personTS!='')?$personTS:'0'); ?>;
         var expertiseTS = <?= ((isset($expertiseTS) && $expertiseTS!='')?$expertiseTS:'0'); ?>;
 
         $("#previousWeekBtn").click(function(event) {
-            event.preventDefault();
-            weekOffset--;
-            updateWeekOffset();
+            if (weekOffset > 0) { 
+                weekOffset--;
+                updateWeekOffset();
+            }
         });
 
         $("#nextWeekBtn").click(function(event) {

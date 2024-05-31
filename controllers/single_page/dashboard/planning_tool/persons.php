@@ -11,6 +11,10 @@ use Imagine\Image\Palette\RGB;
 use Imagine\Gd\Imagine;
 use Concrete\Core\File\Import\ImportException;
 use Concrete\Core\Page\Controller\DashboardPageController;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Annotation\Route;
 
 class Persons extends DashboardPageController
 {   
@@ -87,10 +91,17 @@ class Persons extends DashboardPageController
         $person->setExpertises($expertises);
 
         $file = $this->request->files->get('profilePicture');
-        $filename = $file->getClientOriginalName();
-        $importer = $this->app->make('\Concrete\Core\File\Import\FileImporter');
-        $result = $importer->importUploadedFile($file, $filename);
-        $person->setProfilePicture($result->getFileID());
+
+        if ($file && $file->isValid()) {
+            $filename = $file->getClientOriginalName();
+            $importer = $this->app->make('\Concrete\Core\File\Import\FileImporter');
+            $result = $importer->importUploadedFile($file, $filename);
+            if ($result) {
+                $person->setProfilePicture($result->getFileID());
+            } else {
+            }
+        } else {
+        }
         
         $person->save();
 
@@ -137,6 +148,15 @@ class Persons extends DashboardPageController
 	    $this->buildRedirect('/dashboard/planning_tool/persons/')->send();  
     }
 
+    public function deletetimeslot()
+    {       
+        $post = $this->request->request;
+        $timeslotId = $post->get('timeslot_id');
+        $timeslot = Timeslot::getByID($timeslotId);
+        $timeslot->delete();
+        return new JsonResponse(['status' => 'success']);
+
+    }
 
     public function delete($id){
         $person = Person::getByID($id);

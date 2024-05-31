@@ -270,8 +270,8 @@
          <div class="timeslots">
             <?php 
                foreach ($timeslots as $key => $timeslot) {
-               ?>
-            <div class="timeslot">
+            ?>
+            <div class="timeslot" data-id="<?= $timeslot->getItemID() ?>">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
                      <button class="btn btn-danger remove_timeslot" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
@@ -314,7 +314,7 @@
             </button>
          </div>
          <script id="timeslot" type="text/template">
-            <div class="timeslot">
+            <div class="timeslot" data-id="<?= $timeslot->getItemID() ?>">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
                      <button class="btn btn-danger remove_timeslot" type="button">
@@ -362,19 +362,39 @@
 </form>
 <?php } ?>
 <script>
-   $(function() {
+   $(function() { 
       $(document).on('click', '.remove_timeslot', function() {
          var holder = $('.timeslots');
          var count = $('.timeslot', holder).length;
          var current = $(this).closest('.timeslot');
-         if (count > -1) {
-               current.remove();
-         }
-         else {
-               $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+         var timeslotId = current.data('id'); // Retrieve the data-id attribute value
+         console.log(timeslotId);
+         if (timeslotId) {
+            $.ajax({
+                  url: '<? echo $this->action('deletetimeslot'); ?>',
+                  type: 'POST',
+                  data: { timeslot_id: timeslotId },
+                  success: function(response) {
+                     if (response.status === 'success') {
+                        if (count > -1) {
+                              current.remove();
+                        } else {
+                              $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+                        }
+                     } else {
+                        alert('Failed to delete timeslot: ' + response.message);
+                     }
+                  },
+                  error: function() {
+                     alert('Error deleting timeslot');
+                  }
+            });
+         } else {
+            // Handle case where there is no timeslot ID
+            alert('Invalid timeslot ID');
          }
       });
-   
+      
       $(document).on('click', '.add_timeslot', function() {
          var holder = $('.timeslots');
          var clone = $('#timeslot').html().replace(/_tmp/g, _tmp-1);
