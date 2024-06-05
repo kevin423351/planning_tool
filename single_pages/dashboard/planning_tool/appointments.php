@@ -1,4 +1,4 @@
-<?php if ($this->controller->getAction() == 'agenda') { ?>
+<?php if ($this->controller->getAction() == 'agendaAppointments') { ?>
    <div class="ccm-dashboard-header-buttons">
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/csv/', $date)?>" class="btn btn-primary btn-sm">download CSV</a>
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary btn-sm">Agenda</a>
@@ -45,11 +45,9 @@
                             <?php
                             $expertiseObject = $appointment->getExpertiseObject();
 
-                            // Check if the personObject is not null before accessing its properties
                             if ($expertiseObject !== null) {
                                 echo $expertiseObject->getFirstname();
                             } else {
-                                // Handle the case where personObject is null
                                 echo 'N/A';
                             }
                             ?>
@@ -184,22 +182,16 @@
         <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-primary btn-sm">download CSV</a>
         <a href="<?= URL::to('/dashboard/planning_tool/appointments/downloadICS/')?>" class="btn btn-primary btn-sm">download ICS</a>
     </div>
-    <div class="container-fluid mt-4"> <!-- Gebruik container-fluid om de container over de volledige breedte van de pagina te laten strekken -->
-        <h2 class="mb-4">overview appointments</h2>
+    <div class="container-fluid mt-4">
         <div class="row">
-            <div class="col"> <!-- Gebruik een kolom om de container binnen de rij te plaatsen -->
+            <div class="col">
                 <label for="month">Selecteer een maand:</label>
                 <?php
-               // Stel de geselecteerde maand in op basis van de ontvangen gebruikersinvoer, als die bestaat
                 $selectedMonth = isset($month) ? $month : null;
-                // Output van het dropdown-menu
                 echo '<select name="month" id="month" class="form-select">';
                 for ($month = 1; $month <= 12; $month++) {
-                    // Haal de maandnaam op basis van het maandnummer
                     $monthName = date("F", mktime(0, 0, 0, $month, 1));
-                    // Controleer of de huidige maand overeenkomt met de geselecteerde maand
                     $selected = ($month == $selectedMonth) ? 'selected' : '';
-                    // Display de maand als een option in het dropdown-menu
                     echo "<option value='$month' $selected>$monthName</option>";
                 }
                 echo '</select>';
@@ -228,7 +220,7 @@
                                     } else {
                                         echo $dayContent['daynumber'];
                                         if ($dayContent['count'] >= 1) {
-                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agenda//' . $dayContent['date']).'" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
+                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agendaAppointments//' . $dayContent['date']).'" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
                                                     <i class="fas fa-calendar-check" style="margin-right: 5px;"></i>Appointments ('.$dayContent['count'].')
                                                   </a>';
                                         }

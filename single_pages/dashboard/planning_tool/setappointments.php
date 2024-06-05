@@ -45,7 +45,7 @@
                                     <div class="mb-1 d-flex align-items-center">
                                         <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], isset($expertiseID) ? $expertiseID : 0, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
                                             <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                            <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                         </a>
                                     </div>
                                 <?php } ?>
@@ -144,7 +144,7 @@
                                     <div class="mb-1 d-flex align-items-center">
                                         <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
                                             <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF; "></div>
-                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                            <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
                                         </a>
                                     </div>
                                 <?php } ?>

@@ -5,18 +5,15 @@ defined('C5_EXECUTE') or die("Access Denied.");
 
 <div class="ccm-block-wrapper">
     <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
-<?php   if ($choice == '' && !isset($buttons) && !isset($date)){ ?>
-    <button id="showButtons" class="btn btn-primary">make an appointment</button>
-<?php   } 
+<?php   
         if ($choice == '') { ?>
-    <div id="hiddenButtons" style="display: none;">
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-success">Persoon</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-success">Expertise</a>
     </div>
 <?php   } else { 
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-success mb-3 btn-sm">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -33,7 +30,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div> 
 <?php       }
             if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-success btn-sm mb-3">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -50,12 +47,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }
             if (isset($choice) && isset($buttons)) { ?>
-             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-primary">go back</a>
+             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-success btn-sm mb-3">go back</a>
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
-                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-primary"><- previous week</a>
-                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-primary">next week -></a>
+                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-success"><- previous week</a>
+                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-success">next week -></a>
                         </div>
                     </div>
                 </div>
@@ -67,7 +64,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                     <div class="w-200 px-2 custom-slot" style="width: 225px;">
                                 </div>
                                     <div class="card rounded-top">
-                                        <div class="ps-3 pt-2 text-primary font-weight-bold">
+                                        <div class="ps-3 pt-2 text-success font-weight-bold">
                                             <?= date('l', strtotime($date)); ?><br/>
                                             <?= $date; ?>
                                         </div>
@@ -76,14 +73,14 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                 <?php foreach ($timeslot as $button) { ?>
                                                     <div class="mb-1 d-flex align-items-center">
                                                         <a href="javascript:;" 
-                                                            class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
+                                                            class="btn border-bottom text-success btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
                                                             data-personid="<?= $button['personID']; ?>" 
                                                             data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
                                                             data-date="<?= $date; ?>"
                                                             data-starttime="<?= $button['startTime']; ?>" 
                                                             data-endtime="<?= $button['endTime']; ?>">
-                                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                                            <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                                            <div class="rounded-circle text-success mr-2" style="width: 1rem; height: 1rem; background-color: #198754;"></div>
+                                                            <strong><span class="ms-2 text-black" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
                                                                 <input type="hidden" name="personID" id="personID">
@@ -107,7 +104,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }    
             if (isset($choice) && isset($startTime)) { ?>   
-             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-primary">go back</a>
+             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-success mb-3 btn-sm">go back</a>
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
                     <input type="hidden" name="choice" value="expertise">
@@ -144,7 +141,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
                         <div class="ccm-dashboard-form-actions">
-                            <button class="btn btn-primary" type="submit">submit</button>
+                            <button class="btn btn-success" type="submit">submit</button>
                         </div>
                     </div>
                 </form>
@@ -153,12 +150,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
 </div>
 
 <script>
-$(document).ready(function() {
-    $("#showButtons").click(function() {
-        $("#hiddenButtons").show();
-        $("#showButtons").hide();
-    });
-});
+// $(document).ready(function() {
+//     $("#showButtons").click(function() {
+//         $("#hiddenButtons").show();
+//         $("#showButtons").hide();
+//     });
+// });
 
 $(document).ready(function() {
     $('.set-appointment').off().on('click', function(e) {

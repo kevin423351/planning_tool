@@ -12,18 +12,6 @@ class appointments extends DashboardPageController
 {
     protected $expertiseID;
 
-    public function agenda($dateString='')
-    {    
-        $date = new DateTime($dateString);
-        
-        $formattedDate = $date->format('Y-m-d');
-
-        $appointments = Appointment::getAllByDate($formattedDate);
-
-        $this->set('date', $formattedDate);
-        $this->set('appointments', $appointments);
-    }
-    
     public function view($year='', $month='')
     {
         if ($year == '') { $year = date('Y'); }
@@ -65,6 +53,18 @@ class appointments extends DashboardPageController
             $row++;
         } 
         $this->set('calendar', $return);
+    }
+    
+    public function agendaAppointments($dateString='')
+    {    
+        $date = new DateTime($dateString);
+        
+        $formattedDate = $date->format('Y-m-d');
+
+        $appointments = Appointment::getAllByDate($formattedDate);
+
+        $this->set('date', $formattedDate);
+        $this->set('appointments', $appointments);
     }
 
     public function downloadICS()

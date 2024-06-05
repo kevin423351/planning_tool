@@ -34,11 +34,19 @@ class Installer {
     public function uninstall($pkg = null)
     {
         $db = app()->make('database')->connection();
-    //     $db->query("DROP TABLE IF EXISTS Person");
-    //     $db->query("DROP TABLE IF EXISTS Expertise");
-    //     $db->query("DROP TABLE IF EXISTS Appointment");
-    //     $db->query("DROP TABLE IF EXISTS Timeslots");
+        
+        $db->query("SET FOREIGN_KEY_CHECKS = 0");
+        
+        $db->query("DROP TABLE IF EXISTS persons");
+        $db->query("DROP TABLE IF EXISTS expertises");
+        $db->query("DROP TABLE IF EXISTS appointments");
+        $db->query("DROP TABLE IF EXISTS timeslots");
+        $db->query("DROP TABLE IF EXISTS unavailable");
+        
+        $db->query("SET FOREIGN_KEY_CHECKS = 1");
+        $db->query("SET FOREIGN_KEY_CHECKS = 0");
     }
+
     public function clearCache() {
         Localization::clearCache();
     }
