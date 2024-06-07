@@ -1,6 +1,6 @@
 <?php if ($this->controller->getAction() == 'agendaAppointments') { ?>
    <div class="ccm-dashboard-header-buttons">
-      <a href="<?= URL::to('/dashboard/planning_tool/appointments/csv/', $date)?>" class="btn btn-primary btn-sm">download CSV</a>
+      <a href="<?= URL::to('/dashboard/planning_tool/appointments/csv/', $date)?>" class="btn btn-light btn-sm">download CSV</a>
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
    </div>
@@ -179,8 +179,8 @@
    </form>
 <?php  } else if ($this->controller->getAction() == 'view') { ?>
     <div class="ccm-dashboard-header-buttons">
-        <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-primary btn-sm">download CSV</a>
-        <a href="<?= URL::to('/dashboard/planning_tool/appointments/downloadICS/')?>" class="btn btn-primary btn-sm">download ICS</a>
+        <a href="<?= URL::to('/dashboard/planning_tool/appointments/csvDate/')?>" class="btn btn-light btn-sm">download CSV</a>
+        <a href="<?= URL::to('/dashboard/planning_tool/appointments/downloadICS/')?>" class="btn btn-light btn-sm">download ICS</a>
     </div>
     <div class="container-fluid mt-4">
         <div class="row">
@@ -220,7 +220,7 @@
                                     } else {
                                         echo $dayContent['daynumber'];
                                         if ($dayContent['count'] >= 1) {
-                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agendaAppointments//' . $dayContent['date']).'" class="btn btn-primary" style="height: 24px; width: 100%; background-color: #329ec1; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
+                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agendaAppointments//' . $dayContent['date']).'" class="btn btn-succes" style="height: 24px; width: 100%; background-color: #198754; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
                                                     <i class="fas fa-calendar-check" style="margin-right: 5px;"></i>Appointments ('.$dayContent['count'].')
                                                   </a>';
                                         }

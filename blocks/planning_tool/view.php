@@ -13,7 +13,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
     </div>
 <?php   } else { 
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-success mb-3 btn-sm">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-secondary mb-3 btn-sm">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -30,7 +30,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div> 
 <?php       }
             if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-success btn-sm mb-3">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-secondary btn-sm mb-3">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -47,7 +47,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }
             if (isset($choice) && isset($buttons)) { ?>
-             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-success btn-sm mb-3">go back</a>
+             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-secondary btn-sm mb-3">go back</a>
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
@@ -64,9 +64,9 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                     <div class="w-200 px-2 custom-slot" style="width: 225px;">
                                 </div>
                                     <div class="card rounded-top">
-                                        <div class="ps-3 pt-2 text-success font-weight-bold">
-                                            <?= date('l', strtotime($date)); ?><br/>
-                                            <?= $date; ?>
+                                        <div class="ps-3 pt-2 text-secondary font-weight-bold">
+                                            <strong><?= date('l', strtotime($date)); ?><br/>
+                                            <?= $date; ?></strong>
                                         </div>
                                         <div class="card-body">
                                             <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
@@ -80,7 +80,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                             data-starttime="<?= $button['startTime']; ?>" 
                                                             data-endtime="<?= $button['endTime']; ?>">
                                                             <div class="rounded-circle text-success mr-2" style="width: 1rem; height: 1rem; background-color: #198754;"></div>
-                                                            <strong><span class="ms-2 text-black" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
+                                                            <strong><span class="ms-2 text-secondary" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
                                                                 <input type="hidden" name="personID" id="personID">
@@ -104,7 +104,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }    
             if (isset($choice) && isset($startTime)) { ?>   
-             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-success mb-3 btn-sm">go back</a>
+             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-secondary mb-3 btn-sm">go back</a>
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
                     <input type="hidden" name="choice" value="expertise">
@@ -150,13 +150,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 </div>
 
 <script>
-// $(document).ready(function() {
-//     $("#showButtons").click(function() {
-//         $("#hiddenButtons").show();
-//         $("#showButtons").hide();
-//     });
-// });
-
 $(document).ready(function() {
     $('.set-appointment').off().on('click', function(e) {
         e.preventDefault(); 

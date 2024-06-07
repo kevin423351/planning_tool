@@ -78,7 +78,6 @@ class Controller extends BlockController {
         $this->set('date', $this->date);
         $this->set('startTime', $this->startTime); 
         $this->set('endTime', $this->endTime);
-
     }
     
     public function action_saveAppointment($token = false, $bID = false) 

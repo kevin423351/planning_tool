@@ -119,24 +119,26 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
     public static function getAllByDate($date)
     {
         $em = dbORM::entityManager();
-
+    
         $qb = $em->createQueryBuilder();
-
+    
         $qb->select('a')
            ->from('Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment', 'a')
            ->where('a.appointmentDatetime = :date')
+           ->andWhere('a.deleted = 0')
            ->setParameter('date', $date);
-
+    
         return $qb->getQuery()->getResult();
     }
 
-     public static function countAppointmentsByDate($date)
+    public static function countAppointmentsByDate($date)
     {
         $qb = dbORM::entityManager()->createQueryBuilder();
 
         $qb->select('COUNT(a)')
            ->from('Concrete\Package\PlanningTool\Src\PlanningTool\Persons\Appointment', 'a')
            ->where('a.appointmentDatetime = :date')
+           ->andWhere('a.deleted = 0') 
            ->setParameter('date', $date);
 
         return $qb->getQuery()->getSingleScalarResult();
