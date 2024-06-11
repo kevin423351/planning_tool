@@ -81,59 +81,60 @@ class Controller extends BlockController {
     }
     
     public function action_saveAppointment($token = false, $bID = false) 
-    {
-        if ($this->bID != $bID) {
-            return false;
-        }
-        if (\Core::make('token')->validate('saveAppointment', $token)) {
-            $page = Page::getCurrentPage();
-            $u = new User();
-
-            $post = $this->request->request;
-
-            $choice = $post->get('choice');
-        
-            $appointment = new Appointment();
-            $appointment->setDeleted(0); 
-        
-            $appointment->setPerson($post->get('personID'));
-            $appointment->setExpertise($post->get('expertiseID'));
-            $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
-            $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
-            $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
-            $appointment->setFirstname($post->get('appointmentName'));
-            $appointment->setLastname($post->get('appointmentLastname'));
-            $appointment->setEmail($post->get('appointmentEmail'));
-            $appointment->setPhonenumber($post->get('appointmentPhone'));    
-            $appointment->setComment($post->get('appointmentComment'));
-
-            $appointment->save();
-            
-            
-            $mailService  = \Core::make('mail');
-            $mailService ->from('no-reply@planning-tool.com');
-            $mailService ->replyto('no-reply@planning-tool.com');
-            $mailService ->to('kevin@dewebmakers.nl');
-            
-            $mailContent = '<p>test mail<br>';
-
-            $mailService ->addParameter('mailContent', $mailContent);
-
-            $mailService ->load('appointment_mail', 'planning_tool');
-         
-            $mailService ->sendMail();
-            
-
-            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-                $b = $this->getBlockObject();
-                $bv = new BlockView($b);
-                $bv->render('view');
-            } else {
-                Redirect::page($page)->send();
-            }
-        }
-        exit;
+{
+    if ($this->bID != $bID) {
+        return false;
     }
+    if (\Core::make('token')->validate('saveAppointment', $token)) {
+        $page = Page::getCurrentPage();
+        $u = new User();
+
+        $post = $this->request->request;
+
+        $choice = $post->get('choice');
+    
+        $appointment = new Appointment();
+        $appointment->setDeleted(0); 
+    
+        $appointment->setPerson($post->get('personID'));
+        $appointment->setExpertise($post->get('expertiseID'));
+        $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
+        $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
+        $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
+        $appointment->setFirstname($post->get('appointmentName'));
+        $appointment->setLastname($post->get('appointmentLastname'));
+        $appointment->setEmail($post->get('appointmentEmail'));
+        $appointment->setPhonenumber($post->get('appointmentPhone'));    
+        $appointment->setComment($post->get('appointmentComment'));
+
+        $appointment->save();
+        
+        $appointmentEmail = $appointment->getEmail();
+        
+        $mailService  = \Core::make('mail');
+        $mailService->from('no-reply@planning-tool.com');
+        $mailService->replyto('no-reply@planning-tool.com');
+        $mailService->to($appointmentEmail); 
+        
+        $mailContent = '<p>test mail<br>';
+
+        $mailService->addParameter('mailContent', $mailContent);
+
+        $mailService->load('appointment_mail', 'planning_tool');
+     
+        $mailService->sendMail();
+        
+        if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            $b = $this->getBlockObject();
+            $bv = new BlockView($b);
+            $bv->render('view');
+        } else {
+            Redirect::page($page)->send();
+        }
+    }
+    exit;
+}
+
 
     
     public function action_choice($token = false, $bID = false) 

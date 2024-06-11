@@ -172,7 +172,7 @@
     </div>
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions">
-            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <a href="<?= URL::to('/dashboard/planning_tool/appointments/agendaAppointments/', $date)?>" class="btn btn-secondary float-start">Cancel</a>
             <button class="float-end btn btn-primary" type="submit">Save</button>
          </div>
       </div>
@@ -253,7 +253,12 @@
                 <input class="form-control hasDatepicker" type="date" id="endDate" name="endDate">
             </div>
         </div>
-        <button type="submit">Download CSV</button>
+        <div class="ccm-dashboard-form-actions-wrapper">
+            <div class="ccm-dashboard-form-actions">
+               <a href="<?= URL::to('/dashboard/planning_tool/appointments/, $date')?>" class="btn btn-secondary float-start">Cancel</a>
+               <button class="float-end btn btn-primary" type="submit">Download CSV</button>
+            </div>
+        </div>
     </form>
 <?php  } ?>
 <script>

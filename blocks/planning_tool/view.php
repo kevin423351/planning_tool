@@ -301,94 +301,96 @@ $(function() {
             });
         }
     });
-
-    $(document).ready(function() {
-        $('form').submit(function(event) { 
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment')) ?>',
-                data: formData ,
-                success: function(response) {
-                    $('div.ccm-block-wrapper').html(response);
-                }
-            });
-        });
-    });
 });
 
-    $(document).ready(function() {
-        $('form').submit(function(event) {
-            event.preventDefault();
+$(document).ready(function() {
+    var formSubmitted = false;
 
-            if (!validateForm()) {
-                return;
-            }
+    $('form').submit(function(event) {
+        event.preventDefault(); 
 
-            var formData = $(this).serialize();
+        if (formSubmitted) {
+            return;
+        }
 
-            $.ajax({ 
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                success: function(response) {
-                    var appointmentName = $('#appointmentName').val();
-                    var appointmentLastname = $('#appointmentLastname').val();
-                    var appointmentDatetime = $('#appointmentDatetime').val();
-                    var appointmentStartTime = $('#appointmentStartTime').val();
-                    var appointmentEndTime = $('#appointmentEndTime').val();
+        if (!validateForm()) {
+            return;
+        }
 
-                    var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
-                    alert(message);
+        formSubmitted = true; 
+        var formData = $(this).serialize();
 
-                    $('form')[0].reset();
-                },
-                error: function(xhr, status, error) {
-                    alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
-                }
-            });
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment')) ?>',
+            data: formData,
+            success: function(response) {
+                var appointmentName = $('#appointmentName').val();
+                var appointmentLastname = $('#appointmentLastname').val();
+                var appointmentDatetime = $('#appointmentDatetime').val();
+                var appointmentStartTime = $('#appointmentStartTime').val();
+                var appointmentEndTime = $('#appointmentEndTime').val();
 
-            function validateForm() {
-                var appointmentName = $('#appointmentName').val().trim();
-                var appointmentLastname = $('#appointmentLastname').val().trim();
-                var appointmentEmail = $('#appointmentEmail').val().trim();
-                var appointmentPhone = $('#appointmentPhone').val().trim();
-                var appointmentDatetime = $('#appointmentDatetime').val().trim();
-                var appointmentStartTime = $('#appointmentStartTime').val().trim();
-                var appointmentEndTime = $('#appointmentEndTime').val().trim();
+                var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
+                alert(message);
 
-                if (appointmentName === '') {
-                    alert('Please enter your name.');
-                    return false;
-                }
-
-                if (appointmentLastname === '') {
-                    alert('Please enter your last name.');
-                    return false;
-                }
-                
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(appointmentEmail)) {
-                    alert('Please enter a valid email address.');
-                    return false;
-                }
-
-                var phonePattern = /^\d{10}$/;
-                if (!phonePattern.test(appointmentPhone)) {
-                    alert('Please enter a valid 10-digit phone number.');
-                    return false;
-                }
-
-                if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
-                    alert('Please enter appointment date and time.');
-                    return false;
-                }
-
-                return true;
+                $('form')[0].reset();
+                formSubmitted = false; // Reset the flag after successful submission
+                $('div.ccm-block-wrapper').html(response);
+            },
+            error: function(xhr, status, error) {
+                alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
+                formSubmitted = false; // Reset the flag if there's an error
             }
         });
     });
+
+    function validateForm() {
+        var appointmentName = $('#appointmentName').val().trim();
+        var appointmentLastname = $('#appointmentLastname').val().trim();
+        var appointmentEmail = $('#appointmentEmail').val().trim();
+        var appointmentPhone = $('#appointmentPhone').val().trim();
+        var appointmentDatetime = $('#appointmentDatetime').val().trim();
+        var appointmentStartTime = $('#appointmentStartTime').val().trim();
+        var appointmentEndTime = $('#appointmentEndTime').val().trim();
+
+        if (appointmentName === '') {
+            alert('Please enter your name.');
+            formSubmitted = false; // Reset the flag if validation fails
+            return false;
+        }
+
+        if (appointmentLastname === '') {
+            alert('Please enter your last name.');
+            formSubmitted = false; // Reset the flag if validation fails
+            return false;
+        }
+
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(appointmentEmail)) {
+            alert('Please enter a valid email address.');
+            formSubmitted = false; // Reset the flag if validation fails
+            return false;
+        }
+
+        var phonePattern = /^\d{10}$/;
+        if (!phonePattern.test(appointmentPhone)) {
+            alert('Please enter a valid 10-digit phone number.');
+            formSubmitted = false; // Reset the flag if validation fails
+            return false;
+        }
+
+        if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
+            alert('Please enter appointment date and time.');
+            formSubmitted = false; // Reset the flag if validation fails
+            return false;
+        }
+
+        return true;
+    }
+});
+
+
 
 </script>
 

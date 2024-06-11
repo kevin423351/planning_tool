@@ -44,7 +44,7 @@
 
       <div class="ccm-dashboard-form-actions-wrapper">
          <div class="ccm-dashboard-form-actions ">
-            <a href="#" class="btn btn-secondary float-start">Cancel</a>
+            <a href="<?= URL::to('/dashboard/planning_tool/expertises/')?>" class="btn btn-secondary float-start">Cancel</a>
             <button class="float-end btn btn-primary" type="submit">Save</button>
          </div>
       </div>

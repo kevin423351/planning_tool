@@ -205,7 +205,7 @@
    </div>
    <div class="ccm-dashboard-form-actions-wrapper">
       <div class="ccm-dashboard-form-actions ">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
+         <a href="<?= URL::to('/dashboard/planning_tool/persons/')?>" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
       </div>
    </div>
@@ -355,7 +355,7 @@
    </div>
    <div class="ccm-dashboard-form-actions-wrapper">
       <div class="ccm-dashboard-form-actions ">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
+         <a href="<?= URL::to('/dashboard/planning_tool/persons/')?>" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
       </div>
    </div>

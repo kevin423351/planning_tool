@@ -7,6 +7,7 @@
         <div class="form-group">
             <label for="personID" class="form-label">With who?</label>
             <select id="personID" name="personID" class="form-select">
+                <option value=""></option>
                 <?php foreach ($persons as $person){ ?>
                     <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
                 <?php } ?>
@@ -95,7 +96,6 @@
         </div>
         <div class="ccm-dashboard-form-actions-wrapper">
             <div class="ccm-dashboard-form-actions ">
-                <a href="#" class="btn btn-secondary float-start">Cancel</a>
                 <button class="float-end btn btn-primary" type="submit">Save</button>
             </div>
         </div>
@@ -107,6 +107,7 @@
         <div class="form-group">
             <label for="expertiseID" class="form-label">With who?</label>
             <select id="expertiseID" name="expertiseID" class="form-select">
+                <option value=""></option>
                 <?php foreach ($expertises as $expertise){ ?>
                     <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
                 <?php } ?>
