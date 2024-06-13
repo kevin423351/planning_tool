@@ -151,7 +151,7 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         ->setParameter('unavailableDate', $date)
         ->setParameter('time', $time)
         ->execute();
-
+        
         if (count($query->fetchAll()) >= 1) {
             return true;
         }

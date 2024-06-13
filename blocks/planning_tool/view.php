@@ -1,15 +1,13 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
-
-
 <div class="ccm-block-wrapper">
     <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
 <?php   
         if ($choice == '') { ?>
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-success">Persoon</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-danger">Persoon</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-success">Expertise</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-danger">Expertise</a>
     </div>
 <?php   } else { 
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
@@ -51,8 +49,8 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
-                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-success"><- previous week</a>
-                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-success">next week -></a>
+                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-danger"><- previous week</a>
+                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-danger">next week -></a>
                         </div>
                     </div>
                 </div>
@@ -73,13 +71,13 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                                 <?php foreach ($timeslot as $button) { ?>
                                                     <div class="mb-1 d-flex align-items-center">
                                                         <a href="javascript:;" 
-                                                            class="btn border-bottom text-success btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
+                                                            class="btn border-bottom text-danger btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
                                                             data-personid="<?= $button['personID']; ?>" 
                                                             data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
                                                             data-date="<?= $date; ?>"
                                                             data-starttime="<?= $button['startTime']; ?>" 
                                                             data-endtime="<?= $button['endTime']; ?>">
-                                                            <div class="rounded-circle text-success mr-2" style="width: 1rem; height: 1rem; background-color: #198754;"></div>
+                                                            <div class="rounded-circle text-success mr-2" style="width: 1rem; height: 1rem; background-color: #E30814;"></div>
                                                             <strong><span class="ms-2 text-secondary" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
@@ -141,7 +139,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
                         <div class="ccm-dashboard-form-actions">
-                            <button class="btn btn-success" type="submit">submit</button>
+                            <button class="btn btn-danger" type="submit">Versturen</button>
                         </div>
                     </div>
                 </form>
@@ -331,16 +329,16 @@ $(document).ready(function() {
                 var appointmentStartTime = $('#appointmentStartTime').val();
                 var appointmentEndTime = $('#appointmentEndTime').val();
 
-                var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
+                var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + '.';
                 alert(message);
 
                 $('form')[0].reset();
-                formSubmitted = false; // Reset the flag after successful submission
+                formSubmitted = false; 
                 $('div.ccm-block-wrapper').html(response);
             },
             error: function(xhr, status, error) {
                 alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
-                formSubmitted = false; // Reset the flag if there's an error
+                formSubmitted = false; 
             }
         });
     });
@@ -356,44 +354,46 @@ $(document).ready(function() {
 
         if (appointmentName === '') {
             alert('Please enter your name.');
-            formSubmitted = false; // Reset the flag if validation fails
+            formSubmitted = false; 
             return false;
         }
 
         if (appointmentLastname === '') {
             alert('Please enter your last name.');
-            formSubmitted = false; // Reset the flag if validation fails
+            formSubmitted = false; 
             return false;
         }
 
         var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailPattern.test(appointmentEmail)) {
             alert('Please enter a valid email address.');
-            formSubmitted = false; // Reset the flag if validation fails
+            formSubmitted = false; 
             return false;
         }
 
         var phonePattern = /^\d{10}$/;
         if (!phonePattern.test(appointmentPhone)) {
             alert('Please enter a valid 10-digit phone number.');
-            formSubmitted = false; // Reset the flag if validation fails
+            formSubmitted = false; 
             return false;
         }
 
         if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
             alert('Please enter appointment date and time.');
-            formSubmitted = false; // Reset the flag if validation fails
+            formSubmitted = false; 
             return false;
         }
 
         return true;
     }
 });
-
-
-
 </script>
-
+<style>
+.btn-danger {
+    color: #fff;
+    background-color: #E30814;
+}
+</style>
 
     
 

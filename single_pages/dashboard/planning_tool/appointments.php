@@ -29,11 +29,9 @@
                             <?php
                             $personObject = $appointment->getPersonObject();
 
-                            // Check if the personObject is not null before accessing its properties
                             if ($personObject !== null) {
                                 echo $personObject->getFirstname();
                             } else {
-                                // Handle the case where personObject is null
                                 echo 'N/A';
                             }
                             ?>
@@ -220,7 +218,7 @@
                                     } else {
                                         echo $dayContent['daynumber'];
                                         if ($dayContent['count'] >= 1) {
-                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agendaAppointments//' . $dayContent['date']).'" class="btn btn-succes" style="height: 24px; width: 100%; background-color: #198754; font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
+                                            echo '<a href="'.URL::to('/dashboard/planning_tool/appointments/agendaAppointments//' . $dayContent['date']).'" class="btn btn-danger" style="height: 24px; width: 100%;  font-size: 14px; font-weight: bold; color: #ffffff; padding-top: 0px; padding-left: 0%;">
                                                     <i class="fas fa-calendar-check" style="margin-right: 5px;"></i>Appointments ('.$dayContent['count'].')
                                                   </a>';
                                         }
@@ -265,9 +263,8 @@
     $(document).ready(function() {
         $('#month').change(function() {
             var selectedMonth = $(this).val();
-            var currentYear = (new Date()).getFullYear(); // Get the current year
+            var currentYear = (new Date()).getFullYear();
 
-            // Navigate to the page with the selected month
             window.location.href = '<?= URL::to('/dashboard/planning_tool/appointments/'); ?>'+currentYear+'/'+selectedMonth+'/';
             
         });

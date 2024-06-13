@@ -112,8 +112,8 @@ class Controller extends BlockController {
         $appointmentEmail = $appointment->getEmail();
         
         $mailService  = \Core::make('mail');
-        $mailService->from('no-reply@planning-tool.com');
-        $mailService->replyto('no-reply@planning-tool.com');
+        $mailService->from('no-reply@huismansport.nl');
+        $mailService->replyto('no-reply@huismansport.nl');
         $mailService->to($appointmentEmail); 
         
         $mailContent = '<p>test mail<br>';
