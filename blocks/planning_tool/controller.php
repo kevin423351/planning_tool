@@ -96,16 +96,29 @@ class Controller extends BlockController {
         $appointment = new Appointment();
         $appointment->setDeleted(0); 
     
-        $appointment->setPerson($post->get('personID'));
-        $appointment->setExpertise($post->get('expertiseID'));
-        $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
-        $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
-        $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
-        $appointment->setFirstname($post->get('appointmentName'));
-        $appointment->setLastname($post->get('appointmentLastname'));
-        $appointment->setEmail($post->get('appointmentEmail'));
-        $appointment->setPhonenumber($post->get('appointmentPhone'));    
-        $appointment->setComment($post->get('appointmentComment'));
+        // Get the appointment details from the POST request
+        $personID = $post->get('personID');
+        $expertiseID = $post->get('expertiseID');
+        $appointmentDatetime = $post->get('appointmentDatetime');
+        $appointmentStartTime = $post->get('appointmentStartTime');
+        $appointmentEndTime = $post->get('appointmentEndTime');
+        $appointmentName = $post->get('appointmentName');
+        $appointmentLastname = $post->get('appointmentLastname');
+        $appointmentEmail = $post->get('appointmentEmail');
+        $appointmentPhone = $post->get('appointmentPhone');
+        $appointmentComment = $post->get('appointmentComment');
+
+        // Initialize the appointment object
+        $appointment->setPerson($personID);
+        $appointment->setExpertise($expertiseID);
+        $appointment->setAppointmentDatetime($appointmentDatetime);
+        $appointment->setAppointmentStartTime($appointmentStartTime);
+        $appointment->setAppointmentEndTime($appointmentEndTime);
+        $appointment->setFirstname($appointmentName);
+        $appointment->setLastname($appointmentLastname);
+        $appointment->setEmail($appointmentEmail);
+        $appointment->setPhonenumber($appointmentPhone);
+        $appointment->setComment($appointmentComment);
 
         $appointment->save();
         
@@ -116,7 +129,13 @@ class Controller extends BlockController {
         $mailService->replyto('no-reply@huismansport.nl');
         $mailService->to($appointmentEmail); 
         
-        $mailContent = '<p>test mail<br>';
+        $mailContent = '
+        <p>Appointment Details:</p>
+        <ul>
+            <li>Start Time: ' . $appointmentStartTime . '</li>
+            <li>End Time: ' . $appointmentEndTime . '</li>
+            <li>Comment: ' . $appointmentComment . '</li>
+        </ul>';
 
         $mailService->addParameter('mailContent', $mailContent);
 

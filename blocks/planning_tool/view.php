@@ -383,7 +383,6 @@ $(document).ready(function() {
             formSubmitted = false; 
             return false;
         }
-
         return true;
     }
 });
