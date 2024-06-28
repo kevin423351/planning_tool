@@ -1,22 +1,17 @@
 <?php
 defined('C5_EXECUTE') or die("Access Denied.");
 ?>
-
-
 <div class="ccm-block-wrapper">
     <div class="ccm-block-type-custom-block-field"><?= $content ?></div>
-<?php   if ($choice == '' && !isset($buttons) && !isset($date)){ ?>
-    <button id="showButtons" class="btn btn-primary">make an appointment</button>
-<?php   } 
+<?php   
         if ($choice == '') { ?>
-    <div id="hiddenButtons" style="display: none;">
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-primary">Persoon</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="person" class="btn btn-danger">Persoon</a>
         &nbsp;&nbsp;&nbsp;
-        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-primary">Expertise</a>
+        <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="set-choice" data-value="expertise" class="btn btn-danger">Expertise</a>
     </div>
 <?php   } else { 
             if ($choice == 'person' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-secondary mb-3 btn-sm">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -33,7 +28,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div> 
 <?php       }
             if ($choice == 'expertise' && !isset($buttons) && !isset($date)) { ?>
-                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-primary">go back</a>
+                <a href="<?php echo $view->action('choice', Core::make('token')->generate('choice'))?>" data-action="stepOne" data-value="null" class="btn btn-secondary btn-sm mb-3">go back</a>
                 <div class="row">
                     <div class="col-12 col-md-3">
                         <div class="form-group">
@@ -50,12 +45,12 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }
             if (isset($choice) && isset($buttons)) { ?>
-             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-primary">go back</a>
+             <a href="<?php echo $view->action('personTS', Core::make('token')->generate('personTS'))?>" data-action="stepTwo" class="btn btn-secondary btn-sm mb-3">go back</a>
                 <div class="col text-end"> 
                     <div class="form-group">
                         <div class="mt-3 pt-3 justify-content-between d-flex">
-                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-primary"><- previous week</a>
-                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-primary">next week -></a>
+                            <a id="previousWeekBtn" href="javascript:;" class="btn btn-danger"><- previous week</a>
+                            <a id="nextWeekBtn" href="javascript:;" class="btn btn-danger">next week -></a>
                         </div>
                     </div>
                 </div>
@@ -67,23 +62,23 @@ defined('C5_EXECUTE') or die("Access Denied.");
                                     <div class="w-200 px-2 custom-slot" style="width: 225px;">
                                 </div>
                                     <div class="card rounded-top">
-                                        <div class="ps-3 pt-2 text-primary font-weight-bold">
-                                            <?= date('l', strtotime($date)); ?><br/>
-                                            <?= $date; ?>
+                                        <div class="ps-3 pt-2 text-secondary font-weight-bold">
+                                            <strong><?= date('l', strtotime($date)); ?><br/>
+                                            <?= $date; ?></strong>
                                         </div>
                                         <div class="card-body">
                                             <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                                                 <?php foreach ($timeslot as $button) { ?>
                                                     <div class="mb-1 d-flex align-items-center">
                                                         <a href="javascript:;" 
-                                                            class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
+                                                            class="btn border-bottom text-danger btn-sm w-100 d-flex align-items-center custom-button set-appointment" 
                                                             data-personid="<?= $button['personID']; ?>" 
                                                             data-expertiseid="<?= isset($expertiseTS) ? $expertiseTS : 0; ?>"
                                                             data-date="<?= $date; ?>"
                                                             data-starttime="<?= $button['startTime']; ?>" 
                                                             data-endtime="<?= $button['endTime']; ?>">
-                                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                                            <span class="ms-2 text-black"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                                            <div class="rounded-circle text-success mr-2" style="width: 1rem; height: 1rem; background-color: #E30814;"></div>
+                                                            <strong><span class="ms-2 text-secondary" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                                             <?php if ($choice == 'person'){ ?>
                                                                 <input type="hidden" name="choice" value="person">
                                                                 <input type="hidden" name="personID" id="personID">
@@ -107,7 +102,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                 </div>
 <?php       }    
             if (isset($choice) && isset($startTime)) { ?>   
-             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-primary">go back</a>
+             <a href="<?php echo $view->action('appointmentt', Core::make('token')->generate('appointmentt'))?>" data-action="stepThree" class="btn btn-secondary mb-3 btn-sm">go back</a>
                 <form method="post" action="<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment'))?>">
                     <input type="hidden" name="choice" value="person">
                     <input type="hidden" name="choice" value="expertise">
@@ -144,7 +139,7 @@ defined('C5_EXECUTE') or die("Access Denied.");
                     </div>
                     <div class="ccm-dashboard-form-actions-wrapper">
                         <div class="ccm-dashboard-form-actions">
-                            <button class="btn btn-primary" type="submit">submit</button>
+                            <button class="btn btn-danger" type="submit">Versturen</button>
                         </div>
                     </div>
                 </form>
@@ -153,13 +148,6 @@ defined('C5_EXECUTE') or die("Access Denied.");
 </div>
 
 <script>
-$(document).ready(function() {
-    $("#showButtons").click(function() {
-        $("#hiddenButtons").show();
-        $("#showButtons").hide();
-    });
-});
-
 $(document).ready(function() {
     $('.set-appointment').off().on('click', function(e) {
         e.preventDefault(); 
@@ -282,17 +270,16 @@ $(function() {
         });
     });
 
-
-
     $(document).ready(function() {
         var weekOffset = <?= $weekOffset ?>;
         var personTS = <?= ((isset($personTS) && $personTS!='')?$personTS:'0'); ?>;
         var expertiseTS = <?= ((isset($expertiseTS) && $expertiseTS!='')?$expertiseTS:'0'); ?>;
 
         $("#previousWeekBtn").click(function(event) {
-            event.preventDefault();
-            weekOffset--;
-            updateWeekOffset();
+            if (weekOffset > 0) { 
+                weekOffset--;
+                updateWeekOffset();
+            }
         });
 
         $("#nextWeekBtn").click(function(event) {
@@ -312,97 +299,100 @@ $(function() {
             });
         }
     });
-
-    $(document).ready(function() {
-        $('form').submit(function(event) { 
-            event.preventDefault();
-            var formData = $(this).serialize();
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment')) ?>',
-                data: formData ,
-                success: function(response) {
-                    $('div.ccm-block-wrapper').html(response);
-                }
-            });
-        });
-    });
 });
 
-    $(document).ready(function() {
-        $('form').submit(function(event) {
-            event.preventDefault();
+$(document).ready(function() {
+    var formSubmitted = false;
 
-            if (!validateForm()) {
-                return;
-            }
+    $('form').submit(function(event) {
+        event.preventDefault(); 
 
-            var formData = $(this).serialize();
+        if (formSubmitted) {
+            return;
+        }
 
-            $.ajax({ 
-                type: 'POST',
-                url: $(this).attr('action'),
-                data: formData,
-                success: function(response) {
-                    var appointmentName = $('#appointmentName').val();
-                    var appointmentLastname = $('#appointmentLastname').val();
-                    var appointmentDatetime = $('#appointmentDatetime').val();
-                    var appointmentStartTime = $('#appointmentStartTime').val();
-                    var appointmentEndTime = $('#appointmentEndTime').val();
+        if (!validateForm()) {
+            return;
+        }
 
-                    var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + ' with ' + appointmentName + ' ' + appointmentLastname + '.';
-                    alert(message);
+        formSubmitted = true; 
+        var formData = $(this).serialize();
 
-                    $('form')[0].reset();
-                },
-                error: function(xhr, status, error) {
-                    alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
-                }
-            });
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo $view->action('saveAppointment', Core::make('token')->generate('saveAppointment')) ?>',
+            data: formData,
+            success: function(response) {
+                var appointmentName = $('#appointmentName').val();
+                var appointmentLastname = $('#appointmentLastname').val();
+                var appointmentDatetime = $('#appointmentDatetime').val();
+                var appointmentStartTime = $('#appointmentStartTime').val();
+                var appointmentEndTime = $('#appointmentEndTime').val();
 
-            function validateForm() {
-                var appointmentName = $('#appointmentName').val().trim();
-                var appointmentLastname = $('#appointmentLastname').val().trim();
-                var appointmentEmail = $('#appointmentEmail').val().trim();
-                var appointmentPhone = $('#appointmentPhone').val().trim();
-                var appointmentDatetime = $('#appointmentDatetime').val().trim();
-                var appointmentStartTime = $('#appointmentStartTime').val().trim();
-                var appointmentEndTime = $('#appointmentEndTime').val().trim();
+                var message = 'You have successfully made an appointment on ' + appointmentDatetime + ' from ' + appointmentStartTime + ' to ' + appointmentEndTime + '.';
+                alert(message);
 
-                if (appointmentName === '') {
-                    alert('Please enter your name.');
-                    return false;
-                }
-
-                if (appointmentLastname === '') {
-                    alert('Please enter your last name.');
-                    return false;
-                }
-                
-                var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                if (!emailPattern.test(appointmentEmail)) {
-                    alert('Please enter a valid email address.');
-                    return false;
-                }
-
-                var phonePattern = /^\d{10}$/;
-                if (!phonePattern.test(appointmentPhone)) {
-                    alert('Please enter a valid 10-digit phone number.');
-                    return false;
-                }
-
-                if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
-                    alert('Please enter appointment date and time.');
-                    return false;
-                }
-
-                return true;
+                $('form')[0].reset();
+                formSubmitted = false; 
+                $('div.ccm-block-wrapper').html(response);
+            },
+            error: function(xhr, status, error) {
+                alert('Er is een fout opgetreden bij het verwerken van het formulier: ' + error);
+                formSubmitted = false; 
             }
         });
     });
 
-</script>
+    function validateForm() {
+        var appointmentName = $('#appointmentName').val().trim();
+        var appointmentLastname = $('#appointmentLastname').val().trim();
+        var appointmentEmail = $('#appointmentEmail').val().trim();
+        var appointmentPhone = $('#appointmentPhone').val().trim();
+        var appointmentDatetime = $('#appointmentDatetime').val().trim();
+        var appointmentStartTime = $('#appointmentStartTime').val().trim();
+        var appointmentEndTime = $('#appointmentEndTime').val().trim();
 
+        if (appointmentName === '') {
+            alert('Please enter your name.');
+            formSubmitted = false; 
+            return false;
+        }
+
+        if (appointmentLastname === '') {
+            alert('Please enter your last name.');
+            formSubmitted = false; 
+            return false;
+        }
+
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(appointmentEmail)) {
+            alert('Please enter a valid email address.');
+            formSubmitted = false; 
+            return false;
+        }
+
+        var phonePattern = /^\d{10}$/;
+        if (!phonePattern.test(appointmentPhone)) {
+            alert('Please enter a valid 10-digit phone number.');
+            formSubmitted = false; 
+            return false;
+        }
+
+        if (appointmentDatetime === '' || appointmentStartTime === '' || appointmentEndTime === '') {
+            alert('Please enter appointment date and time.');
+            formSubmitted = false; 
+            return false;
+        }
+        return true;
+    }
+});
+</script>
+<style>
+.btn-danger {
+    color: #fff;
+    background-color: #E30814;
+}
+</style>
 
     
 

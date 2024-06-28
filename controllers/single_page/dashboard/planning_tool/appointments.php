@@ -12,18 +12,6 @@ class appointments extends DashboardPageController
 {
     protected $expertiseID;
 
-    public function agenda($dateString='')
-    {    
-        $date = new DateTime($dateString);
-        
-        $formattedDate = $date->format('Y-m-d');
-
-        $appointments = Appointment::getAllByDate($formattedDate);
-
-        $this->set('date', $formattedDate);
-        $this->set('appointments', $appointments);
-    }
-    
     public function view($year='', $month='')
     {
         if ($year == '') { $year = date('Y'); }
@@ -31,15 +19,10 @@ class appointments extends DashboardPageController
         
         $return = array();
 
-        // Get the number of days in the selected month
         $daysInMonth = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        // Get the first day of the month
         $firstDayOfMonth = date("N", mktime(0, 0, 0, $month, 1, $year));
-        // Calculate the number of weeks needed to display all days
         $weeks = ceil(($daysInMonth + $firstDayOfMonth - 1) / 7);
-        // Initialize the day counter
         $dayCount = 1;
-        // Loop through the weeks
         $this->set('month', $month);
         $row = 0;
         for ($week = 0; $week < $weeks; $week++) {
@@ -65,6 +48,28 @@ class appointments extends DashboardPageController
             $row++;
         } 
         $this->set('calendar', $return);
+    }
+    
+    public function agendaAppointments($dateString = '', $page = 1)
+    {
+        $page = max(1, (int)$page);
+        $itemsPerPage = 16;
+
+        if (empty($dateString)) {
+            $dateString = (new \DateTime())->format('Y-m-d');
+        }
+
+        try {
+            $paginationData = Appointment::getAppointmentsByDate($dateString, true, $page, $itemsPerPage);
+        } catch (\InvalidArgumentException $e) {
+            $this->set('error', 'Invalid date format provided.');
+            return;
+        }
+
+        $this->set('date', $dateString);
+        $this->set('appointments', $paginationData['appointments']);
+        $this->set('currentPage', $paginationData['currentPage']);
+        $this->set('totalPages', $paginationData['totalPages']);
     }
 
     public function downloadICS()
@@ -112,7 +117,6 @@ class appointments extends DashboardPageController
                 $appointment->getComment()
             ));
         }
-    
         fclose($output);
         exit;
     }
@@ -185,7 +189,6 @@ class appointments extends DashboardPageController
     
     public function saveAppointment($id = null) 
     {
-
         $post = $this->request->request;
 
         if ($id !== null) {

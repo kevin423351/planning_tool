@@ -76,7 +76,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function setPersons($persons)
     {
-        // Store only the personID
         $this->persons = $persons;
     }
     
@@ -119,5 +118,39 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
         $em = dbORM::entityManager();
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
+    }
+    public static function getPaginated($currentPage = 1, $itemsPerPage = 16)
+    {
+        $em = dbORM::entityManager();
+        
+        $offset = ($currentPage - 1) * $itemsPerPage;
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('e')
+        ->from(get_called_class(), 'e')
+        ->where('e.deleted = :deleted')
+        ->setParameter('deleted', 0)
+        ->setFirstResult($offset)
+        ->setMaxResults($itemsPerPage);
+
+
+        $query = $qb->getQuery();
+        $expertises = $query->getResult();
+
+        $qbTotal = $em->createQueryBuilder();
+        $qbTotal->select('COUNT(e.expertiseID)') 
+                ->from(get_called_class(), 'e')
+                ->where('e.deleted = :deleted')
+                ->setParameter('deleted', 0);
+        
+        $totalExpertises = $qbTotal->getQuery()->getSingleScalarResult();
+        $totalPages = ceil($totalExpertises / $itemsPerPage);
+
+        return [
+            'expertises' => $expertises,
+            'totalExpertises' => $totalExpertises,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage
+        ];
     }
 }

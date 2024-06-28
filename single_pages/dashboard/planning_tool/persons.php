@@ -22,10 +22,10 @@
                      <tr data-launch-search-menu="" class="">
                      <td>
                         <?php
-                        $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+                        $profilePicture = $person->getProfilePicture(); 
                         
                         if ($profilePicture) {
-                           $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+                           $file = File::getByID($profilePicture); 
                            
                            if ($file) {
                                  echo '<img src="'.$file->getURL().'" class="img-fluid" style="width: 31px;">';
@@ -55,6 +55,42 @@
             <?php } ?>
         </tbody>
     </table>
+</div>
+<!-- Pagination Controls -->
+<div class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/persons/view/' . ($currentPage - 1)) ?>">← Previous</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">← Previous</span>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <?php if ($i == $currentPage): ?>
+                <li class="page-item active">
+                    <span class="page-link"><?= $i ?> <span class="sr-only">(current)</span></span>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/persons/view/' . $i) ?>"><?= $i ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/persons/view/' . ($currentPage + 1)) ?>">Next →</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">Next →</span>
+            </li>
+        <?php endif; ?>
+    </ul>
 </div>
 
 <?php } else if ($this->controller->getAction() == 'add') { ?>
@@ -205,7 +241,7 @@
    </div>
    <div class="ccm-dashboard-form-actions-wrapper">
       <div class="ccm-dashboard-form-actions ">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
+         <a href="<?= URL::to('/dashboard/planning_tool/persons/')?>" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
       </div>
    </div>
@@ -270,8 +306,8 @@
          <div class="timeslots">
             <?php 
                foreach ($timeslots as $key => $timeslot) {
-               ?>
-            <div class="timeslot">
+            ?>
+            <div class="timeslot" data-id="<?= $timeslot->getItemID() ?>">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
                      <button class="btn btn-danger remove_timeslot" type="button" <?=!is_object($timeslot)?'disabled':'';?>>
@@ -314,7 +350,7 @@
             </button>
          </div>
          <script id="timeslot" type="text/template">
-            <div class="timeslot">
+            <div class="timeslot" data-id="<?= $timeslot->getItemID() ?>">
                <div class="col-auto">
                   <div class="input-group-append" style="margin-top:22px;">
                      <button class="btn btn-danger remove_timeslot" type="button">
@@ -355,26 +391,45 @@
    </div>
    <div class="ccm-dashboard-form-actions-wrapper">
       <div class="ccm-dashboard-form-actions ">
-         <a href="#" class="btn btn-secondary float-start">Cancel</a>
+         <a href="<?= URL::to('/dashboard/planning_tool/persons/')?>" class="btn btn-secondary float-start">Cancel</a>
          <button class="float-end btn btn-primary" type="submit">Save</button>
       </div>
    </div>
 </form>
 <?php } ?>
 <script>
-   $(function() {
+   $(function() { 
       $(document).on('click', '.remove_timeslot', function() {
          var holder = $('.timeslots');
          var count = $('.timeslot', holder).length;
          var current = $(this).closest('.timeslot');
-         if (count > -1) {
-               current.remove();
-         }
-         else {
-               $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+         var timeslotId = current.data('id'); // Retrieve the data-id attribute value
+         console.log(timeslotId);
+         if (timeslotId) {
+            $.ajax({
+                  url: '<? echo $this->action('deletetimeslot'); ?>',
+                  type: 'POST',
+                  data: { timeslot_id: timeslotId },
+                  success: function(response) {
+                     if (response.status === 'success') {
+                        if (count > -1) {
+                              current.remove();
+                        } else {
+                              $(':input', current).val('').removeClass('is-valid').removeClass('is-invalid');
+                        }
+                     } else {
+                        alert('Failed to delete timeslot: ' + response.message);
+                     }
+                  },
+                  error: function() {
+                     alert('Error deleting timeslot');
+                  }
+            });
+         } else {
+            alert('Invalid timeslot ID');
          }
       });
-   
+      
       $(document).on('click', '.add_timeslot', function() {
          var holder = $('.timeslots');
          var clone = $('#timeslot').html().replace(/_tmp/g, _tmp-1);

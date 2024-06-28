@@ -6,13 +6,18 @@ use Concrete\Core\Page\Controller\DashboardPageController;
 class expertises extends DashboardPageController
 {
 
-    public function view()
+    public function view($page = 1)
     {
-        $expertises = Expertise::getAll();
-        $this->set('expertises', $expertises);
+        $page = max(1, (int)$page);
+        $itemsPerPage = 16;
+    
+        $paginationData = Expertise::getPaginated($page, $itemsPerPage);
+    
+        $this->set('expertises', $paginationData['expertises']);
+        $this->set('currentPage', $paginationData['currentPage']);
+        $this->set('totalPages', $paginationData['totalPages']);
     }
-
-
+    
     public function edit($id) 
     {
         $expertise = Expertise::getByID($id);

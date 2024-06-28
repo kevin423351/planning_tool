@@ -8,11 +8,11 @@ class Unavailableperson extends DashboardPageController
 {   
     public function view()
     {
-        $unavailable = Unavailable::getAll(); // Get all expertises using the Person::getAll() method
-        $this->set('unavailable', $unavailable); // Set the 'persons' variable in the current instance to hold the retrieved person
+        $unavailable = Unavailable::getAll(); 
+        $this->set('unavailable', $unavailable); 
 
-        $person = Person::getAll(); // Get all expertises using the Person::getAll() method
-        $this->set('persons', $person); // Set the 'persons' variable in the current instance to hold the retrieved person
+        $person = Person::getAll(); 
+        $this->set('persons', $person); 
     }
     
     public function save()
@@ -63,7 +63,6 @@ class Unavailableperson extends DashboardPageController
                     $this->saveDateRange($post, $person->getItemID());
                     break;
                 default:
-                    // Handle default case or show error message
                     break;
             }
         }
@@ -72,7 +71,7 @@ class Unavailableperson extends DashboardPageController
     
     private function saveSpecificDate($post, $selectedPersonID)
     {
-        $unavailable = new Unavailable(); // Create a new Unavailable object
+        $unavailable = new Unavailable(); 
     
         $unavailable->setDate($post->get('unavailableDate'));
         $unavailable->setPerson($selectedPersonID);
@@ -84,16 +83,14 @@ class Unavailableperson extends DashboardPageController
     
     private function saveWholeDay($post, $selectedPersonID)
     {
-        // Get the date from the wholeDayDate field
         $wholeDayDate = $post->get('wholeDayDate');
-    
-        // Set the same start and end time to cover the whole day
+
         $startTime = '00:00';
         $endTime = '23:59';
     
-        $unavailable = new Unavailable(); // Create a new Unavailable object
+        $unavailable = new Unavailable();
     
-        $unavailable->setDate($wholeDayDate); // Use the wholeDayDate field
+        $unavailable->setDate($wholeDayDate); 
         $unavailable->setPerson($selectedPersonID);
         $unavailable->setStartTime($startTime);
         $unavailable->setEndTime($endTime);
@@ -105,12 +102,11 @@ class Unavailableperson extends DashboardPageController
         $startDate = $post->get('startDate');
         $endDate = $post->get('endDate');
     
-        // Loop through each day in the date range and save as unavailable
         $currentDate = new DateTime($startDate);
         $endDateObj = new DateTime($endDate);
     
         while ($currentDate <= $endDateObj) {
-            $unavailable = new Unavailable(); // Create a new Unavailable object
+            $unavailable = new Unavailable(); 
     
             $unavailable->setDate($currentDate->format('Y-m-d'));
             $unavailable->setPerson($selectedPersonID);

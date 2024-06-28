@@ -1,12 +1,13 @@
 <?php if ($this->controller->getAction() == 'view') { ?>
-    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview')?>" class="btn btn-primary btn-sm">personen</a>
-    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview')?>" class="btn btn-primary btn-sm">expertises</a>
+    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview')?>" class="btn btn-danger btn-sm">personen</a>
+    <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview')?>" class="btn btn-danger btn-sm">expertises</a>
 <?php } else if ($this->controller->getAction() == 'personview') { ?>
 <div class="row">
     <div class="col-12 col-md-3">
         <div class="form-group">
             <label for="personID" class="form-label">With who?</label>
             <select id="personID" name="personID" class="form-select">
+                <option value=""></option>
                 <?php foreach ($persons as $person){ ?>
                     <option value="<?= $person->getItemID(); ?>"><?= $person->getFirstname(); ?></option>
                 <?php } ?>
@@ -20,8 +21,8 @@
                 $lastWeekOffset = $weekOffset - 1;
                 $nextWeekOffset = $weekOffset + 1;
                 ?>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $lastWeekOffset) ?>" class="btn btn-primary"><- previous week</a>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">next week -></a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $lastWeekOffset) ?>" class="btn btn-danger"><- previous week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/personview/' . $personID . '/' . $nextWeekOffset) ?>" class="btn btn-danger">next week -></a>
             </div>
         </div>
     </div>
@@ -34,18 +35,18 @@
                 <div class="col me-4">
                     <div class="w-200 px-2 custom-slot" style="width: 250px;">
                 </div>
-                    <div class="card border-dark rounded-top">
-                        <div class="ps-3 pt-2 text-primary font-weight-bold">
-                            <?= date('l', strtotime($date)); ?><br/>
-                            <?= $date; ?>
+                    <div class="card rounded-top">
+                        <div class="ps-3 pt-2 text-secondary font-weight-bold">
+                            <strong><?= date('l', strtotime($date)); ?><br/>
+                            <?= $date; ?></strong>
                         </div>
                         <div class="card-body">
                             <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                                 <?php foreach ($timeslot as $button) { ?>
                                     <div class="mb-1 d-flex align-items-center">
-                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], isset($expertiseID) ? $expertiseID : 0, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
-                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF;"></div>
-                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], isset($expertiseID) ? $expertiseID : 0, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-success btn-sm w-100 d-flex align-items-center custom-button">
+                                            <div class="rounded-circle mr-2" style="width: 1rem; height: 1rem; background-color: #E30814;"></div>
+                                            <strong><span class="ms-2 text-secondary" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                         </a>
                                     </div>
                                 <?php } ?>
@@ -95,8 +96,7 @@
         </div>
         <div class="ccm-dashboard-form-actions-wrapper">
             <div class="ccm-dashboard-form-actions ">
-                <a href="#" class="btn btn-secondary float-start">Cancel</a>
-                <button class="float-end btn btn-primary" type="submit">Save</button>
+                <button class="float-end btn btn-primary" type="submit">submit</button>
             </div>
         </div>
     </form>
@@ -107,6 +107,7 @@
         <div class="form-group">
             <label for="expertiseID" class="form-label">With who?</label>
             <select id="expertiseID" name="expertiseID" class="form-select">
+                <option value=""></option>
                 <?php foreach ($expertises as $expertise){ ?>
                     <option value="<?= $expertise->getItemID(); ?>"><?= $expertise->getFirstname(); ?></option>
                 <?php } ?>
@@ -120,8 +121,8 @@
                 $lastWeekOffset = $weekOffset - 1;
                 $nextWeekOffset = $weekOffset + 1;
                 ?>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $lastWeekOffset) ?>" class="btn btn-primary"><- previous week</a>
-                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $nextWeekOffset) ?>" class="btn btn-primary">next week -></a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $lastWeekOffset) ?>" class="btn btn-danger"><- previous week</a>
+                <a href="<?= URL::to('/dashboard/planning_tool/setappointments/expertiseview/' . $expertiseID . '/' . $nextWeekOffset) ?>" class="btn btn-danger">next week -></a>
             </div>
         </div>
     </div>
@@ -133,18 +134,18 @@
                 <div class="col me-4">
                     <div class="w-200 px-2 custom-slot" style="width: 260px;">
                 </div>
-                    <div class="card border-dark rounded-top">
-                        <div class="ps-3 pt-2 text-primary font-weight-bold">
-                            <?= date('l', strtotime($date)); ?><br/>
-                            <?= $date; ?>
+                    <div class="card rounded-top">
+                        <div class="ps-3 pt-2 text-secondary font-weight-bold">
+                            <strong><?= date('l', strtotime($date)); ?><br/>
+                            <?= $date; ?></strong>
                         </div>
                         <div class="card-body">
                             <?php if (isset($buttons[$date]) && !empty($timeslot)) { ?>
                                 <?php foreach ($timeslot as $button) { ?>
                                     <div class="mb-1 d-flex align-items-center">
-                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-primary btn-sm w-100 d-flex align-items-center custom-button">
-                                            <div class="rounded-circle text-primary mr-2" style="width: 1rem; height: 1rem; background-color: #007BFF; "></div>
-                                            <span class="ms-2"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span>
+                                        <a href="<?= URL::to('/dashboard/planning_tool/setappointments/appointment', $button['personID'], $expertiseID, $date, str_replace(':', '-', $button['startTime']), str_replace(':', '-', $button['endTime'])); ?>" class="btn border-bottom text-success btn-sm w-100 d-flex align-items-center custom-button">
+                                            <div class="rounded-circle text-danger mr-2" style="width: 1rem; height: 1rem; background-color: #E30814;"></div>
+                                            <strong><span class="ms-2 text-secondary" style="font-size: 15px;"><?= $button['startTime'] . ' - ' . $button['endTime']; ?></span></strong>
                                         </a>
                                     </div>
                                 <?php } ?>
@@ -215,7 +216,7 @@
   }
 
   .custom-button:hover {
-    background-color: #d0e6ff;
+    background-color: #ccc;
     color: #fff;
   }
 

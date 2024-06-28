@@ -56,7 +56,7 @@ class Controller extends BlockController {
         if ((int)$this->personTS != 0) {
             $currentDate = new DateTime();
             $currentDate->modify("+".$this->weekOffset." week");
-    
+            
             $this->set('buttons', Timeslot::getAvailableTimeSlots($this->personTS, null, $currentDate));
         }
         if ((int)$this->expertiseTS != 0) {
@@ -78,63 +78,80 @@ class Controller extends BlockController {
         $this->set('date', $this->date);
         $this->set('startTime', $this->startTime); 
         $this->set('endTime', $this->endTime);
-
     }
     
     public function action_saveAppointment($token = false, $bID = false) 
-    {
-        if ($this->bID != $bID) {
-            return false;
-        }
-        if (\Core::make('token')->validate('saveAppointment', $token)) {
-            $page = Page::getCurrentPage();
-            $u = new User();
-
-            $post = $this->request->request;
-
-            $choice = $post->get('choice');
-        
-            $appointment = new Appointment();
-            $appointment->setDeleted(0); 
-        
-            $appointment->setPerson($post->get('personID'));
-            $appointment->setExpertise($post->get('expertiseID'));
-            $appointment->setAppointmentDatetime($post->get('appointmentDatetime'));
-            $appointment->setAppointmentStartTime($post->get('appointmentStartTime'));
-            $appointment->setAppointmentEndTime($post->get('appointmentEndTime'));
-            $appointment->setFirstname($post->get('appointmentName'));
-            $appointment->setLastname($post->get('appointmentLastname'));
-            $appointment->setEmail($post->get('appointmentEmail'));
-            $appointment->setPhonenumber($post->get('appointmentPhone'));    
-            $appointment->setComment($post->get('appointmentComment'));
-
-            $appointment->save();
-            
-            
-            $mailService  = \Core::make('mail');
-            $mailService ->from('no-reply@planning-tool.com');
-            $mailService ->replyto('no-reply@planning-tool.com');
-            $mailService ->to('kevin@dewebmakers.nl');
-            
-            $mailContent = '<p>test mail<br>';
-
-            $mailService ->addParameter('mailContent', $mailContent);
-
-            $mailService ->load('appointment_mail', 'planning_tool');
-         
-            $mailService ->sendMail();
-            
-
-            if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
-                $b = $this->getBlockObject();
-                $bv = new BlockView($b);
-                $bv->render('view');
-            } else {
-                Redirect::page($page)->send();
-            }
-        }
-        exit;
+{
+    if ($this->bID != $bID) {
+        return false;
     }
+    if (\Core::make('token')->validate('saveAppointment', $token)) {
+        $page = Page::getCurrentPage();
+        $u = new User();
+
+        $post = $this->request->request;
+
+        $choice = $post->get('choice');
+    
+        $appointment = new Appointment();
+        $appointment->setDeleted(0); 
+    
+        $personID = $post->get('personID');
+        $expertiseID = $post->get('expertiseID');
+        $appointmentDatetime = $post->get('appointmentDatetime');
+        $appointmentStartTime = $post->get('appointmentStartTime');
+        $appointmentEndTime = $post->get('appointmentEndTime');
+        $appointmentName = $post->get('appointmentName');
+        $appointmentLastname = $post->get('appointmentLastname');
+        $appointmentEmail = $post->get('appointmentEmail');
+        $appointmentPhone = $post->get('appointmentPhone');
+        $appointmentComment = $post->get('appointmentComment');
+
+        $appointment->setPerson($personID);
+        $appointment->setExpertise($expertiseID);
+        $appointment->setAppointmentDatetime($appointmentDatetime);
+        $appointment->setAppointmentStartTime($appointmentStartTime);
+        $appointment->setAppointmentEndTime($appointmentEndTime);
+        $appointment->setFirstname($appointmentName);
+        $appointment->setLastname($appointmentLastname);
+        $appointment->setEmail($appointmentEmail);
+        $appointment->setPhonenumber($appointmentPhone);
+        $appointment->setComment($appointmentComment);
+
+        $appointment->save();
+        
+        $appointmentEmail = $appointment->getEmail();
+        
+        $mailService  = \Core::make('mail');
+        $mailService->from('no-reply@huismansport.nl');
+        $mailService->replyto('no-reply@huismansport.nl');
+        $mailService->to($appointmentEmail);
+        
+        $mailContent = ' 
+        <p>Appointment Details:</p>
+        <ul>
+            <li>Start Time: ' . $appointmentStartTime . '</li>
+            <li>End Time: ' . $appointmentEndTime . '</li>
+            <li>Comment: ' . $appointmentComment . '</li>
+        </ul>';
+
+        $mailService->addParameter('mailContent', $mailContent);
+
+        $mailService->load('appointment_mail', 'planning_tool');
+     
+        $mailService->sendMail();
+        
+        if ($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
+            $b = $this->getBlockObject();
+            $bv = new BlockView($b);
+            $bv->render('view');
+        } else {
+            Redirect::page($page)->send();
+        }
+    }
+    exit;
+}
+
 
     
     public function action_choice($token = false, $bID = false) 
@@ -190,8 +207,6 @@ class Controller extends BlockController {
         }
         exit;
     }    
-
-
     public function action_personTS($token = false, $bID = false) 
     {
         if ($this->bID != $bID) {

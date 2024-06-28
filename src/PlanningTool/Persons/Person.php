@@ -221,4 +221,38 @@ use Doctrine\Common\Collections\ArrayCollection;
         $results = $em->getRepository(get_called_class())->findBy(['deleted' => 0]);
         return $results;
     }
+    public static function getPaginated($currentPage = 1, $itemsPerPage = 16)
+    {
+        $em = dbORM::entityManager();
+        
+        $offset = ($currentPage - 1) * $itemsPerPage;
+    
+        $qb = $em->createQueryBuilder();
+        $qb->select('p')
+           ->from(get_called_class(), 'p')
+           ->where('p.deleted = :deleted')
+           ->setParameter('deleted', 0)
+           ->setFirstResult($offset)
+           ->setMaxResults($itemsPerPage);
+    
+        $query = $qb->getQuery();
+        $persons = $query->getResult();
+    
+        $qbTotal = $em->createQueryBuilder();
+        $qbTotal->select('COUNT(p.personID)') 
+                ->from(get_called_class(), 'p')
+                ->where('p.deleted = :deleted')
+                ->setParameter('deleted', 0);
+        
+        $totalPersons = $qbTotal->getQuery()->getSingleScalarResult();
+        $totalPages = ceil($totalPersons / $itemsPerPage);
+    
+        return [
+            'persons' => $persons,
+            'totalPersons' => $totalPersons,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage
+        ];
+    }
+    
 }

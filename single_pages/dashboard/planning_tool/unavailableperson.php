@@ -10,7 +10,6 @@
                 </select>
             <div class="help-block">"Select the person that is unavailable."</div>
         </div><br>
-
         <div class="form-group">
             <label for="unavailableOption">Unavailable Option:</label>
             <select class="form-select" name="unavailableOption" id="unavailableOption" required>
@@ -20,9 +19,7 @@
             </select>
             <div class="help-block">"Select the unavailable option."</div>
         </div>
-
         <div class="row" id="specificDate">
-
             <div class="col-12 col-md-4">
                 <div class="form-group">
                     <label for="unavailableDate">Date:</label>
@@ -42,7 +39,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row" id="wholeDay">
             <div class="col-12 col-md-4">
                 <div class="form-group">
@@ -51,7 +47,6 @@
                 </div>
             </div>
         </div>
-
         <div class="row" id="dateRange">
             <div class="col-12 col-md-6">
                 <div class="form-group">
@@ -66,10 +61,8 @@
                 </div>
             </div>
         </div>
-
         <div class="ccm-dashboard-form-actions-wrapper">
             <div class="ccm-dashboard-form-actions ">
-                <a href="#" class="btn btn-secondary float-start">Cancel</a>
                 <button class="float-end btn btn-primary" type="submit">Save</button>
             </div>
         </div>
