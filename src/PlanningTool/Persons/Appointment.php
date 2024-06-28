@@ -5,7 +5,7 @@ defined('C5_EXECUTE') or die('Access Denied.');
 
 use Doctrine\ORM\Mapping as ORM;
 use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
-
+use DateTime;
 /**
  * @ORM\Entity
  * @ORM\Table(name="appointments", indexes={
@@ -322,5 +322,78 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
             return true;
         }
         return false;
+    }
+    public static function searchAppointments($query)
+    {
+        $em = dbORM::entityManager();
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('a')
+            ->from(self::class, 'a')
+            ->where('a.deleted = :deleted')
+            ->andWhere($qb->expr()->orX(
+                $qb->expr()->like('a.appointmentName', ':query'),
+                $qb->expr()->like('a.appointmentLastname', ':query'),
+                $qb->expr()->like('a.appointmentEmail', ':query')
+            ))
+            ->setParameter('deleted', 0)
+            ->setParameter('query', '%' . $query . '%');
+
+        return $qb->getQuery()->getResult();
+    }
+
+
+    public static function getAppointmentsByDate($dateString, $paginate = false, $currentPage = 1, $itemsPerPage = 16, $order = 'ASC')
+    {
+        $em = dbORM::entityManager();
+
+        try {
+            $date = new DateTime($dateString);
+        } catch (Exception $e) {
+            throw new \InvalidArgumentException("Invalid date format: $dateString");
+        }
+
+        $formattedDate = $date->format('Y-m-d');
+
+        $qb = $em->createQueryBuilder();
+        $qb->select('a')
+           ->from(get_called_class(), 'a')
+           ->where('a.deleted = :deleted')
+           ->andWhere('a.appointmentDatetime = :appointmentDate')
+           ->setParameter('deleted', 0)
+           ->setParameter('appointmentDate', $formattedDate)
+           ->orderBy('a.appointmentDatetime', $order);
+
+        if ($paginate) {
+            $offset = ($currentPage - 1) * $itemsPerPage;
+            $qb->setFirstResult($offset)
+               ->setMaxResults($itemsPerPage);
+        }
+
+        $query = $qb->getQuery();
+        $appointments = $query->getResult();
+
+        if (!$paginate) {
+            return $appointments;
+        }
+
+        // Total count query for pagination
+        $qbTotal = $em->createQueryBuilder();
+        $qbTotal->select('COUNT(a.appointmentID)')
+                ->from(get_called_class(), 'a')
+                ->where('a.deleted = :deleted')
+                ->andWhere('a.appointmentDatetime = :appointmentDate')
+                ->setParameter('deleted', 0)
+                ->setParameter('appointmentDate', $formattedDate);
+        
+        $totalAppointments = $qbTotal->getQuery()->getSingleScalarResult();
+        $totalPages = ceil($totalAppointments / $itemsPerPage);
+
+        return [
+            'appointments' => $appointments,
+            'totalAppointments' => $totalAppointments,
+            'totalPages' => $totalPages,
+            'currentPage' => $currentPage
+        ];
     }
 }

@@ -1,5 +1,9 @@
 <?php if ($this->controller->getAction() == 'agendaAppointments') { ?>
    <div class="ccm-dashboard-header-buttons">
+      <form method="get" action="<?= URL::to('/dashboard/planning_tool/appointments/search') ?>" class="d-flex">
+         <input type="text" name="query" class="form-control form-control-sm" placeholder="Search...">
+         <button type="submit" class="btn btn-outline-primary btn-sm">Search</button>
+      </form>
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/csv/', $date)?>" class="btn btn-light btn-sm">download CSV</a>
       <a href="<?= URL::to('/dashboard/planning_tool/appointments/')?>" class="btn btn-primary btn-sm">Agenda</a>
       <a href="<?= URL::to('/dashboard/planning_tool/setappointments/')?>" class="btn btn-success btn-sm">Add new</a>
@@ -76,6 +80,43 @@
         </tbody>
     </table>
 </div>
+<div class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/appointments/agendaAppointments/' . urlencode($date) . '/' . ($currentPage - 1)) ?>">← Previous</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">← Previous</span>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <?php if ($i == $currentPage): ?>
+                <li class="page-item active">
+                    <span class="page-link"><?= $i ?> <span class="sr-only">(current)</span></span>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/appointments/agendaAppointments/' . urlencode($date) . '/' . $i) ?>"><?= $i ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/appointments/agendaAppointments/' . urlencode($date) . '/' . ($currentPage + 1)) ?>">Next →</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">Next →</span>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
+
+
 
 <?php } else if ($this->controller->getAction() == 'edit') { ?>
    <h2>Edit appointment</h2><br>

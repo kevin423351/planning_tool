@@ -56,7 +56,7 @@ class Controller extends BlockController {
         if ((int)$this->personTS != 0) {
             $currentDate = new DateTime();
             $currentDate->modify("+".$this->weekOffset." week");
-    
+            
             $this->set('buttons', Timeslot::getAvailableTimeSlots($this->personTS, null, $currentDate));
         }
         if ((int)$this->expertiseTS != 0) {
@@ -96,7 +96,6 @@ class Controller extends BlockController {
         $appointment = new Appointment();
         $appointment->setDeleted(0); 
     
-        // Get the appointment details from the POST request
         $personID = $post->get('personID');
         $expertiseID = $post->get('expertiseID');
         $appointmentDatetime = $post->get('appointmentDatetime');
@@ -108,7 +107,6 @@ class Controller extends BlockController {
         $appointmentPhone = $post->get('appointmentPhone');
         $appointmentComment = $post->get('appointmentComment');
 
-        // Initialize the appointment object
         $appointment->setPerson($personID);
         $appointment->setExpertise($expertiseID);
         $appointment->setAppointmentDatetime($appointmentDatetime);
@@ -127,9 +125,9 @@ class Controller extends BlockController {
         $mailService  = \Core::make('mail');
         $mailService->from('no-reply@huismansport.nl');
         $mailService->replyto('no-reply@huismansport.nl');
-        $mailService->to($appointmentEmail); 
+        $mailService->to($appointmentEmail);
         
-        $mailContent = '
+        $mailContent = ' 
         <p>Appointment Details:</p>
         <ul>
             <li>Start Time: ' . $appointmentStartTime . '</li>
@@ -209,7 +207,6 @@ class Controller extends BlockController {
         }
         exit;
     }    
-
 
     public function action_personTS($token = false, $bID = false) 
     {

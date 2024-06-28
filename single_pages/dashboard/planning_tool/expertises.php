@@ -35,6 +35,41 @@
         </tbody>
     </table>
 </div>
+<div class="d-flex justify-content-center mt-3">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/expertises/view/' . ($currentPage - 1)) ?>">← Previous</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">← Previous</span>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <?php if ($i == $currentPage): ?>
+                <li class="page-item active">
+                    <span class="page-link"><?= $i ?> <span class="sr-only">(current)</span></span>
+                </li>
+            <?php else: ?>
+                <li class="page-item">
+                    <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/expertises/view/' . $i) ?>"><?= $i ?></a>
+                </li>
+            <?php endif; ?>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="<?= URL::to('/dashboard/planning_tool/expertises/view/' . ($currentPage + 1)) ?>">Next →</a>
+            </li>
+        <?php else: ?>
+            <li class="page-item disabled">
+                <span class="page-link">Next →</span>
+            </li>
+        <?php endif; ?>
+    </ul>
+</div>
 
 <?php } else if ($this->controller->getAction() == 'add') { ?>
    <h2>Add expertise</h2>

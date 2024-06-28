@@ -73,7 +73,6 @@ use Concrete\Core\Support\Facade\DatabaseORM as dbORM;
 
     public function setPerson($personID)
     {
-        // Store only the personID
         $this->personID = $personID;
     }
 

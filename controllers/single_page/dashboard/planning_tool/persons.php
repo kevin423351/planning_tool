@@ -20,41 +20,46 @@ class Persons extends DashboardPageController
 {   
     public function on_start()
     {      
-        parent::on_start(); // Call the parent class's on_start method
+        parent::on_start();
         
         $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
         $daysAssoc = array_combine($daysOfWeek, $daysOfWeek);
         $this->set('daysAssoc', $daysAssoc);
         
-        $expertises = Expertise::getAll(); // Get all expertises using the Expertise::getAll() method
-        $this->set('expertises', $expertises); // Set the 'expertises' variable in the current instance to hold the retrieved expertises
+        $expertises = Expertise::getAll();
+        $this->set('expertises', $expertises);
     }
 
-
-    public function view()
+    public function view($page = 1)
     {
-        $persons = Person::getAll(); // Get all persons from the database
-        $this->set('persons', $persons);
-    }   
+        $page = max(1, (int)$page);
+        $itemsPerPage = 16;
+    
+        $paginationData = Person::getPaginated($page, $itemsPerPage);
+    
+        $this->set('persons', $paginationData['persons']);
+        $this->set('currentPage', $paginationData['currentPage']);
+        $this->set('totalPages', $paginationData['totalPages']);
+    }
 
 
     public function edit($id) 
     {
-        $person = Person::getByID($id); // Retrieve a Person object by ID
-        $this->set('person', $person); // Set the 'person' variable in the current instance to hold the retrieved person
+        $person = Person::getByID($id);
+        $this->set('person', $person); 
 
-        $timeslots = $person->getTimeslots(); // Retrieve timeslots associated with the person
-        $this->set('timeslots', $timeslots); // Set the 'timeslots' variable to be used in the view
+        $timeslots = $person->getTimeslots(); 
+        $this->set('timeslots', $timeslots); 
 
-        $profilePicture = $person->getProfilePicture(); // Get the profile picture of the current person
+        $profilePicture = $person->getProfilePicture(); 
         $profilePictureURL = '';
         
         if ($profilePicture) {
-            $file = File::getByID($profilePicture); // Get the file object from the database using the profile picture ID
+            $file = File::getByID($profilePicture); 
             
             if ($file) {
-                $profilePictureURL = $file->getURL(); // Get the URL of the profile picture
+                $profilePictureURL = $file->getURL();
             }
         }
         $this->set('profilePictureURL', $profilePictureURL);
@@ -69,21 +74,17 @@ class Persons extends DashboardPageController
     public function save($id = null) 
     {   
         $post = $this->request->request;
-        // Check if $id is provided
         if ($id !== null) {
             $person = Person::getByID($id);
         } else {
-             // If $id is not provided, create a new Person object
             $person = new Person();
             $person->setDeleted(0);
         }
-        // Set person attributes based on form data
         $person->setFirstname($post->get('formName'));
         $person->setLastname($post->get('formLastname'));
         $person->setEmail($post->get('formEmail'));
         $person->setDate($post->get('formDate')); 
         
-        // Process and set expertises associated with the person
         $expertises = [];
         foreach ((array)$post->get('expertise') as $expertiseID) { 
             $expertises[] = Expertise::getByID($expertiseID);
@@ -117,7 +118,6 @@ class Persons extends DashboardPageController
                 $ts->setPerson($person);
             } 
 
-            // Set time slot attributes based on form data
 	        $timeslotsDays = $post->get('timeslotsDays');
 	        if (isset($timeslotsDays[$key])) {
 	            $ts->setDay($timeslotsDays[$key]);
@@ -138,13 +138,10 @@ class Persons extends DashboardPageController
 	            $ts->setAppointmentTime($appointmentTime[$key]);
         	}
     
-            // If a new time slot or not existing, add it to the person's time slots
 	        $person->addTimeslots($ts);
 
             $ts->save();
 	    }
-
-        // Redirect after processing the form
 	    $this->buildRedirect('/dashboard/planning_tool/persons/')->send();  
     }
 
