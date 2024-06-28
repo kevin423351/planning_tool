@@ -49,20 +49,6 @@ class appointments extends DashboardPageController
         } 
         $this->set('calendar', $return);
     }
-
-    public function search()
-    {
-        $query = $this->request->query->get('query');
-        
-        $appointments = Appointment::searchAppointments($query);
-
-        $this->set('appointments', $appointments);
-        $this->set('currentPage', 1);
-        $this->set('totalPages', 1);
-        $this->set('query', $query);
-
-        $this->render('/dashboard/planning_tool/appointments/agendaAppointments');
-    }
     
     public function agendaAppointments($dateString = '', $page = 1)
     {
@@ -131,7 +117,6 @@ class appointments extends DashboardPageController
                 $appointment->getComment()
             ));
         }
-    
         fclose($output);
         exit;
     }

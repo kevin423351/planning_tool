@@ -321,27 +321,8 @@ use DateTime;
         if (count($query->fetchAll()) >= 1) {
             return true;
         }
-        return false;
+        return false; 
     }
-    public static function searchAppointments($query)
-    {
-        $em = dbORM::entityManager();
-
-        $qb = $em->createQueryBuilder();
-        $qb->select('a')
-            ->from(self::class, 'a')
-            ->where('a.deleted = :deleted')
-            ->andWhere($qb->expr()->orX(
-                $qb->expr()->like('a.appointmentName', ':query'),
-                $qb->expr()->like('a.appointmentLastname', ':query'),
-                $qb->expr()->like('a.appointmentEmail', ':query')
-            ))
-            ->setParameter('deleted', 0)
-            ->setParameter('query', '%' . $query . '%');
-
-        return $qb->getQuery()->getResult();
-    }
-
 
     public static function getAppointmentsByDate($dateString, $paginate = false, $currentPage = 1, $itemsPerPage = 16, $order = 'ASC')
     {

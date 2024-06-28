@@ -207,7 +207,6 @@ class Controller extends BlockController {
         }
         exit;
     }    
-
     public function action_personTS($token = false, $bID = false) 
     {
         if ($this->bID != $bID) {
